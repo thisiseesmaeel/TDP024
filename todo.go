@@ -19,16 +19,6 @@ type Task struct {
 	ListId int
 }
 
-type CreateTaskRequest struct {
-    Name string `json:"name"`
-    ListId int  `json:"list_id"`
-}
-
-type List struct {
-    Id int
-    Name string
-}
-
 type ListCreateRequest struct {
 	Name string
 }
