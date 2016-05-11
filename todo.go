@@ -47,6 +47,16 @@ type Database struct {
     Db *sql.DB
 }
 
+
+func getURLParameter(path string) *string {
+    param := strings.Split(path, "/")
+    if len(param) == 3 {
+        return &param[2]
+    } else {
+        return nil
+    }
+}
+
 func getLists(db *sql.DB) []List {
     rows, err := db.Query("select * from list")
     CheckFatal(err)
@@ -63,10 +73,65 @@ func getLists(db *sql.DB) []List {
     return res
 }
 
+func getTasks(db *sql.DB, listId int) []Task {
+    // Query the database for all tasks that references the specified list
+    rows, err := db.Query("select * from task where list=$1", listId)
+    CheckFatal(err)
+
+    // Retrieve all tasks from the query
+    res := make([]Task, 0)
+    for rows.Next() {
+        var name string
+        var id, list int
+        var done bool
+        err := rows.Scan(&id, &name, &done, &list)
+        CheckFatal(err)
+        res = append(res, Task{Id: id, Name: name, Done: done, ListId: list})
+    }
+
+    return res
+}
+
+func insertTask(db *sql.DB, taskName string, listId int) {
+    _, err := db.Exec("insert into task (name, list) values ($1, $2)", taskName, listId)
+    // Handle non-existing list id
+    CheckFatal(err)
+}
+
 func (db *Database) listHandler(w http.ResponseWriter, r *http.Request) {
-    // Retrieve lists
-    list := getLists(db.Db)
-    json.NewEncoder(w).Encode(&list)
+    if r.Method == "GET" {
+        // Handle GET Request
+        param := getURLParameter(r.URL.Path)
+
+        // If no parameter exists, retrieve all lists
+        if param == nil || *param == "" {
+            // Retrieve lists
+            list := getLists(db.Db)
+            json.NewEncoder(w).Encode(&list)
+        } else {
+            // Get the list id from the parameter
+            listId, err := strconv.Atoi(*param)
+            CheckFatal(err)
+
+            // Retrieve tasks and send them back
+            tasks := getTasks(db.Db, listId)
+            json.NewEncoder(w).Encode(&tasks)
+        }
+    }
+}
+
+func (db *Database) taskHandler(w http.ResponseWriter, r *http.Request) {
+    if r.Method == "POST" {
+        body, err := ioutil.ReadAll(r.Body)
+        CheckFatal(err)
+        taskRequest := CreateTaskRequest{}
+        err = json.Unmarshal(body, &taskRequest)
+        CheckFatal(err)
+
+        insertTask(db.Db, taskRequest.Name, taskRequest.ListId)
+
+        fmt.Fprintf(w, "OK")
+    }
 }
 
 func ConnectDb() *sql.DB {
@@ -80,6 +145,8 @@ func Handlers() *http.ServeMux {
     db := Database{Db: ConnectDb()}
     mux := http.NewServeMux()
     mux.Handle("/list", http.HandlerFunc(db.listHandler))
+    mux.Handle("/list/", http.HandlerFunc(db.listHandler))
+    mux.Handle("/task", http.HandlerFunc(db.taskHandler))
     return mux
 }
 
