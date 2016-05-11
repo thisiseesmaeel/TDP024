@@ -92,6 +92,14 @@ func getTasks(db *sql.DB, listId int) []Task {
     return res
 }
 
+func insertList(db *sql.DB, listName string) int {
+    var listId int
+    err := db.QueryRow("insert into list (name) values ($1) returning id", listName).Scan(&listId)
+    CheckFatal(err)
+
+    return listId
+}
+
 func insertTask(db *sql.DB, taskName string, listId int) {
     _, err := db.Exec("insert into task (name, list) values ($1, $2)", taskName, listId)
     // Handle non-existing list id
@@ -117,6 +125,18 @@ func (db *Database) listHandler(w http.ResponseWriter, r *http.Request) {
             tasks := getTasks(db.Db, listId)
             json.NewEncoder(w).Encode(&tasks)
         }
+    } else if r.Method == "POST" {
+        // Parse the request and create a new list
+        body, err := ioutil.ReadAll(r.Body)
+        CheckFatal(err)
+        listRequest := ListCreateRequest{}
+        err = json.Unmarshal(body, &listRequest)
+        CheckFatal(err)
+
+        listResponse := ListCreateResponse{}
+        listResponse.Id = insertList(db.Db, listRequest.Name)
+
+        json.NewEncoder(w).Encode(&listResponse)
     }
 }
 
