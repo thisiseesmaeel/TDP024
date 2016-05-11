@@ -48,6 +48,9 @@ type Database struct {
 }
 
 
+// getURLParameter takes out the first URL parameter from the path
+// path should be formated as /type/param.
+// It returns a parameter representing a string.
 func getURLParameter(path string) *string {
     param := strings.Split(path, "/")
     if len(param) == 3 {
@@ -57,6 +60,8 @@ func getURLParameter(path string) *string {
     }
 }
 
+// getLists retrieves all the lists from the database.
+// It returns a slice of List structs.
 func getLists(db *sql.DB) []List {
     rows, err := db.Query("select * from list")
     CheckFatal(err)
@@ -73,6 +78,8 @@ func getLists(db *sql.DB) []List {
     return res
 }
 
+// getTasks retrieves all the tasks from the database.
+// It returns a slice of Task structs.
 func getTasks(db *sql.DB, listId int) []Task {
     // Query the database for all tasks that references the specified list
     rows, err := db.Query("select * from task where list=$1", listId)
@@ -92,6 +99,8 @@ func getTasks(db *sql.DB, listId int) []Task {
     return res
 }
 
+// insertList adds a list to the database with listName as its name.
+// It returns the Id of the list.
 func insertList(db *sql.DB, listName string) int {
     var listId int
     err := db.QueryRow("insert into list (name) values ($1) returning id", listName).Scan(&listId)
@@ -100,12 +109,19 @@ func insertList(db *sql.DB, listName string) int {
     return listId
 }
 
+// insertTask adds a task to the database. 
+// taskName specifies the name of the task, and listId the list that it belongs to.
 func insertTask(db *sql.DB, taskName string, listId int) {
     _, err := db.Exec("insert into task (name, list) values ($1, $2)", taskName, listId)
     // Handle non-existing list id
     CheckFatal(err)
 }
 
+// listHandler manages requests with regards to the lists.
+// A GET request to /list will retrieve all the lists.
+// A GET request to /list/<id> will retrieve all the tasks of the list with id <id>.
+// A POST request to /list will create a new list with the name provided in the Post Body
+// in the format {"name": "listName"}
 func (db *Database) listHandler(w http.ResponseWriter, r *http.Request) {
     if r.Method == "GET" {
         // Handle GET Request
@@ -140,6 +156,9 @@ func (db *Database) listHandler(w http.ResponseWriter, r *http.Request) {
     }
 }
 
+// taskHandler manages requests with regards to the tasks.
+// A POST request to /task will create a new task with the name and list provided in
+// the Post Body. The Body should be in the format {"name": "taskName", "list_id": 123}
 func (db *Database) taskHandler(w http.ResponseWriter, r *http.Request) {
     if r.Method == "POST" {
         body, err := ioutil.ReadAll(r.Body)
@@ -154,6 +173,8 @@ func (db *Database) taskHandler(w http.ResponseWriter, r *http.Request) {
     }
 }
 
+// ConnectDb connects to a postgres database.
+// it returns a database handle
 func ConnectDb() *sql.DB {
     db, err := sql.Open("postgres", "postgres://simon@localhost/todo?sslmode=disable")
     CheckFatal(err)
@@ -161,6 +182,7 @@ func ConnectDb() *sql.DB {
     return db
 }
 
+// Handlers retrieves all handlers for the server.
 func Handlers() *http.ServeMux {
     db := Database{Db: ConnectDb()}
     mux := http.NewServeMux()
