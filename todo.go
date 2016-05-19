@@ -12,6 +12,11 @@ import (
 	"strings"
 )
 
+const (
+	postgresUser = "simon"
+	postgresHost = "localhost"
+)
+
 type Task struct {
 	Id     int
 	Name   string
@@ -145,8 +150,7 @@ func (db *Database) taskHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func ConnectDb() *sql.DB {
-	// TODO: Refactor the database config
-	db, err := sql.Open("postgres", "postgres://simon@localhost/todo?sslmode=disable")
+	db, err := sql.Open("postgres", fmt.Sprintf("postgres://%s@%s/todo?sslmode=disable", postgresUser, postgresHost))
 	if err != nil {
 		log.Fatal(err)
 	}
