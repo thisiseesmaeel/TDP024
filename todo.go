@@ -48,6 +48,7 @@ type Database struct {
 }
 
 func getURLParameter(path string) *string {
+	// TODO: Handle multiple parameters
 	param := strings.Split(path, "/")
 	if len(param) == 3 {
 		return &param[2]
