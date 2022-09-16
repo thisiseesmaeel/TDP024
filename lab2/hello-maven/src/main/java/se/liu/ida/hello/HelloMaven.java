@@ -24,7 +24,7 @@ public class HelloMaven {
             }
 
             BufferedReader br = new BufferedReader(
-                             new InputStreamReader((response.getEntity().getContent())));
+                    new InputStreamReader((response.getEntity().getContent())));
 
             String output;
             System.out.println("Output from Server .... \n");
@@ -32,10 +32,10 @@ public class HelloMaven {
                 System.out.println(output);
             }
             httpClient.getConnectionManager().shutdown();
-      } catch (ClientProtocolException e) {
-        e.printStackTrace();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

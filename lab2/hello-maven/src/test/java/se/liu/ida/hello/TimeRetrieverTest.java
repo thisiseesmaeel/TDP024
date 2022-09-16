@@ -1,4 +1,4 @@
-package se.liu.ida.time;
+package se.liu.ida.hello;
 
 import static org.junit.Assert.*;
 import junit.framework.TestCase;
