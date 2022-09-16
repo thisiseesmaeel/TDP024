@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-failsafe-plugin/xsd/failsafe-test-report-3.0.xsd" version="3.0" name="se.liu.ida.hello.StatusIT" time="0.323" tests="1" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="17"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/home/hadan326/tdp024/lab2/hello-maven/target/test-classes:/home/hadan326/tdp024/lab2/hello-maven/target/hello-maven-1.0-SNAPSHOT.jar:/home/hadan326/.m2/repository/junit/junit/4.11/junit-4.11.jar:/home/hadan326/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/hadan326/.m2/repository/org/apache/httpcomponents/httpclient/4.5.13/httpclient-4.5.13.jar:/home/hadan326/.m2/repository/org/apache/httpcomponents/httpcore/4.4.13/httpcore-4.4.13.jar:/home/hadan326/.m2/repository/commons-logging/commons-logging/1.2/commons-logging-1.2.jar:/home/hadan326/.m2/repository/commons-codec/commons-codec/1.11/commons-codec-1.11.jar:/home/hadan326/.m2/repository/joda-time/joda-time/2.11.1/joda-time-2.11.1.jar:/home/hadan326/.m2/repository/log4j/log4j/1.2.17/log4j-1.2.17.jar:/home/hadan326/.m2/repository/org/testng/testng/6.9.8/testng-6.9.8.jar:/home/hadan326/.m2/repository/org/beanshell/bsh/2.0b4/bsh-2.0b4.jar:/home/hadan326/.m2/repository/com/beust/jcommander/1.48/jcommander-1.48.jar:"/>
+    <property name="java.vm.vendor" value="Private Build"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="Unknown"/>
+    <property name="user.timezone" value="Europe/Stockholm"/>
+    <property name="os.name" value="Linux"/>
+    <property name="java.vm.specification.version" value="17"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-17-openjdk-amd64/lib"/>
+    <property name="sun.java.command" value="/home/hadan326/tdp024/lab2/hello-maven/target/surefire/surefirebooter-20220916115457798_3.jar /home/hadan326/tdp024/lab2/hello-maven/target/surefire 2022-09-16T11-54-57_636-jvmRun1 surefire-20220916115457798_1tmp surefire_0-20220916115457798_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/home/hadan326/tdp024/lab2/hello-maven/target/test-classes:/home/hadan326/tdp024/lab2/hello-maven/target/hello-maven-1.0-SNAPSHOT.jar:/home/hadan326/.m2/repository/junit/junit/4.11/junit-4.11.jar:/home/hadan326/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/hadan326/.m2/repository/org/apache/httpcomponents/httpclient/4.5.13/httpclient-4.5.13.jar:/home/hadan326/.m2/repository/org/apache/httpcomponents/httpcore/4.4.13/httpcore-4.4.13.jar:/home/hadan326/.m2/repository/commons-logging/commons-logging/1.2/commons-logging-1.2.jar:/home/hadan326/.m2/repository/commons-codec/commons-codec/1.11/commons-codec-1.11.jar:/home/hadan326/.m2/repository/joda-time/joda-time/2.11.1/joda-time-2.11.1.jar:/home/hadan326/.m2/repository/log4j/log4j/1.2.17/log4j-1.2.17.jar:/home/hadan326/.m2/repository/org/testng/testng/6.9.8/testng-6.9.8.jar:/home/hadan326/.m2/repository/org/beanshell/bsh/2.0b4/bsh-2.0b4.jar:/home/hadan326/.m2/repository/com/beust/jcommander/1.48/jcommander-1.48.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/home/hadan326"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2022-07-19"/>
+    <property name="java.home" value="/usr/lib/jvm/java-17-openjdk-amd64"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/home/hadan326/tdp024/lab2/hello-maven"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="surefire.real.class.path" value="/home/hadan326/tdp024/lab2/hello-maven/target/surefire/surefirebooter-20220916115457798_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="17.0.4+8-Ubuntu-122.04"/>
+    <property name="user.name" value="hadan326"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="5.15.0-47-generic"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="localRepository" value="/home/hadan326/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="Unknown"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="java.version" value="17.0.4"/>
+    <property name="user.dir" value="/home/hadan326/tdp024/lab2/hello-maven"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.vendor" value="Private Build"/>
+    <property name="java.vm.version" value="17.0.4+8-Ubuntu-122.04"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="61.0"/>
+  </properties>
+  <testcase name="testStatusCode on testStatusCode(se.liu.ida.hello.StatusIT)" classname="se.liu.ida.hello.StatusIT" time="0.159">
+    <system-err><![CDATA[log4j:WARN No appenders could be found for logger (org.apache.http.impl.conn.BasicClientConnectionManager).
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+]]></system-err>
+  </testcase>
+</testsuite>

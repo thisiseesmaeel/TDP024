@@ -9,6 +9,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.HttpResponse;
 
 public class StatusIT extends TestCase {
+
     private static String serverURL = "http://localhost:8080/list";
 
     public StatusIT(String name) {
