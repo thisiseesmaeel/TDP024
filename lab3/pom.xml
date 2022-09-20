@@ -5,10 +5,12 @@
     <artifactId>account</artifactId>
     <version>1.0</version>
     <packaging>pom</packaging>
+
     <modules>
       <module>account-datalayer</module>
       <module>account-logic</module>
       <module>account-rest</module>
       <module>account-xfinal-test</module>
- </modules>
+    </modules>
+
 </project>
