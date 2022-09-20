@@ -1,15 +1,16 @@
 package se.liu.ida.tdp024.account.xfinal.test.account;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 import se.liu.ida.tdp024.account.util.http.HTTPHelper;
 import se.liu.ida.tdp024.account.util.http.HTTPHelperImpl;
 import se.liu.ida.tdp024.account.xfinal.test.util.FinalConstants;
 
-public class AccountCreateTest {
+import java.util.ArrayList;
+import java.util.List;
 
+public class AccountCreateTest {
+/*
     private static final HTTPHelper httpHelper = new HTTPHelperImpl();
 
     @Test
@@ -265,6 +266,7 @@ public class AccountCreateTest {
 
 
         /* Wrong endpoint (i.e. incorrect request) */
+    /*
         {
             String person = "3";
             String bank = "SWEDBANK";
@@ -290,4 +292,7 @@ public class AccountCreateTest {
 
 
     }
+
+
+     */
 }

@@ -1,4 +1,4 @@
-package hello;
+package se.liu.ida.tdp024.account.rest;
 
 public class Greeting {
 

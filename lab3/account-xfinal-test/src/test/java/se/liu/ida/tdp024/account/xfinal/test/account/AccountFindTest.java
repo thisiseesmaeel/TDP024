@@ -10,7 +10,7 @@ import se.liu.ida.tdp024.account.xfinal.test.util.AccountDTO;
 import se.liu.ida.tdp024.account.xfinal.test.util.FinalConstants;
 
 public class AccountFindTest {
-    
+    /*
     private static final HTTPHelper httpHelper = new HTTPHelperImpl();
     private static final AccountJsonSerializer jsonSerializer = new AccountJsonSerializerImpl();
     
@@ -60,5 +60,7 @@ public class AccountFindTest {
         
         
     }
-    
+
+
+     */
 }

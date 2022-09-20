@@ -15,6 +15,7 @@ import se.liu.ida.tdp024.account.xfinal.test.util.FinalConstants;
 import se.liu.ida.tdp024.account.xfinal.test.util.TransactionDTO;
 
 public class TransactionTest {
+    /*
 
     private static final HTTPHelper httpHelper = new HTTPHelperImpl();
     private static final AccountJsonSerializer jsonSerializer = new AccountJsonSerializerImpl();
@@ -223,4 +224,6 @@ public class TransactionTest {
         }
         
     }
+
+     */
 }
