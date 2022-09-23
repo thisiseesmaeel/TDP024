@@ -12,7 +12,7 @@ import java.util.List;
 public class AccountCreateTest {
 
     private static final HTTPHelper httpHelper = new HTTPHelperImpl();
-
+/*
     @Test
     public void createSuccess() {
 
@@ -294,5 +294,5 @@ public class AccountCreateTest {
     }
 
 
-
+*/
 }
