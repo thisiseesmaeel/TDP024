@@ -12,17 +12,16 @@ import se.liu.ida.tdp024.account.logic.impl.facade.AccountLogicFacadeImpl;
 @RequestMapping("/account-rest")
 public class AccountController {
     AccountLogicFacade accountLogicFacade = new AccountLogicFacadeImpl(new AccountEntityFacadeDB());
-        //this.accountLogicFacade = accountLogicFacade
-    
+
     @RequestMapping("/account/create")
     public String create(@RequestParam String accountType, @RequestParam String person, @RequestParam String bank) {
-        //accountLogicFacade.create(accountType, person, bank);
+        accountLogicFacade.create(accountType, person, bank);
         return "Create works!";
     }
 
     @RequestMapping("/account/find/person")
     public String findPerson(@RequestParam String personKey) {
-        //accountLogicFacade.find(personKey);
+        accountLogicFacade.find(personKey);
         return "Find person works!";
     }
 

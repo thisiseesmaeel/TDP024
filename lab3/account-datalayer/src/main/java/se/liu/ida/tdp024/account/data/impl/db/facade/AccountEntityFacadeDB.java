@@ -17,7 +17,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
         em.getTransaction().begin();
 
         AccountDB accountDB = new AccountDB();
-        accountDB.setId(2); // How to find a unique id?
+        //accountDB.setId(2); // How to find a unique id?
         accountDB.setPersonKey(personKey);
         accountDB.setAccountType(accountType);
         accountDB.setBankKey(bankKey);
@@ -26,6 +26,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
 
         em.getTransaction().commit();
 
+
         return true;
     }
 
@@ -33,7 +34,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
     public List<Account> find(String personKey) {
 
         Query query = em.createQuery(
-                "SELECT * FROM AccountDB WHERE personKey = :personKey"
+                "SELECT account FROM AccountDB account WHERE account.personKey = :personKey"
         );
 
         query.setParameter("personKey", personKey);

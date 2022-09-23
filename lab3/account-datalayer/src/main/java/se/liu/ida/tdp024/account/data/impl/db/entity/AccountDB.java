@@ -3,12 +3,15 @@ package se.liu.ida.tdp024.account.data.impl.db.entity;
 import se.liu.ida.tdp024.account.data.api.entity.Account;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class AccountDB implements Account {
 
     @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY) // Auto increment the id each time we create an account
     private long id;
     private String personKey;
     private String accountType;
