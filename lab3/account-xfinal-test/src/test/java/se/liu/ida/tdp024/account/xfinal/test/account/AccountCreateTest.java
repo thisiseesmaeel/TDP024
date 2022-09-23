@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AccountCreateTest {
-/*
+
     private static final HTTPHelper httpHelper = new HTTPHelperImpl();
 
     @Test
@@ -294,5 +294,5 @@ public class AccountCreateTest {
     }
 
 
-     */
+
 }
