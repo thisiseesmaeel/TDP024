@@ -32,8 +32,8 @@ public class AccountController {
     }
 
     @RequestMapping("/account/find/person")
-    public List<Account> findPerson(@RequestParam String personKey) {
-        return accountLogicFacade.find(personKey);
+    public List<Account> findPerson(@RequestParam String person) {
+        return accountLogicFacade.find(person);
     }
 
     @RequestMapping("/account/debit")

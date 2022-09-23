@@ -17,7 +17,7 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
     }
 
     @Override
-    public boolean create(String personKey, String bankKey, String accountType) {
+    public boolean create(String personKey, String bankName, String accountType) {
         // we need to implement a logic before calling data layer
         // TODO:
         // 1) Validate the accountType
@@ -29,11 +29,12 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
             return false;
         }
 
-        // 3) Call to Rust and check whether the bank exists in our database or not.
-        if(BankMock.findBankByName(bankKey) == null){
+        // 3) Call to Rust and check whether the bank exists in our database or not and get the unique bank key.
+        String bankKey = BankMock.findBankByName(bankName);
+        if( bankKey == null){
             return false;
         }
-        accountEntityFacade.create(accountType, personKey, bankKey);
+        accountEntityFacade.create(personKey, bankKey, accountType);
 
         return true;
     }

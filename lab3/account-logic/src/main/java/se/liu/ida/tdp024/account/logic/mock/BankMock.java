@@ -25,7 +25,7 @@ public class BankMock {
     public static String findBankByName(String name){
         for(Map.Entry<String, String> entry: banks.entrySet()){
             if(entry.getValue().equals(name)){
-                return entry.getValue();
+                return entry.getKey();
             }
         }
         return null;
