@@ -3,6 +3,8 @@ package se.liu.ida.tdp024.account.logic.impl.facade;
 import se.liu.ida.tdp024.account.data.api.entity.Account;
 import se.liu.ida.tdp024.account.data.api.facade.AccountEntityFacade;
 import se.liu.ida.tdp024.account.logic.api.facade.AccountLogicFacade;
+import se.liu.ida.tdp024.account.logic.mock.BankMock;
+import se.liu.ida.tdp024.account.logic.mock.PersonMock;
 
 import java.util.List;
 
@@ -15,10 +17,22 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
     }
 
     @Override
-    public boolean create(String accountType, String personKey, String bankKey) {
+    public boolean create(String personKey, String bankKey, String accountType) {
         // we need to implement a logic before calling data layer
-        // Call to Elixir and check whether the person exists in our database or not.
-        // Call to Rust and check whether the bank exists in our database or not.
+        // TODO:
+        // 1) Validate the accountType
+        if(!(accountType.equals("CHECK") || accountType.equals("SAVINGS")))
+            return false;
+
+        // 2) Call to Elixir and check whether the person exists in our database or not.
+        if(PersonMock.findPersonById(personKey) == null){
+            return false;
+        }
+
+        // 3) Call to Rust and check whether the bank exists in our database or not.
+        if(BankMock.findBankByName(bankKey) == null){
+            return false;
+        }
         accountEntityFacade.create(accountType, personKey, bankKey);
 
         return true;

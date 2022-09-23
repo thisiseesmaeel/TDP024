@@ -12,7 +12,7 @@ import java.util.List;
 public class AccountCreateTest {
 
     private static final HTTPHelper httpHelper = new HTTPHelperImpl();
-/*
+
     @Test
     public void createSuccess() {
 
@@ -266,7 +266,7 @@ public class AccountCreateTest {
 
 
         /* Wrong endpoint (i.e. incorrect request) */
-    /*
+
         {
             String person = "3";
             String bank = "SWEDBANK";
@@ -288,11 +288,6 @@ public class AccountCreateTest {
             String response = httpHelper.get(FinalConstants.ENDPOINT + "account/account/create/", "person", person, "bank", bank, "accounttype", accountType);
             Assert.assertEquals("", response);
         }
-
-
-
     }
 
-
-*/
 }

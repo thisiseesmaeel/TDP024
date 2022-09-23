@@ -1,5 +1,7 @@
 package se.liu.ida.tdp024.account.rest;
 
+import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,9 +19,15 @@ public class AccountController {
     AccountLogicFacade accountLogicFacade = new AccountLogicFacadeImpl(new AccountEntityFacadeDB());
 
     @RequestMapping("/account/create")
-    public String create(@RequestParam String accountType, @RequestParam String person, @RequestParam String bank) {
-        if(accountLogicFacade.create(accountType, person, bank))
+    public String create(@RequestParam(value = "person", defaultValue = "") String person,
+                         @RequestParam(value = "bank", defaultValue = "") String bank,
+                         @RequestParam(value = "accounttype", defaultValue = "")String accounttype) {
+
+        if (person.isEmpty() || bank.isEmpty() || accounttype.isEmpty())
+            return "FAILED";
+        if (accountLogicFacade.create(person, bank, accounttype))
             return "OK";
+
         return "FAILED";
     }
 
@@ -47,5 +55,11 @@ public class AccountController {
 
         return "Transaction works!";
     }
+
+//    @ExceptionHandler(MissingServletRequestParameterException.class)
+//    public void handleMissingParams(MissingServletRequestParameterException ex) {
+//        String missingParam = ex.getParameterName();
+//        System.out.println(missingParam + " parameter is missing");
+//    }
 
 }

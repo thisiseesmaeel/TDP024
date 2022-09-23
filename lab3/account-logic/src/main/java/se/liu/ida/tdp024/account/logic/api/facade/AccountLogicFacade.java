@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AccountLogicFacade {
 
-    boolean create(String accountType, String personKey, String bankKey);
+    boolean create(String personKey, String bankKey, String accountType);
 
     List<Account> find(String personKey);
 

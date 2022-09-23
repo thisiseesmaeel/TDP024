@@ -12,7 +12,7 @@ import java.util.List;
 public class AccountEntityFacadeDB implements AccountEntityFacade {
     private EntityManager em = EMF.getEntityManager();
     @Override
-    public boolean create(String accountType, String personKey, String bankKey) {
+    public boolean create(String personKey, String bankKey, String accountType) {
 
         em.getTransaction().begin();
 
