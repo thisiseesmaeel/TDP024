@@ -21,7 +21,7 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
         // Call to Rust and check whether the bank exists in our database or not.
         accountEntityFacade.create(accountType, personKey, bankKey);
 
-        return false;
+        return true;
     }
 
     @Override
@@ -29,14 +29,17 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
         // Call to Elixir and check whether the person exists in our database or not.
         return accountEntityFacade.find(personKey);
     }
-
     @Override
-    public boolean credit(long id) {
-        return false;
+    public boolean debit(long id, long amount) {
+        accountEntityFacade.debit(id, amount);
+        return true;
     }
 
     @Override
-    public boolean debit(long id) {
-        return false;
+    public boolean credit(long id, long amount) {
+        accountEntityFacade.credit(id, amount);
+        return true;
     }
+
+
 }

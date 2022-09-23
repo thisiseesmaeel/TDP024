@@ -8,28 +8,28 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/account-datalayer/src/main/java/se/liu/ida/tdp024/account/data/api/facade/AccountEntityFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-datalayer/src/main/java/se/liu/ida/tdp024/account/data/api/facade/AccountEntityFacade.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/account-datalayer/src/main/java/se/liu/ida/tdp024/account/data/impl/db/facade/AccountEntityFacadeDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-datalayer/src/main/java/se/liu/ida/tdp024/account/data/impl/db/facade/AccountEntityFacadeDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-datalayer/target/classes/se/liu/ida/tdp024/account/data/api/facade/AccountEntityFacade.class" beforeDir="false" afterPath="$PROJECT_DIR$/account-datalayer/target/classes/se/liu/ida/tdp024/account/data/api/facade/AccountEntityFacade.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-datalayer/target/classes/se/liu/ida/tdp024/account/data/impl/db/facade/AccountEntityFacadeDB.class" beforeDir="false" afterPath="$PROJECT_DIR$/account-datalayer/target/classes/se/liu/ida/tdp024/account/data/impl/db/facade/AccountEntityFacadeDB.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/account-datalayer/target/datalayer-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/account-datalayer/target/datalayer-1.0.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/account-datalayer/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/account-datalayer/target/maven-archiver/pom.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/account-datalayer/target/surefire-reports/TEST-se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/account-datalayer/target/surefire-reports/TEST-se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/account-datalayer/target/surefire-reports/se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/account-datalayer/target/surefire-reports/se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/account-logic/src/main/java/se/liu/ida/tdp024/account/logic/api/facade/AccountLogicFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-logic/src/main/java/se/liu/ida/tdp024/account/logic/api/facade/AccountLogicFacade.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/account-logic/src/main/java/se/liu/ida/tdp024/account/logic/impl/facade/AccountLogicFacadeImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-logic/src/main/java/se/liu/ida/tdp024/account/logic/impl/facade/AccountLogicFacadeImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-logic/target/classes/se/liu/ida/tdp024/account/logic/api/facade/AccountLogicFacade.class" beforeDir="false" afterPath="$PROJECT_DIR$/account-logic/target/classes/se/liu/ida/tdp024/account/logic/api/facade/AccountLogicFacade.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-logic/target/classes/se/liu/ida/tdp024/account/logic/impl/facade/AccountLogicFacadeImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/account-logic/target/classes/se/liu/ida/tdp024/account/logic/impl/facade/AccountLogicFacadeImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/account-logic/target/logic-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/account-logic/target/logic-1.0.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/account-logic/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/account-logic/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-logic/target/surefire-reports/TEST-se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/account-logic/target/surefire-reports/TEST-se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/account-logic/target/surefire-reports/se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/account-logic/target/surefire-reports/se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-rest/derby.log" beforeDir="false" afterPath="$PROJECT_DIR$/account-rest/derby.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/account-rest/src/main/java/se/liu/ida/tdp024/account/rest/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-rest/src/main/java/se/liu/ida/tdp024/account/rest/AccountController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-rest/src/main/java/se/liu/ida/tdp024/account/rest/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-rest/src/main/java/se/liu/ida/tdp024/account/rest/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-rest/target/classes/se/liu/ida/tdp024/account/rest/AccountController.class" beforeDir="false" afterPath="$PROJECT_DIR$/account-rest/target/classes/se/liu/ida/tdp024/account/rest/AccountController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/account-rest/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/account-rest/target/maven-archiver/pom.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/account-rest/target/rest-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/account-rest/target/rest-1.0.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/account-xfinal-test/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/account-xfinal-test/target/maven-archiver/pom.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/account-xfinal-test/target/xfinal-test-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/account-xfinal-test/target/xfinal-test-1.0.jar" afterDir="false" />
     </list>
-    <list id="77d549e6-f1c3-4e47-b9a7-9aa49d4872e8" name="Changes by heartless" comment="">
-      <change beforePath="$PROJECT_DIR$/account-datalayer/src/main/java/se/liu/ida/tdp024/account/data/impl/db/facade/AccountEntityFacadeDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-datalayer/src/main/java/se/liu/ida/tdp024/account/data/impl/db/facade/AccountEntityFacadeDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-rest/src/main/java/se/liu/ida/tdp024/account/rest/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-rest/src/main/java/se/liu/ida/tdp024/account/rest/AccountController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-xfinal-test/src/test/java/se/liu/ida/tdp024/account/xfinal/test/account/AccountCreateTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-xfinal-test/src/test/java/se/liu/ida/tdp024/account/xfinal/test/account/AccountCreateTest.java" afterDir="false" />
-    </list>
+    <list id="77d549e6-f1c3-4e47-b9a7-9aa49d4872e8" name="Changes by heartless" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -37,28 +37,6 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
-  </component>
-  <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/account-datalayer/src/main/java/se/liu/ida/tdp024/account/data/impl/db/facade/AccountEntityFacadeDB.java">
-      <ranges>
-        <range start1="2" end1="2" start2="2" end2="3" changelist="3c1d752e-6f9c-41b6-8219-ade21b800e1a" />
-        <range start1="3" end1="3" start2="4" end2="10" changelist="3c1d752e-6f9c-41b6-8219-ade21b800e1a" />
-        <range start1="5" end1="6" start2="12" end2="52" changelist="3c1d752e-6f9c-41b6-8219-ade21b800e1a" />
-        <range start1="8" end1="8" start2="54" end2="56" changelist="77d549e6-f1c3-4e47-b9a7-9aa49d4872e8" />
-      </ranges>
-    </file>
-    <file path="$PROJECT_DIR$/account-rest/src/main/java/se/liu/ida/tdp024/account/rest/AccountController.java">
-      <ranges>
-        <range start1="5" end1="5" start2="5" end2="6" changelist="3c1d752e-6f9c-41b6-8219-ade21b800e1a" />
-        <range start1="7" end1="7" start2="8" end2="9" changelist="3c1d752e-6f9c-41b6-8219-ade21b800e1a" />
-        <range start1="8" end1="10" start2="10" end2="11" changelist="3c1d752e-6f9c-41b6-8219-ade21b800e1a" />
-        <range start1="11" end1="11" start2="12" end2="19" changelist="3c1d752e-6f9c-41b6-8219-ade21b800e1a" />
-        <range start1="14" end1="15" start2="22" end2="23" changelist="77d549e6-f1c3-4e47-b9a7-9aa49d4872e8" />
-        <range start1="20" end1="21" start2="28" end2="29" changelist="77d549e6-f1c3-4e47-b9a7-9aa49d4872e8" />
-        <range start1="26" end1="27" start2="34" end2="35" changelist="3c1d752e-6f9c-41b6-8219-ade21b800e1a" />
-        <range start1="32" end1="33" start2="40" end2="41" changelist="3c1d752e-6f9c-41b6-8219-ade21b800e1a" />
-      </ranges>
-    </file>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -76,17 +54,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/hadan326/tdp024/lab3&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;spring.configuration.checksum&quot;: &quot;65e8800b5c6800aad896f888b2a62afc&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "last_opened_file_path": "/home/hadan326/tdp024/lab3",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.keymap",
+    "spring.configuration.checksum": "65e8800b5c6800aad896f888b2a62afc"
   }
-}</component>
+}]]></component>
+  <component name="RunManager">
+    <configuration name="Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="rest" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="se.liu.ida.tdp024.account.rest.Application" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -100,6 +88,9 @@
       <workItem from="1663750142136" duration="531000" />
       <workItem from="1663751551736" duration="1225000" />
       <workItem from="1663915025297" duration="10404000" />
+      <workItem from="1663926029749" duration="3328000" />
+      <workItem from="1663935065605" duration="2860000" />
+      <workItem from="1663945916473" duration="3305000" />
     </task>
     <servers />
   </component>

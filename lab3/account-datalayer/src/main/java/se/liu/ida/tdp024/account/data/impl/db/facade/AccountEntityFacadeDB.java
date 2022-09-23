@@ -17,7 +17,6 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
         em.getTransaction().begin();
 
         AccountDB accountDB = new AccountDB();
-        //accountDB.setId(2); // How to find a unique id?
         accountDB.setPersonKey(personKey);
         accountDB.setAccountType(accountType);
         accountDB.setBankKey(bankKey);
@@ -43,13 +42,26 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
     }
 
     @Override
-    public boolean credit(long id) {
-        return false;
+    public boolean credit(long id, long amount) {
+
+        Account account = em.find(AccountDB.class, id);
+
+        em.getTransaction().begin();
+        account.setHoldings(account.getHoldings() + amount);
+        em.getTransaction().commit();
+
+        return true;
     }
 
     @Override
-    public boolean debit(long id) {
-        return false;
+    public boolean debit(long id, long amount) {
+        Account account = em.find(AccountDB.class, id);
+
+        em.getTransaction().begin();
+        account.setHoldings(account.getHoldings() - amount);
+        em.getTransaction().commit();
+
+        return true;
     }
 }
 

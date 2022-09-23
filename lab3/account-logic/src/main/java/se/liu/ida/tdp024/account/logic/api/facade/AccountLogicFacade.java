@@ -11,8 +11,8 @@ public interface AccountLogicFacade {
 
     List<Account> find(String personKey);
 
-    boolean credit(long id);
+    boolean debit(long id, long amount);
 
-    boolean debit(long id);
-    
+    boolean credit(long id, long amount);
+
 }
