@@ -1,5 +1,7 @@
 package se.liu.ida.tdp024.account.data.api.facade;
 
-public interface TransactionEntityFacade {
-    boolean create();
+import se.liu.ida.tdp024.account.data.api.entity.Account;
+
+public interface TransactionEntityFacade{
+    boolean create(String type, long amount, String status, Account account);
 }

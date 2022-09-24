@@ -4,25 +4,25 @@ public interface Transaction {
 
     long getId();
 
-    public void setId(long id);
+    void setId(long id);
 
-    public String getType();
+    String getType();
 
-    public void setType(String type);
+    void setType(String type);
 
-    public long getAmount();
+    long getAmount();
 
-    public void setAmount(long amount);
-    public String getCreated();
+    void setAmount(long amount);
+    String getCreated();
 
-    public void setCreated(String created);
+    void setCreated(String created);
 
-    public String getStatus();
+    String getStatus();
 
-    public void setStatus(String status);
+    void setStatus(String status);
 
-//    public AccountDTO getAccount();
-//
-//    public void setAccount(AccountDTO account);
+    Account getAccount();
+
+    void setAccount(Account account);
 
 }

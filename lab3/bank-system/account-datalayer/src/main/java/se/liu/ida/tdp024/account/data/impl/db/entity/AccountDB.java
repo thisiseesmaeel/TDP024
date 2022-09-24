@@ -1,11 +1,10 @@
 package se.liu.ida.tdp024.account.data.impl.db.entity;
 
 import se.liu.ida.tdp024.account.data.api.entity.Account;
+import se.liu.ida.tdp024.account.data.api.entity.Transaction;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class AccountDB implements Account {
@@ -17,6 +16,8 @@ public class AccountDB implements Account {
     private String accountType;
     private String bankKey;
     private long holdings;
+    @OneToMany(mappedBy = "account", targetEntity = TransactionDB.class)
+    private List<Transaction> transactions;
 
     @Override
     public long getId() {
@@ -67,4 +68,16 @@ public class AccountDB implements Account {
     public void setHoldings(long holdings) {
         this.holdings = holdings;
     }
+
+    @Override
+    public List<Transaction> getTransactions() {
+        return this.transactions;
+    }
+
+    @Override
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package se.liu.ida.tdp024.account.data.api.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 public interface Account extends Serializable {
 
@@ -18,5 +19,9 @@ public interface Account extends Serializable {
 
     long getHoldings();
     void setHoldings(long holdings);
+
+    List<Transaction> getTransactions();
+
+    void setTransactions(List<Transaction> transactions);
 
 }

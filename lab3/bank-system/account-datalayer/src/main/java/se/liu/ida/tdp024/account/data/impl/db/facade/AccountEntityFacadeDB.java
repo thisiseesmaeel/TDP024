@@ -1,12 +1,14 @@
 package se.liu.ida.tdp024.account.data.impl.db.facade;
 
 import se.liu.ida.tdp024.account.data.api.entity.Account;
+import se.liu.ida.tdp024.account.data.api.entity.Transaction;
 import se.liu.ida.tdp024.account.data.api.facade.AccountEntityFacade;
 import se.liu.ida.tdp024.account.data.impl.db.entity.AccountDB;
 import se.liu.ida.tdp024.account.data.impl.db.util.EMF;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AccountEntityFacadeDB implements AccountEntityFacade {
@@ -21,10 +23,10 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
         accountDB.setAccountType(accountType);
         accountDB.setBankKey(bankKey);
         accountDB.setHoldings(0); // An empty account with zero holdings
+        accountDB.setTransactions(new ArrayList<Transaction>());
+
         em.persist(accountDB);
-
         em.getTransaction().commit();
-
 
         return true;
     }
