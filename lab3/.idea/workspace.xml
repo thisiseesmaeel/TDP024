@@ -6,34 +6,23 @@
   <component name="ChangeListManager">
     <list default="true" id="3c1d752e-6f9c-41b6-8219-ade21b800e1a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-datalayer/src/main/java/se/liu/ida/tdp024/account/data/api/facade/AccountEntityFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-datalayer/src/main/java/se/liu/ida/tdp024/account/data/api/facade/AccountEntityFacade.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/account-datalayer/src/main/java/se/liu/ida/tdp024/account/data/impl/db/facade/AccountEntityFacadeDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-datalayer/src/main/java/se/liu/ida/tdp024/account/data/impl/db/facade/AccountEntityFacadeDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-datalayer/target/classes/se/liu/ida/tdp024/account/data/api/facade/AccountEntityFacade.class" beforeDir="false" afterPath="$PROJECT_DIR$/account-datalayer/target/classes/se/liu/ida/tdp024/account/data/api/facade/AccountEntityFacade.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-datalayer/target/classes/se/liu/ida/tdp024/account/data/impl/db/facade/AccountEntityFacadeDB.class" beforeDir="false" afterPath="$PROJECT_DIR$/account-datalayer/target/classes/se/liu/ida/tdp024/account/data/impl/db/facade/AccountEntityFacadeDB.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-datalayer/target/datalayer-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/account-datalayer/target/datalayer-1.0.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-datalayer/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/account-datalayer/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-datalayer/target/surefire-reports/TEST-se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/account-datalayer/target/surefire-reports/TEST-se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-datalayer/target/surefire-reports/se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/account-datalayer/target/surefire-reports/se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-logic/src/main/java/se/liu/ida/tdp024/account/logic/api/facade/AccountLogicFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-logic/src/main/java/se/liu/ida/tdp024/account/logic/api/facade/AccountLogicFacade.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/account-logic/src/main/java/se/liu/ida/tdp024/account/logic/impl/facade/AccountLogicFacadeImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-logic/src/main/java/se/liu/ida/tdp024/account/logic/impl/facade/AccountLogicFacadeImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-logic/target/classes/se/liu/ida/tdp024/account/logic/api/facade/AccountLogicFacade.class" beforeDir="false" afterPath="$PROJECT_DIR$/account-logic/target/classes/se/liu/ida/tdp024/account/logic/api/facade/AccountLogicFacade.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-logic/target/classes/se/liu/ida/tdp024/account/logic/impl/facade/AccountLogicFacadeImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/account-logic/target/classes/se/liu/ida/tdp024/account/logic/impl/facade/AccountLogicFacadeImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-logic/target/logic-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/account-logic/target/logic-1.0.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-logic/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/account-logic/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-logic/target/surefire-reports/se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/account-logic/target/surefire-reports/se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-rest/derby.log" beforeDir="false" afterPath="$PROJECT_DIR$/account-rest/derby.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/account-rest/src/main/java/se/liu/ida/tdp024/account/rest/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-rest/src/main/java/se/liu/ida/tdp024/account/rest/AccountController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-rest/target/classes/se/liu/ida/tdp024/account/rest/AccountController.class" beforeDir="false" afterPath="$PROJECT_DIR$/account-rest/target/classes/se/liu/ida/tdp024/account/rest/AccountController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-rest/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/account-rest/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-rest/target/rest-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/account-rest/target/rest-1.0.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-xfinal-test/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/account-xfinal-test/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-xfinal-test/target/xfinal-test-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/account-xfinal-test/target/xfinal-test-1.0.jar" afterDir="false" />
     </list>
     <list id="77d549e6-f1c3-4e47-b9a7-9aa49d4872e8" name="Changes by heartless" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="Interface" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -62,6 +51,9 @@
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "last_opened_file_path": "/home/hadan326/tdp024/lab3",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "preferences.keymap",
     "spring.configuration.checksum": "65e8800b5c6800aad896f888b2a62afc"
   }
@@ -90,7 +82,8 @@
       <workItem from="1663915025297" duration="10404000" />
       <workItem from="1663926029749" duration="3328000" />
       <workItem from="1663935065605" duration="2860000" />
-      <workItem from="1663945916473" duration="3305000" />
+      <workItem from="1663945916473" duration="14816000" />
+      <workItem from="1664013732957" duration="4164000" />
     </task>
     <servers />
   </component>
