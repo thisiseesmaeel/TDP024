@@ -13,7 +13,7 @@ public class TransactionEntityFacadeDB implements TransactionEntityFacade {
     private final EntityManager em = EMF.getEntityManager();
 
     @Override
-    public boolean create(String type, long amount, String status, Account account) {
+    public boolean create(String type, long amount, String status, long accountId) {
         em.getTransaction().begin();
 
         Transaction transaction = new TransactionDB();
@@ -21,7 +21,9 @@ public class TransactionEntityFacadeDB implements TransactionEntityFacade {
         transaction.setAmount(amount);
         transaction.setStatus(status);
         transaction.setCreated(new Date().toString());
-        transaction.setAccount(account);
+        transaction.setAccount(em.find(Account.class, accountId)); // Find belonging account and relate this transaction to it
+                                                                   // DB handles the rest. It creates two tables and add account id as
+                                                                   // a column into the transaction table. (one -> many)
 
         em.persist(transaction);
         em.getTransaction().commit();
