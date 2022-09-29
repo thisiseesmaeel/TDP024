@@ -59,11 +59,6 @@ public class AccountController {
         return transactionLogicFacade.findByAccountId(id);
     }
 
-    @RequestMapping("/account/transactions/create")
-    public boolean transaction() {
-        return transactionLogicFacade.create("CREDIT", 100, "OK", 1);
-    }
-
 //    @ExceptionHandler(MissingServletRequestParameterException.class)
 //    public void handleMissingParams(MissingServletRequestParameterException ex) {
 //        String missingParam = ex.getParameterName();

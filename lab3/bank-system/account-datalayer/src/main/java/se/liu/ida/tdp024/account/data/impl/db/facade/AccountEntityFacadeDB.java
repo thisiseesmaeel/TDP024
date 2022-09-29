@@ -63,9 +63,6 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
         account.getTransactions().add(transaction);
 
         em.persist(transaction);
-        em.persist(account);
-
-        // Append accounts transaction list
         em.getTransaction().commit();
 
         return true;
@@ -78,7 +75,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
         em.getTransaction().begin();
         // Create a transaction in db
         TransactionDB transaction = new TransactionDB();
-        transaction.setType("CREDIT");
+        transaction.setType("DEBIT");
         transaction.setAmount(amount);
         transaction.setCreated(new Date().toString());
         transaction.setStatus("OK");
@@ -89,7 +86,6 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
         account.getTransactions().add(transaction);
 
         em.persist(transaction);
-        em.persist(account);
         em.getTransaction().commit();
 
         return true;

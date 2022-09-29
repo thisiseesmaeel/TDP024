@@ -8,7 +8,6 @@ import se.liu.ida.tdp024.account.data.impl.db.util.EMF;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,10 +36,11 @@ public class TransactionEntityFacadeDB implements TransactionEntityFacade {
 
     @Override
     public List<Transaction> findByAccountId(long accountID) {
+        em.clear(); // If we do not clear entity manager it will show old data of account
         Query query = em.createQuery(
-                "SELECT transaction FROM TransactionDB transaction WHERE transaction.account.id = :accountID");
+                "SELECT transaction FROM TransactionDB transaction");// WHERE transaction.account.id = :accountID");
 
-        query.setParameter("accountID", accountID);
+        //query.setParameter("accountID", accountID);
 
         return (List<Transaction>) query.getResultList();
     }

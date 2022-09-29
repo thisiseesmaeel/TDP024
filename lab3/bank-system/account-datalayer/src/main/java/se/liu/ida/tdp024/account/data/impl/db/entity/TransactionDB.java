@@ -15,7 +15,7 @@ public class TransactionDB implements Transaction {
     private long amount;
     private String created;
     private String status;
-    @ManyToOne(targetEntity = AccountDB.class)
+    @ManyToOne(targetEntity = AccountDB.class, fetch = FetchType.EAGER)
     private Account account;
 
     @Override
