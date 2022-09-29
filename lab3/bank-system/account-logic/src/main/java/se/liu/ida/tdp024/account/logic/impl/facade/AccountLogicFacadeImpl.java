@@ -47,14 +47,14 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
     }
     @Override
     public boolean debit(long id, long amount) {
-        accountEntityFacade.debit(id, amount);
-        return true;
+        // TODO: Check if this account exists?
+        return accountEntityFacade.debit(id, amount);
     }
 
     @Override
     public boolean credit(long id, long amount) {
-        accountEntityFacade.credit(id, amount);
-        return true;
+        // TODO: Check if this account exists?
+        return accountEntityFacade.credit(id, amount);
     }
 
 

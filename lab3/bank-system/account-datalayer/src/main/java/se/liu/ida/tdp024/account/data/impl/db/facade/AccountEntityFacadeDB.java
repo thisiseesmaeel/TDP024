@@ -55,40 +55,51 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
         transaction.setType("CREDIT");
         transaction.setAmount(amount);
         transaction.setCreated(new Date().toString());
-        transaction.setStatus("OK");
         transaction.setAccount(account);
-
-        // Update existing account in db
-        account.setHoldings(account.getHoldings() + amount);
         account.getTransactions().add(transaction);
 
-        em.persist(transaction);
-        em.getTransaction().commit();
-
-        return true;
+        if(amount > 0){
+            transaction.setStatus("OK");
+            // Update existing account in db
+            account.setHoldings(account.getHoldings() + amount);
+            em.persist(transaction);
+            em.getTransaction().commit();
+            return true;
+        }
+        else {
+            transaction.setStatus("FAILED");
+            em.persist(transaction);
+            em.getTransaction().commit();
+            return false;
+        }
     }
 
     @Override
     public boolean debit(long id, long amount) {
         Account account = em.find(AccountDB.class, id);
-
         em.getTransaction().begin();
         // Create a transaction in db
         TransactionDB transaction = new TransactionDB();
         transaction.setType("DEBIT");
         transaction.setAmount(amount);
         transaction.setCreated(new Date().toString());
-        transaction.setStatus("OK");
         transaction.setAccount(account);
-
-        // Update existing account in db
-        account.setHoldings(account.getHoldings() - amount);
         account.getTransactions().add(transaction);
 
-        em.persist(transaction);
-        em.getTransaction().commit();
-
-        return true;
+        if(account.getHoldings() >= amount && amount > 0){
+            transaction.setStatus("OK");
+            // Update existing account in db
+            account.setHoldings(account.getHoldings() - amount);
+            em.persist(transaction);
+            em.getTransaction().commit();
+            return true;
+        }
+        else {
+            transaction.setStatus("FAILED");
+            em.persist(transaction);
+            em.getTransaction().commit();
+            return false;
+        }
     }
 }
 

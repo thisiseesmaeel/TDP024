@@ -18,7 +18,7 @@ public class AccountDB implements Account {
     private String bankKey;
     private long holdings;
     @JsonIgnore
-    @OneToMany(mappedBy = "account", targetEntity = TransactionDB.class, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "account", targetEntity = TransactionDB.class)
     private List<Transaction> transactions;
 
     @Override
