@@ -17,7 +17,7 @@ public class TransactionDB implements Transaction {
     private long amount;
     private String created;
     private String status;
-    
+
     @JsonIgnore
     @ManyToOne(targetEntity = AccountDB.class)
     private Account account;

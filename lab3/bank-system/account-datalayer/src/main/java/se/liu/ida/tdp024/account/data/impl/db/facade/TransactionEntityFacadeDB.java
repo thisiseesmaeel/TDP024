@@ -38,9 +38,9 @@ public class TransactionEntityFacadeDB implements TransactionEntityFacade {
     @Override
     public List<Transaction> findByAccountId(long accountID) {
         Query query = em.createQuery(
-                "SELECT transaction FROM TransactionDB transaction WHERE 1 = 1");
+                "SELECT transaction FROM TransactionDB transaction WHERE transaction.account.id = :accountID");
 
-       // query.setParameter("accountID", accountID);
+        query.setParameter("accountID", accountID);
 
 //        List<Transaction> transactions = new ArrayList<>();
 //        transactions.add(em.find(TransactionDB.class, 1));
