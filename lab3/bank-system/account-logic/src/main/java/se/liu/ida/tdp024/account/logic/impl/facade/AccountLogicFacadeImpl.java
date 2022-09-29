@@ -2,6 +2,7 @@ package se.liu.ida.tdp024.account.logic.impl.facade;
 
 import se.liu.ida.tdp024.account.data.api.entity.Account;
 import se.liu.ida.tdp024.account.data.api.facade.AccountEntityFacade;
+import se.liu.ida.tdp024.account.data.api.facade.TransactionEntityFacade;
 import se.liu.ida.tdp024.account.logic.api.facade.AccountLogicFacade;
 import se.liu.ida.tdp024.account.logic.mock.BankMock;
 import se.liu.ida.tdp024.account.logic.mock.PersonMock;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class AccountLogicFacadeImpl implements AccountLogicFacade {
     private final AccountEntityFacade accountEntityFacade;
-    
+
     public AccountLogicFacadeImpl(AccountEntityFacade accountEntityFacade) {
         this.accountEntityFacade = accountEntityFacade;
     }

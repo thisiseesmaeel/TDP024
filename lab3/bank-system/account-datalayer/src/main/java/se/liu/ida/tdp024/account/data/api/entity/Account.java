@@ -1,5 +1,6 @@
 package se.liu.ida.tdp024.account.data.api.entity;
 
+import javax.persistence.Entity;
 import java.io.Serializable;
 import java.util.List;
 

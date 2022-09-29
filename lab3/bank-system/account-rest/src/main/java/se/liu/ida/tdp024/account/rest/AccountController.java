@@ -6,9 +6,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import se.liu.ida.tdp024.account.data.api.entity.Account;
+import se.liu.ida.tdp024.account.data.api.entity.Transaction;
 import se.liu.ida.tdp024.account.data.impl.db.facade.AccountEntityFacadeDB;
+import se.liu.ida.tdp024.account.data.impl.db.facade.TransactionEntityFacadeDB;
 import se.liu.ida.tdp024.account.logic.api.facade.AccountLogicFacade;
+import se.liu.ida.tdp024.account.logic.api.facade.TransactionLogicFacade;
 import se.liu.ida.tdp024.account.logic.impl.facade.AccountLogicFacadeImpl;
+import se.liu.ida.tdp024.account.logic.impl.facade.TransactionLogicFacadeImp;
 
 import java.util.List;
 
@@ -17,7 +21,7 @@ import java.util.List;
 @RequestMapping("/account-rest")
 public class AccountController {
     private final AccountLogicFacade accountLogicFacade = new AccountLogicFacadeImpl(new AccountEntityFacadeDB());
-
+    private final TransactionLogicFacade transactionLogicFacade = new TransactionLogicFacadeImp(new TransactionEntityFacadeDB());
     @RequestMapping("/account/create")
     public String create(@RequestParam(value = "person", defaultValue = "") String person,
                          @RequestParam(value = "bank", defaultValue = "") String bank,
@@ -50,10 +54,14 @@ public class AccountController {
         return "FAILED";
     }
 
-    @RequestMapping("/account/transaction")
-    public String transaction(@RequestParam long id) {
+    @RequestMapping("/account/transactions")
+    public List<Transaction> transaction(@RequestParam long id) {
+        return transactionLogicFacade.findByAccountId(id);
+    }
 
-        return "Transaction works!";
+    @RequestMapping("/account/transactions/create")
+    public boolean transaction() {
+        return transactionLogicFacade.create("CREDIT", 100, "OK", 1);
     }
 
 //    @ExceptionHandler(MissingServletRequestParameterException.class)

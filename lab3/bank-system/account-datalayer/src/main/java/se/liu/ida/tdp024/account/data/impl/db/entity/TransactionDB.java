@@ -1,7 +1,9 @@
 package se.liu.ida.tdp024.account.data.impl.db.entity;
 
+//import org.codehaus.jackson.annotate.JsonIgnore;
 import se.liu.ida.tdp024.account.data.api.entity.Account;
 import se.liu.ida.tdp024.account.data.api.entity.Transaction;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -15,6 +17,8 @@ public class TransactionDB implements Transaction {
     private long amount;
     private String created;
     private String status;
+    
+    @JsonIgnore
     @ManyToOne(targetEntity = AccountDB.class)
     private Account account;
 
