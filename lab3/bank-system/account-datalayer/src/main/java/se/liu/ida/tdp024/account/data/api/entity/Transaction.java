@@ -1,6 +1,8 @@
 package se.liu.ida.tdp024.account.data.api.entity;
 
-public interface Transaction {
+import java.io.Serializable;
+
+public interface Transaction extends Serializable {
 
     long getId();
 

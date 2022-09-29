@@ -3,7 +3,6 @@ package se.liu.ida.tdp024.account.data.impl.db.facade;
 import se.liu.ida.tdp024.account.data.api.entity.Account;
 import se.liu.ida.tdp024.account.data.api.entity.Transaction;
 import se.liu.ida.tdp024.account.data.api.facade.AccountEntityFacade;
-import se.liu.ida.tdp024.account.data.api.facade.TransactionEntityFacade;
 import se.liu.ida.tdp024.account.data.impl.db.entity.AccountDB;
 import se.liu.ida.tdp024.account.data.impl.db.entity.TransactionDB;
 import se.liu.ida.tdp024.account.data.impl.db.util.EMF;
@@ -26,7 +25,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
         accountDB.setAccountType(accountType);
         accountDB.setBankKey(bankKey);
         accountDB.setHoldings(0); // An empty account with zero holdings
-        accountDB.setTransactions(new ArrayList<Transaction>());
+        accountDB.setTransactions(new ArrayList<>());
 
         em.persist(accountDB);
         em.getTransaction().commit();
@@ -36,7 +35,6 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
 
     @Override
     public List<Account> find(String personKey) {
-
         Query query = em.createQuery(
                 "SELECT account FROM AccountDB account WHERE account.personKey = :personKey"
         );
@@ -44,11 +42,11 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
         query.setParameter("personKey", personKey);
 
         return (List<Account>) query.getResultList();
+
     }
 
     @Override
     public boolean credit(long id, long amount) {
-
         Account account = em.find(AccountDB.class, id);
 
         em.getTransaction().begin();
@@ -60,8 +58,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
         transaction.setStatus("OK");
         transaction.setAccount(account);
 
-
-        // Update holding of existing account in db
+        // Update existing account in db
         account.setHoldings(account.getHoldings() + amount);
         account.getTransactions().add(transaction);
 
@@ -79,7 +76,20 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
         Account account = em.find(AccountDB.class, id);
 
         em.getTransaction().begin();
+        // Create a transaction in db
+        TransactionDB transaction = new TransactionDB();
+        transaction.setType("CREDIT");
+        transaction.setAmount(amount);
+        transaction.setCreated(new Date().toString());
+        transaction.setStatus("OK");
+        transaction.setAccount(account);
+
+        // Update existing account in db
         account.setHoldings(account.getHoldings() - amount);
+        account.getTransactions().add(transaction);
+
+        em.persist(transaction);
+        em.persist(account);
         em.getTransaction().commit();
 
         return true;

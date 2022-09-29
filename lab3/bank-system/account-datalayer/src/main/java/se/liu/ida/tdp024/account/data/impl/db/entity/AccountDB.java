@@ -1,5 +1,6 @@
 package se.liu.ida.tdp024.account.data.impl.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import se.liu.ida.tdp024.account.data.api.entity.Account;
 import se.liu.ida.tdp024.account.data.api.entity.Transaction;
 
@@ -16,6 +17,7 @@ public class AccountDB implements Account {
     private String accountType;
     private String bankKey;
     private long holdings;
+    @JsonIgnore
     @OneToMany(mappedBy = "account", targetEntity = TransactionDB.class, cascade = CascadeType.ALL)
     private List<Transaction> transactions;
 

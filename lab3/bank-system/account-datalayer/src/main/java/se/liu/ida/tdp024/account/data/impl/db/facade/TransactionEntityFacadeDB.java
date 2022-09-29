@@ -42,10 +42,6 @@ public class TransactionEntityFacadeDB implements TransactionEntityFacade {
 
         query.setParameter("accountID", accountID);
 
-//        List<Transaction> transactions = new ArrayList<>();
-//        transactions.add(em.find(TransactionDB.class, 1));
-//
-//        return (List<Transaction>) transactions;
         return (List<Transaction>) query.getResultList();
     }
 }
