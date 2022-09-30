@@ -38,9 +38,9 @@ public class TransactionEntityFacadeDB implements TransactionEntityFacade {
     public List<Transaction> findByAccountId(long accountID) {
         em.clear(); // If we do not clear entity manager it will show old data of account
         Query query = em.createQuery(
-                "SELECT transaction FROM TransactionDB transaction");// WHERE transaction.account.id = :accountID");
+                 "SELECT transaction FROM TransactionDB transaction WHERE transaction.account.id = :accountID");
 
-        //query.setParameter("accountID", accountID);
+        query.setParameter("accountID", accountID);
 
         return (List<Transaction>) query.getResultList();
     }
