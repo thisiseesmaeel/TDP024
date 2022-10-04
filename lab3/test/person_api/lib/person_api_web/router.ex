@@ -9,8 +9,10 @@ defmodule PersonApiWeb.Router do
 
   scope "/api", PersonApiWeb do
     pipe_through :api
-    
+
     get "/person", PersonController, :index
+
+    get "/person/list", PersonController, :lol
   end
 
   # Enables LiveDashboard only for development
