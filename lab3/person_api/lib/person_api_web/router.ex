@@ -1,14 +1,20 @@
 defmodule PersonApiWeb.Router do
-  
   use PersonApiWeb, :router
+
+
 
   pipeline :api do
     plug :accepts, ["json"]
   end
 
   scope "/api", PersonApiWeb do
-    resources "/persons", PersonController, except: [:new, :edit]
     pipe_through :api
+
+    get "/person/list", PersonController, :list
+
+    get "/person/find.name", PersonController, :find_by_name
+
+    get "/person/find.key", PersonController, :find_by_key
   end
 
   # Enables LiveDashboard only for development

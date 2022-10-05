@@ -7,7 +7,7 @@ defmodule PersonApiWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_person_api_key",
-    signing_salt: "WXZF7cgL"
+    signing_salt: "TCrQe1x9"
   ]
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]

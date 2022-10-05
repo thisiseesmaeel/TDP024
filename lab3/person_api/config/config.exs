@@ -8,15 +8,14 @@
 import Config
 
 config :person_api,
-  ecto_repos: [PersonApi.Repo],
-  generators: [binary_id: true]
+  ecto_repos: [PersonApi.Repo]
 
 # Configures the endpoint
 config :person_api, PersonApiWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: PersonApiWeb.ErrorView, accepts: ~w(json), layout: false],
   pubsub_server: PersonApi.PubSub,
-  live_view: [signing_salt: "4gWjWqV1"]
+  live_view: [signing_salt: "n0QeRjYE"]
 
 # Configures the mailer
 #
@@ -51,3 +50,14 @@ config :phoenix, :json_library, Jason
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
+
+
+config :kaffe,
+  producer: [
+    endpoints: [localhost: 9092],
+    # endpoints references [hostname: port]. Kafka is configured to run on port 9092.
+    # In this example, the hostname is localhost because we've started the Kafka server
+    # straight from our machine. However, if the server is dockerized, the hostname will
+    # be called whatever is specified by that container (usually "kafka")
+    topics: ["REST"], # add a list of topics you plan to produce messages to
+  ]

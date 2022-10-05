@@ -17,7 +17,7 @@ config :person_api, PersonApi.Repo,
 # you can enable the server option below.
 config :person_api, PersonApiWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "0dY+LIlUOkIkdSaL5+eDp7pkeXErRQRn5Y8V98fuKTPU9uYjZZKfp220aF51xK0i",
+  secret_key_base: "avi7TOJdOUwLZ+qbLwRECAyE4Q2iYi0X+wpJRF1vqlbEe3kQCrsppo2tV1l2p5QV",
   server: false
 
 # In test we don't send emails.

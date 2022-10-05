@@ -23,7 +23,7 @@ config :person_api, PersonApiWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "7+4jxBVi6DvsKx8y389ohYh+m1pv49AeuJMv7ZnGj+g+jVP1AOlboO1bUa8HpnC2",
+  secret_key_base: "dv0lmLq5m5DUpYgE/kggrl2gfFYbQ9TejfCwYYRgfI5w1ulKsdp2Tu1rPst+uh6S",
   watchers: [
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}

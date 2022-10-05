@@ -1,20 +1,24 @@
 defmodule PersonApiWeb.PersonView do
-  use PersonApiWeb, :view
-  alias PersonApiWeb.PersonView
+    use PersonApiWeb, :view
 
-  def render("index.json", %{persons: persons}) do
-    %{data: render_many(persons, PersonView, "person.json")}
-  end
+    alias PersonApi.KafkaProducer
+    alias PersonApi.LocalDatabase
 
-  def render("show.json", %{person: person}) do
-    %{data: render_one(person, PersonView, "person.json")}
-  end
+    def render("list.json", _data) do
+        KafkaProducer.send_my_message("REST", to_string(:os.system_time(:millisecond)), "Inquiry for a list of all persons")
+        LocalDatabase.get_db()
+    end     
 
-  def render("person.json", %{person: person}) do
-    %{
-      id: person.id,
-      key: person.key,
-      name: person.name
-    }
-  end
+    def render("find_by_name.json", %{name: name}) do
+        KafkaProducer.send_my_message("REST", to_string(:os.system_time(:millisecond)), "Inquiry for person with name: " <> name)
+        person_db = LocalDatabase.get_db()
+        LocalDatabase.find_by_name(person_db, length(person_db), name, []) 
+    end
+
+    def render("find_by_key.json", %{key: key}) do
+        KafkaProducer.send_my_message("REST", to_string(:os.system_time(:millisecond)), "Inquiry for person with person key: " <> key)
+        person_db = LocalDatabase.get_db()
+        LocalDatabase.find_by_key(person_db, length(person_db), key) 
+    end
+
 end
