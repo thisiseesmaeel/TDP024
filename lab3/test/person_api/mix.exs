@@ -19,7 +19,7 @@ defmodule PersonApi.MixProject do
   def application do
     [
       mod: {PersonApi.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :kaffe]
     ]
   end
 
@@ -43,7 +43,8 @@ defmodule PersonApi.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"}
+      {:plug_cowboy, "~> 2.5"},
+      {:kaffe, "~> 1.9"}
     ]
   end
 

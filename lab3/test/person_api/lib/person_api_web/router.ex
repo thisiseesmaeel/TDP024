@@ -10,8 +10,6 @@ defmodule PersonApiWeb.Router do
   scope "/api", PersonApiWeb do
     pipe_through :api
 
-    get "/person", PersonController, :index
-
     get "/person/list", PersonController, :list
 
     get "/person/find.name", PersonController, :find_by_name

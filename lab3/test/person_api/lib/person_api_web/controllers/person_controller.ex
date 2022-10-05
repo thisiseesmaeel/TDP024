@@ -1,10 +1,6 @@
 defmodule PersonApiWeb.PersonController do
     use PersonApiWeb, :controller
 
-    def index(conn, _params) do
-        render(conn, "index.json")
-    end
-
     def list(conn, _params) do
         render(conn, "list.json")
     end
