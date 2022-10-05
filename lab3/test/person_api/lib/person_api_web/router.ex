@@ -12,7 +12,11 @@ defmodule PersonApiWeb.Router do
 
     get "/person", PersonController, :index
 
-    get "/person/list", PersonController, :lol
+    get "/person/list", PersonController, :list
+
+    get "/person/find.name", PersonController, :find_by_name
+
+    get "/person/find.key", PersonController, :find_by_key
   end
 
   # Enables LiveDashboard only for development
