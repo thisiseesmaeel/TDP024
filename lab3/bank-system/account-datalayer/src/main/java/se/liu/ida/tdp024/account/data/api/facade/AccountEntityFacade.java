@@ -15,10 +15,10 @@ public interface AccountEntityFacade {
     List<Account> find(String personKey)
             throws AccountEntityNotFoundException, AccountInputParameterException, AccountServiceConfigurationException;
 
-    boolean debit(long id, long amount)
+    Account debit(long id, long amount)
             throws AccountEntityNotFoundException, AccountInputParameterException, AccountServiceConfigurationException,
             InsufficientHoldingException;
 
-    boolean credit(long id, long amount)
+    Account credit(long id, long amount)
             throws AccountEntityNotFoundException, AccountInputParameterException, AccountServiceConfigurationException;
 }

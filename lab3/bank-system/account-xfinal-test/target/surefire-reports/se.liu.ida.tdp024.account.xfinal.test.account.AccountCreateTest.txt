@@ -1,9 +1,9 @@
 -------------------------------------------------------------------------------
 Test set: se.liu.ida.tdp024.account.xfinal.test.account.AccountCreateTest
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.089 sec <<< FAILURE!
-createSuccessAllCombos(se.liu.ida.tdp024.account.xfinal.test.account.AccountCreateTest)  Time elapsed: 0.039 sec  <<< FAILURE!
-org.junit.ComparisonFailure: expected:<O[K]> but was:<O[k]>
+Tests run: 3, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.077 sec <<< FAILURE!
+createSuccessAllCombos(se.liu.ida.tdp024.account.xfinal.test.account.AccountCreateTest)  Time elapsed: 0.024 sec  <<< FAILURE!
+org.junit.ComparisonFailure: expected:<[OK]> but was:<[]>
 	at org.junit.Assert.assertEquals(Assert.java:115)
 	at org.junit.Assert.assertEquals(Assert.java:144)
 	at se.liu.ida.tdp024.account.xfinal.test.account.AccountCreateTest.createSuccessAllCombos(AccountCreateTest.java:113)
@@ -37,8 +37,8 @@ org.junit.ComparisonFailure: expected:<O[K]> but was:<O[k]>
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
 
-createSuccess(se.liu.ida.tdp024.account.xfinal.test.account.AccountCreateTest)  Time elapsed: 0.008 sec  <<< FAILURE!
-org.junit.ComparisonFailure: expected:<O[K]> but was:<O[k]>
+createSuccess(se.liu.ida.tdp024.account.xfinal.test.account.AccountCreateTest)  Time elapsed: 0.006 sec  <<< FAILURE!
+org.junit.ComparisonFailure: expected:<[OK]> but was:<[]>
 	at org.junit.Assert.assertEquals(Assert.java:115)
 	at org.junit.Assert.assertEquals(Assert.java:144)
 	at se.liu.ida.tdp024.account.xfinal.test.account.AccountCreateTest.createSuccess(AccountCreateTest.java:22)
@@ -72,7 +72,7 @@ org.junit.ComparisonFailure: expected:<O[K]> but was:<O[k]>
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
 
-createFailure(se.liu.ida.tdp024.account.xfinal.test.account.AccountCreateTest)  Time elapsed: 0.008 sec  <<< FAILURE!
+createFailure(se.liu.ida.tdp024.account.xfinal.test.account.AccountCreateTest)  Time elapsed: 0.005 sec  <<< FAILURE!
 org.junit.ComparisonFailure: expected:<[FAILED]> but was:<[]>
 	at org.junit.Assert.assertEquals(Assert.java:115)
 	at org.junit.Assert.assertEquals(Assert.java:144)

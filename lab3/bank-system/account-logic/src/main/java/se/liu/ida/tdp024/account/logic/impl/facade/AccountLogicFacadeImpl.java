@@ -61,7 +61,7 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
         }
     }
     @Override
-    public boolean debit(long id, long amount)
+    public Account debit(long id, long amount)
             throws AccountEntityNotFoundException, AccountInputParameterException, AccountServiceConfigurationException,
             InsufficientHoldingException {
         try {
@@ -72,7 +72,7 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
     }
 
     @Override
-    public boolean credit(long id, long amount)
+    public Account credit(long id, long amount)
             throws AccountEntityNotFoundException, AccountInputParameterException, AccountServiceConfigurationException {
         try {
             return accountEntityFacade.credit(id, amount);

@@ -2,6 +2,7 @@ package se.liu.ida.tdp024.account.data.impl.db.facade;
 
 import se.liu.ida.tdp024.account.data.api.entity.Account;
 import se.liu.ida.tdp024.account.data.api.facade.AccountEntityFacade;
+import se.liu.ida.tdp024.account.data.api.facade.TransactionEntityFacade;
 import se.liu.ida.tdp024.account.data.exception.AccountEntityNotFoundException;
 import se.liu.ida.tdp024.account.data.exception.AccountInputParameterException;
 import se.liu.ida.tdp024.account.data.exception.AccountServiceConfigurationException;
@@ -76,7 +77,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
     }
 
     @Override
-    public boolean debit(long id, long amount)
+    public Account debit(long id, long amount)
             throws AccountEntityNotFoundException, AccountInputParameterException, AccountServiceConfigurationException,
             InsufficientHoldingException {
         if(id < 0 || amount <= 0)
@@ -102,7 +103,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
                 account.setHoldings(account.getHoldings() - amount);
                 em.persist(transaction);
                 em.getTransaction().commit();
-                return true;
+                return account;
             }
             else {
                 transaction.setStatus("FAILED");
@@ -123,7 +124,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
     }
 
     @Override
-    public boolean credit(long id, long amount)
+    public Account credit(long id, long amount)
             throws AccountEntityNotFoundException, AccountInputParameterException, AccountServiceConfigurationException{
         if(id < 0 || amount <= 0)
             throw new AccountInputParameterException("Crediting account failed due to invalid input(s).");
@@ -132,22 +133,18 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
             if (account == null)
                 throw new AccountEntityNotFoundException("Could not found any account with provided id.");
 
-            em.getTransaction().begin();
+            final TransactionEntityFacade transactionEntityFacade = new TransactionEntityFacadeDB();
             // Create a transaction in db
-            TransactionDB transaction = new TransactionDB();
-            transaction.setType("CREDIT");
-            transaction.setAmount(amount);
-            transaction.setCreated(new Date().toString());
-            transaction.setAccount(account);
-            account.getTransactions().add(transaction);
+            TransactionDB transaction = transactionEntityFacade.create("CREDIT", amount, new Date().toString(), "OK", id);
 
-            // TODO: How can this go wrong? (creating a transaction with fail status!?)
-            transaction.setStatus("OK");
             // Update existing account in db
+            em.getTransaction().begin();
+            account.getTransactions().add(transaction);
             account.setHoldings(account.getHoldings() + amount);
-            em.persist(transaction);
+            em.persist(account);
             em.getTransaction().commit();
-            return true;
+
+            return account;
         }
         catch(AccountEntityNotFoundException e){
             throw e;
