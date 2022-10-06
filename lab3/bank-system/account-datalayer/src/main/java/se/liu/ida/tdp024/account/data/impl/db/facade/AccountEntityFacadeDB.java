@@ -21,11 +21,11 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
     @Override
     public boolean create(String personKey, String bankKey, String accountType)
             throws AccountInputParameterException, AccountServiceConfigurationException {
-        if(personKey.isEmpty() || bankKey.isEmpty() || accountType.isEmpty()){
-            throw new AccountInputParameterException("Creating account failed due to invalid input.");
-        }
-
         try {
+            if(personKey.isEmpty() || bankKey.isEmpty() || accountType.isEmpty()){
+                throw new AccountInputParameterException("Creating account failed due to invalid input.");
+            }
+
             em.getTransaction().begin();
 
             AccountDB accountDB = new AccountDB();
@@ -38,11 +38,11 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
             em.persist(accountDB);
             em.getTransaction().commit();
         }
+        catch (AccountInputParameterException e){
+            throw e;
+        }
         catch (Exception e){
             throw new AccountServiceConfigurationException("Creating account failed due to internal service error.");
-        }
-        finally {
-            em.close();
         }
         return true;
     }
@@ -50,9 +50,10 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
     @Override
     public List<Account> find(String personKey)
             throws AccountEntityNotFoundException, AccountInputParameterException, AccountServiceConfigurationException{
-        if(personKey.isEmpty())
-            throw new AccountInputParameterException("Finding account(s) failed due to invalid input(s).");
         try {
+            if(personKey.isEmpty())
+                throw new AccountInputParameterException("Finding account(s) failed due to invalid input(s).");
+
             Query query = em.createQuery(
                     "SELECT account FROM AccountDB account WHERE account.personKey = :personKey"
             );
@@ -60,12 +61,16 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
             query.setParameter("personKey", personKey);
             List<Account> accounts = (List<Account>) query.getResultList();
             if (accounts.isEmpty())
-                throw new Exception("Empty");
+                throw new AccountEntityNotFoundException("Could not found any account with this person key.");
             return accounts;
         }
+        catch (AccountInputParameterException e){
+            throw e;
+        }
+        catch (AccountEntityNotFoundException e){
+            throw e;
+        }
         catch (Exception e){
-            if(e.getMessage().equals("Empty"))
-                throw new AccountEntityNotFoundException("Could not found any account with this person key.");
             throw new AccountServiceConfigurationException("Finding account(s) failed due to internal service error.");
         }
     }
@@ -80,7 +85,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
         try {
             Account account = em.find(AccountDB.class, id);
             if (account == null)
-                throw new Exception("Account in null");
+                throw new AccountEntityNotFoundException("Could not found any account with provided id.");
 
             em.getTransaction().begin();
             // Create a transaction in db
@@ -103,18 +108,17 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
                 transaction.setStatus("FAILED");
                 em.persist(transaction);
                 em.getTransaction().commit();
-                throw new Exception("Insufficient holding");
+                throw new InsufficientHoldingException("Insufficient holding");
             }
         }
-        catch (Exception e){
-            if(e.getMessage().equals("Account is null"))
-                throw new AccountEntityNotFoundException("Could not found any account with provided id.");
-            if(e.getMessage().equals("Insufficient holding"))
-                throw new InsufficientHoldingException("Insufficient holding");
-            throw new AccountServiceConfigurationException("Debiting account failed due to internal service error!");
+        catch(AccountEntityNotFoundException e){
+            throw e;
         }
-        finally {
-            em.close();
+        catch (InsufficientHoldingException e){
+            throw e;
+        }
+        catch (Exception e){
+            throw new AccountServiceConfigurationException("Debiting account failed due to internal service error!");
         }
     }
 
@@ -126,7 +130,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
         try {
             Account account = em.find(AccountDB.class, id);
             if (account == null)
-                throw new Exception("Account in null");
+                throw new AccountEntityNotFoundException("Could not found any account with provided id.");
 
             em.getTransaction().begin();
             // Create a transaction in db
@@ -145,13 +149,11 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
             em.getTransaction().commit();
             return true;
         }
-        catch (Exception e){
-            if(e.getMessage().equals("Account is null"))
-                throw new AccountEntityNotFoundException("Could not found any account with provided id.");
-            throw new AccountServiceConfigurationException("Crediting account failed due to internal service error!");
+        catch(AccountEntityNotFoundException e){
+            throw e;
         }
-        finally {
-            em.close();
+        catch (Exception e){
+            throw new AccountServiceConfigurationException("Crediting account failed due to internal service error!");
         }
 
     }

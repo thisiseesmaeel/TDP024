@@ -27,17 +27,17 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
 
         // 1) Validate the accountType
         if(!(accountType.equals("CHECK") || accountType.equals("SAVINGS")))
-            return false;
+            throw new AccountInputParameterException("Account type is incorrect.");
 
         // TODO: 2) Call to Elixir and check whether the person exists in our database or not.
         if(PersonMock.findPersonById(personKey) == null){
-            return false;
+            throw new AccountServiceConfigurationException("Could not find this person.");
         }
 
         // 3) Call to Rust and check whether the bank exists in our database or not and get the unique bank key.
         String bankKey = BankMock.findBankByName(bankName);
         if( bankKey == null){
-            return false;
+            throw new AccountServiceConfigurationException("Could not find this bank.");
         }
         try {
             accountEntityFacade.create(personKey, bankKey, accountType);

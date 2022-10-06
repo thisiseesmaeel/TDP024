@@ -9,6 +9,7 @@ import se.liu.ida.tdp024.account.data.api.entity.Transaction;
 import se.liu.ida.tdp024.account.data.exception.AccountEntityNotFoundException;
 import se.liu.ida.tdp024.account.data.exception.AccountInputParameterException;
 import se.liu.ida.tdp024.account.data.exception.AccountServiceConfigurationException;
+import se.liu.ida.tdp024.account.data.exception.InsufficientHoldingException;
 import se.liu.ida.tdp024.account.data.impl.db.facade.AccountEntityFacadeDB;
 import se.liu.ida.tdp024.account.data.impl.db.facade.TransactionEntityFacadeDB;
 import se.liu.ida.tdp024.account.logic.api.facade.AccountLogicFacade;
@@ -96,12 +97,13 @@ public class AccountController {
             producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Debited from account at: \"" + new Date() + "\"")).get();
             return ResponseEntity.ok("Ok");
         }
-        catch (AccountEntityNotFoundException| AccountInputParameterException| AccountServiceConfigurationException e){
+        catch (AccountEntityNotFoundException | AccountInputParameterException
+               | AccountServiceConfigurationException | InsufficientHoldingException e){
             producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Could not debit from account at: \"" + new Date() + "\""));
             return ResponseEntity.status(400).body(e.getMessage());
         }
         catch (Exception e){
-            return ResponseEntity.status(400).body("Something went wrong.");
+            return ResponseEntity.status(400).body("Something went wrong. Cause => " + e.getMessage());
         }
 
     }
