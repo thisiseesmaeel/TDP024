@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TransactionLogicFacade {
 
-    boolean create(String type, long amount, String status, long accountId);
+//    boolean create(String type, long amount, String status, long accountId);
 
     List<Transaction> findByAccountId(long accountID);
 }

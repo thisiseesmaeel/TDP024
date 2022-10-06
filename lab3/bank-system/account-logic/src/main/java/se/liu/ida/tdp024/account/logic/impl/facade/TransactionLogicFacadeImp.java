@@ -13,11 +13,11 @@ public class TransactionLogicFacadeImp implements TransactionLogicFacade {
         this.transactionEntityFacade = transactionEntityFacade;
     }
 
-    @Override
-    public boolean create(String type, long amount, String status, long accountId) {
-        transactionEntityFacade.create(type, amount, status, accountId);
-        return true;
-    }
+//    @Override
+//    public boolean create(String type, long amount, String status, long accountId) {
+//        transactionEntityFacade.create(type, amount, status, accountId);
+//        return true;
+//    }
 
     @Override
     public List<Transaction> findByAccountId(long accountID) {
