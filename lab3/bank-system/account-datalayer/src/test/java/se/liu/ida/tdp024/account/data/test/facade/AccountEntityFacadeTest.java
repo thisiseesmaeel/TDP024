@@ -91,6 +91,58 @@ public class AccountEntityFacadeTest {
 
     @Test
     public void createSuccessAllCombos() {
+        try {
+            {
+                String personKey = "";
+                String bankKey = "1";
+                String accountType = "CHECK";
+                boolean result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
+                fail("Should not reach this line");
+            }
+        }
+        catch (AccountInputParameterException e){
+            return;
+        }
+        catch (Exception e){
+            fail("Should throw AccountInputParameterException while parameters are empty");
+        }
+
+        try {
+            {
+                String personKey = "2";
+                String bankKey = "";
+                String accountType = "CHECK";
+                boolean result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
+                fail("Should not reach this line");
+            }
+        }
+        catch (AccountInputParameterException e){
+            return;
+        }
+        catch (Exception e){
+            fail("Should throw AccountInputParameterException while parameters are empty");
+        }
+
+        try {
+            {
+                String personKey = "1";
+                String bankKey = "2";
+                String accountType = "";
+                boolean result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
+                fail("Should not reach this line");
+            }
+        }
+        catch (AccountInputParameterException e){
+            return;
+        }
+        catch (Exception e){
+            fail("Should throw AccountInputParameterException while parameters are empty");
+        }
+
+    }
+
+    @Test
+    public void createInvalid() {
 
         List<String> personKeys = new ArrayList<String>();
         List<String> bankKeys = new ArrayList<String>();
