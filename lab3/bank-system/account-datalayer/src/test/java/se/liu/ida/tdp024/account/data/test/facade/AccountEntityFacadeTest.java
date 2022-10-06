@@ -56,7 +56,7 @@ public class AccountEntityFacadeTest {
             {
                 String personKey = "1";
                 String bankKey = "2";
-                String accountType = "SAVING";
+                String accountType = "SAVINGS";
                 boolean result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
                 Assert.assertEquals(true, result);
             }
@@ -77,7 +77,7 @@ public class AccountEntityFacadeTest {
             {
                 String personKey = "2";
                 String bankKey = "2";
-                String accountType = "SAVING";
+                String accountType = "SAVINGS";
                 boolean result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
                 Assert.assertEquals(true, result);
             }

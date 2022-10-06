@@ -22,7 +22,7 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
 
     @Override
     public boolean create(String personKey, String bankName, String accountType)
-            throws AccountInputParameterException, AccountServiceConfigurationException{
+            throws AccountEntityNotFoundException, AccountInputParameterException, AccountServiceConfigurationException{
         // we need to implement a logic before calling data layer
 
         // 1) Validate the accountType
@@ -31,13 +31,13 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
 
         // TODO: 2) Call to Elixir and check whether the person exists in our database or not.
         if(PersonMock.findPersonById(personKey) == null){
-            throw new AccountServiceConfigurationException("Could not find this person.");
+            throw new AccountEntityNotFoundException("Could not find this person.");
         }
 
         // 3) Call to Rust and check whether the bank exists in our database or not and get the unique bank key.
         String bankKey = BankMock.findBankByName(bankName);
         if( bankKey == null){
-            throw new AccountServiceConfigurationException("Could not find this bank.");
+            throw new AccountEntityNotFoundException("Could not find this bank.");
         }
         try {
             accountEntityFacade.create(personKey, bankKey, accountType);

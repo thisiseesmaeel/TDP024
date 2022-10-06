@@ -12,7 +12,7 @@ import java.util.List;
 public interface AccountLogicFacade {
 
     boolean create(String personKey, String bankKey, String accountType)
-            throws AccountInputParameterException, AccountServiceConfigurationException;
+            throws AccountEntityNotFoundException, AccountInputParameterException, AccountServiceConfigurationException;
 
     List<Account> find(String personKey)
             throws AccountEntityNotFoundException, AccountInputParameterException, AccountServiceConfigurationException;
