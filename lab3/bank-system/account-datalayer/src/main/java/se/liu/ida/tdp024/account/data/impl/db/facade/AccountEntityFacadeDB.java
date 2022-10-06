@@ -19,6 +19,7 @@ import java.util.List;
 
 public class AccountEntityFacadeDB implements AccountEntityFacade {
     private final EntityManager em = EMF.getEntityManager();
+    private final TransactionEntityFacade transactionEntityFacade = new TransactionEntityFacadeDB();
     @Override
     public boolean create(String personKey, String bankKey, String accountType)
             throws AccountInputParameterException, AccountServiceConfigurationException {
@@ -89,25 +90,18 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
                 throw new AccountEntityNotFoundException("Could not found any account with provided id.");
 
             em.getTransaction().begin();
-            // Create a transaction in db
-            TransactionDB transaction = new TransactionDB();
-            transaction.setType("DEBIT");
-            transaction.setAmount(amount);
-            transaction.setCreated(new Date().toString());
-            transaction.setAccount(account);
-            account.getTransactions().add(transaction);
 
             if(account.getHoldings() >= amount){
-                transaction.setStatus("OK");
+                TransactionDB transaction = transactionEntityFacade.create("DEBIT", amount, new Date().toString(), "OK", id);
                 // Update existing account in db
+                account.getTransactions().add(transaction);
                 account.setHoldings(account.getHoldings() - amount);
-                em.persist(transaction);
                 em.getTransaction().commit();
                 return account;
             }
             else {
-                transaction.setStatus("FAILED");
-                em.persist(transaction);
+                TransactionDB transaction = transactionEntityFacade.create("DEBIT", amount, new Date().toString(), "FAILED", id);
+                account.getTransactions().add(transaction);
                 em.getTransaction().commit();
                 throw new InsufficientHoldingException("Insufficient holding");
             }
@@ -133,12 +127,11 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
             if (account == null)
                 throw new AccountEntityNotFoundException("Could not found any account with provided id.");
 
-            final TransactionEntityFacade transactionEntityFacade = new TransactionEntityFacadeDB();
+            em.getTransaction().begin();
             // Create a transaction in db
             TransactionDB transaction = transactionEntityFacade.create("CREDIT", amount, new Date().toString(), "OK", id);
 
             // Update existing account in db
-            em.getTransaction().begin();
             account.getTransactions().add(transaction);
             account.setHoldings(account.getHoldings() + amount);
             em.persist(account);

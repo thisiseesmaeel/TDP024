@@ -36,7 +36,7 @@ public class TransactionEntityFacadeTest {
 
             transactions = transactionEntityFacade.findByAccountId(accountId);
 
-            //Assert.assertEquals(4, transactions.size());
+            Assert.assertEquals(8, transactions.size());
         }catch (Exception e){
             fail("testTransaction failed");
         }
