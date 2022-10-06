@@ -1,11 +1,14 @@
 package se.liu.ida.tdp024.account.rest;
 
-
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import se.liu.ida.tdp024.account.data.api.entity.Account;
 import se.liu.ida.tdp024.account.data.api.entity.Transaction;
+import se.liu.ida.tdp024.account.data.exception.AccountEntityNotFoundException;
+import se.liu.ida.tdp024.account.data.exception.AccountInputParameterException;
+import se.liu.ida.tdp024.account.data.exception.AccountServiceConfigurationException;
 import se.liu.ida.tdp024.account.data.impl.db.facade.AccountEntityFacadeDB;
 import se.liu.ida.tdp024.account.data.impl.db.facade.TransactionEntityFacadeDB;
 import se.liu.ida.tdp024.account.logic.api.facade.AccountLogicFacade;
@@ -23,11 +26,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/account-rest")
 public class AccountController {
-
     private final static String REST_TOPIC = "REST";
     private final static String TRANSACTION_TOPIC = "TRANSACTION";
     private final Producer <Long, String> producer = createProducer();
@@ -47,72 +50,80 @@ public class AccountController {
     private final AccountLogicFacade accountLogicFacade = new AccountLogicFacadeImpl(new AccountEntityFacadeDB());
     private final TransactionLogicFacade transactionLogicFacade = new TransactionLogicFacadeImp(new TransactionEntityFacadeDB());
     @RequestMapping("/account/create")
-    public String create(@RequestParam(value = "person", defaultValue = "") String person,
+    public ResponseEntity create(@RequestParam(value = "person", defaultValue = "") String person,
                          @RequestParam(value = "bank", defaultValue = "") String bank,
                          @RequestParam(value = "accounttype", defaultValue = "")String accounttype) {
         try{
             producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Creating user at: \"" + new Date() + "\"")).get();
 
-            if (person.isEmpty() || bank.isEmpty() || accounttype.isEmpty()){
-                producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not create user: \"" + new Date() + "\"")).get();
-                return "FAILED";
-            }
             if (accountLogicFacade.create(person, bank, accounttype)) {
                 producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "User created at: \"" + new Date() + "\"")).get();
-                return "OK";
+                return ResponseEntity.ok("Ok");
             }
+        } catch (AccountServiceConfigurationException | AccountInputParameterException e) {
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not create user: " + e.getMessage()));
+            return ResponseEntity.status(400).body(e.getMessage());
         }
         catch (Exception e){
-            System.out.println(e);
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not create user: " + e.getMessage()));
+            return ResponseEntity.status(400).body(e.getMessage());
         }
-        // Do we need a log here?
-        return "FAILED";
+        return null;
     }
 
-
     @RequestMapping("/account/find/person")
-    public List<Account> findPerson(@RequestParam String person) {
+    public ResponseEntity findPerson(@RequestParam String person) {
         try {
             producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Finding all accounts of a person: \"" + new Date() + "\"")).get();
-        }catch (Exception e){
-            System.out.println(e);
+            List<Account> response = accountLogicFacade.find(person);
+            return ResponseEntity.ok(response);
+        } catch (AccountEntityNotFoundException | AccountInputParameterException |
+                 AccountServiceConfigurationException e) {
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not find the person"));
+            return ResponseEntity.status(400).body(e.getMessage());
         }
-        return accountLogicFacade.find(person);
+        catch (Exception e){
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Something went wrong."));
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
     }
 
     @RequestMapping("/account/debit")
-    public String debit(@RequestParam long id, @RequestParam long amount) {
+    public ResponseEntity debit(@RequestParam long id, @RequestParam long amount) {
         try {
             producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Trying to debit from an account at: \"" + new Date() + "\"")).get();
-            if(accountLogicFacade.debit(id, amount)){
-                producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Debited from account at: \"" + new Date() + "\"")).get();
-                return "OK";
-            }
-            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Could not debit from account at: \"" + new Date() + "\"")).get();
-            return "FAILED";
+            accountLogicFacade.debit(id, amount);
+            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Debited from account at: \"" + new Date() + "\"")).get();
+            return ResponseEntity.ok("Ok");
+        }
+        catch (AccountEntityNotFoundException| AccountInputParameterException| AccountServiceConfigurationException e){
+            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Could not debit from account at: \"" + new Date() + "\""));
+            return ResponseEntity.status(400).body(e.getMessage());
         }
         catch (Exception e){
-            System.out.println(e);
-            return "FAILED";
+            return ResponseEntity.status(400).body("Something went wrong.");
         }
+
     }
 
     @RequestMapping("/account/credit")
-    public String credit(@RequestParam long id, @RequestParam long amount) {
+    public ResponseEntity credit(@RequestParam long id, @RequestParam long amount) {
         try {
             producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Trying to credit an account at: \"" + new Date() + "\"")).get();
-            if(accountLogicFacade.credit(id, amount)) {
-                producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Credited from account at: \"" + new Date() + "\"")).get();
-                return "OK";
-            }
-            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Could not credit account at: \"" + new Date() + "\"")).get();
-            return "FAILED";
+            accountLogicFacade.credit(id, amount);
+            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Credited from account at: \"" + new Date() + "\"")).get();
 
+            return ResponseEntity.ok("Ok");
+
+
+        } catch (AccountEntityNotFoundException | AccountInputParameterException | AccountServiceConfigurationException e) {
+            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Could not credit account at: \"" + new Date() + "\""));
+            return ResponseEntity.status(400).body(e.getMessage());
         }
         catch (Exception e){
-                System.out.println(e);
-                return "FAILED";
-            }
+            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Could not credit account at: \"" + new Date() + "\""));
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
     }
 
     @RequestMapping("/account/transactions")

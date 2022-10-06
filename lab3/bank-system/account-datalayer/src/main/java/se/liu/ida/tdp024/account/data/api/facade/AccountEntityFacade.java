@@ -4,6 +4,7 @@ import se.liu.ida.tdp024.account.data.api.entity.Account;
 import se.liu.ida.tdp024.account.data.exception.AccountEntityNotFoundException;
 import se.liu.ida.tdp024.account.data.exception.AccountInputParameterException;
 import se.liu.ida.tdp024.account.data.exception.AccountServiceConfigurationException;
+import se.liu.ida.tdp024.account.data.exception.InsufficientHoldingException;
 
 import java.util.List;
 
@@ -15,10 +16,9 @@ public interface AccountEntityFacade {
             throws AccountEntityNotFoundException, AccountInputParameterException, AccountServiceConfigurationException;
 
     boolean debit(long id, long amount)
-            throws AccountEntityNotFoundException, AccountInputParameterException, AccountServiceConfigurationException;
+            throws AccountEntityNotFoundException, AccountInputParameterException, AccountServiceConfigurationException,
+            InsufficientHoldingException;
 
     boolean credit(long id, long amount)
             throws AccountEntityNotFoundException, AccountInputParameterException, AccountServiceConfigurationException;
-
-    //ArrayList<Account> transactions(long id); // not implemented yet
 }

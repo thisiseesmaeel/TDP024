@@ -5,6 +5,7 @@ import se.liu.ida.tdp024.account.data.api.facade.AccountEntityFacade;
 import se.liu.ida.tdp024.account.data.exception.AccountEntityNotFoundException;
 import se.liu.ida.tdp024.account.data.exception.AccountInputParameterException;
 import se.liu.ida.tdp024.account.data.exception.AccountServiceConfigurationException;
+import se.liu.ida.tdp024.account.data.exception.InsufficientHoldingException;
 import se.liu.ida.tdp024.account.data.impl.db.entity.AccountDB;
 import se.liu.ida.tdp024.account.data.impl.db.entity.TransactionDB;
 import se.liu.ida.tdp024.account.data.impl.db.util.EMF;
@@ -71,7 +72,8 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
 
     @Override
     public boolean debit(long id, long amount)
-            throws AccountEntityNotFoundException, AccountInputParameterException, AccountServiceConfigurationException{
+            throws AccountEntityNotFoundException, AccountInputParameterException, AccountServiceConfigurationException,
+            InsufficientHoldingException {
         if(id < 0 || amount <= 0)
             throw new AccountInputParameterException("Debiting account failed due to invalid input(s).");
 
@@ -101,33 +103,41 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
                 transaction.setStatus("FAILED");
                 em.persist(transaction);
                 em.getTransaction().commit();
-                return false;
+                throw new Exception("Insufficient holding");
             }
         }
         catch (Exception e){
-
+            if(e.getMessage().equals("Account is null"))
+                throw new AccountEntityNotFoundException("Could not found any account with provided id.");
+            if(e.getMessage().equals("Insufficient holding"))
+                throw new InsufficientHoldingException("Insufficient holding");
+            throw new AccountServiceConfigurationException("Debiting account failed due to internal service error!");
         }
         finally {
             em.close();
         }
-        return true;
     }
 
     @Override
     public boolean credit(long id, long amount)
             throws AccountEntityNotFoundException, AccountInputParameterException, AccountServiceConfigurationException{
-        Account account = em.find(AccountDB.class, id);
+        if(id < 0 || amount <= 0)
+            throw new AccountInputParameterException("Crediting account failed due to invalid input(s).");
+        try {
+            Account account = em.find(AccountDB.class, id);
+            if (account == null)
+                throw new Exception("Account in null");
 
-        em.getTransaction().begin();
-        // Create a transaction in db
-        TransactionDB transaction = new TransactionDB();
-        transaction.setType("CREDIT");
-        transaction.setAmount(amount);
-        transaction.setCreated(new Date().toString());
-        transaction.setAccount(account);
-        account.getTransactions().add(transaction);
+            em.getTransaction().begin();
+            // Create a transaction in db
+            TransactionDB transaction = new TransactionDB();
+            transaction.setType("CREDIT");
+            transaction.setAmount(amount);
+            transaction.setCreated(new Date().toString());
+            transaction.setAccount(account);
+            account.getTransactions().add(transaction);
 
-        if(amount > 0){
+            // TODO: How can this go wrong? (creating a transaction with fail status!?)
             transaction.setStatus("OK");
             // Update existing account in db
             account.setHoldings(account.getHoldings() + amount);
@@ -135,15 +145,16 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
             em.getTransaction().commit();
             return true;
         }
-        else {
-            transaction.setStatus("FAILED");
-            em.persist(transaction);
-            em.getTransaction().commit();
-            return false;
+        catch (Exception e){
+            if(e.getMessage().equals("Account is null"))
+                throw new AccountEntityNotFoundException("Could not found any account with provided id.");
+            throw new AccountServiceConfigurationException("Crediting account failed due to internal service error!");
         }
+        finally {
+            em.close();
+        }
+
     }
-
-
 }
 
 
