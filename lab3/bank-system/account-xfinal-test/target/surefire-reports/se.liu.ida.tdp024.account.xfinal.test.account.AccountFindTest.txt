@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: se.liu.ida.tdp024.account.xfinal.test.account.AccountFindTest
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.098 sec <<< FAILURE!
-testFind(se.liu.ida.tdp024.account.xfinal.test.account.AccountFindTest)  Time elapsed: 0.003 sec  <<< FAILURE!
+Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.107 sec <<< FAILURE!
+testFind(se.liu.ida.tdp024.account.xfinal.test.account.AccountFindTest)  Time elapsed: 0.002 sec  <<< FAILURE!
 org.junit.ComparisonFailure: expected:<[OK]> but was:<[]>
 	at org.junit.Assert.assertEquals(Assert.java:115)
 	at org.junit.Assert.assertEquals(Assert.java:144)

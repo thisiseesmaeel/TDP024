@@ -91,6 +91,47 @@ public class AccountEntityFacadeTest {
 
     @Test
     public void createSuccessAllCombos() {
+
+        List<String> personKeys = new ArrayList<String>();
+        List<String> bankKeys = new ArrayList<String>();
+        List<String> accountTypes = new ArrayList<String>();
+
+        personKeys.add("1");
+        personKeys.add("2");
+        personKeys.add("3");
+        personKeys.add("4");
+        personKeys.add("5");
+
+        bankKeys.add("1");
+        bankKeys.add("2");
+        bankKeys.add("3");
+        bankKeys.add("4");
+        bankKeys.add("5");
+        bankKeys.add("6");
+        bankKeys.add("7");
+        bankKeys.add("8");
+        bankKeys.add("9");
+
+        accountTypes.add("CHECK");
+        accountTypes.add("SAVINGS");
+
+        for (String personKey : personKeys) {
+            for (String bankKey : bankKeys) {
+                for (String accountType : accountTypes) {
+                    try {
+                        boolean result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
+                        Assert.assertEquals(true, result);
+                    }catch (AccountServiceConfigurationException | AccountInputParameterException e){
+                        fail("Something went wrong while creating account");
+                    }
+                }
+            }
+        }
+
+    }
+
+    @Test
+    public void createInvalid() {
         try {
             {
                 String personKey = "";
@@ -142,46 +183,6 @@ public class AccountEntityFacadeTest {
     }
 
     @Test
-    public void createInvalid() {
-
-        List<String> personKeys = new ArrayList<String>();
-        List<String> bankKeys = new ArrayList<String>();
-        List<String> accountTypes = new ArrayList<String>();
-
-        personKeys.add("1");
-        personKeys.add("2");
-        personKeys.add("3");
-        personKeys.add("4");
-        personKeys.add("5");
-
-        bankKeys.add("1");
-        bankKeys.add("2");
-        bankKeys.add("3");
-        bankKeys.add("4");
-        bankKeys.add("5");
-        bankKeys.add("6");
-        bankKeys.add("7");
-        bankKeys.add("8");
-        bankKeys.add("9");
-
-        accountTypes.add("CHECK");
-        accountTypes.add("SAVINGS");
-
-        for (String personKey : personKeys) {
-            for (String bankKey : bankKeys) {
-                for (String accountType : accountTypes) {
-                    try {
-                        boolean result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
-                        Assert.assertEquals(true, result);
-                    }catch (AccountServiceConfigurationException | AccountInputParameterException e){
-                        fail("Something went wrong while creating account");
-                    }
-                }
-            }
-        }
-
-    }
-    @Test
     public void testFind(){
         try {
             // We have added all combinations here we check if we
@@ -195,7 +196,7 @@ public class AccountEntityFacadeTest {
 
             for(String personKey: personKeys){
                 List<Account> accounts = accountEntityFacadeDB.find(personKey);
-                Assert.assertEquals(true, accounts.size() >= 1);
+                Assert.assertTrue(accounts.size() >= 1);
             }
 
 
