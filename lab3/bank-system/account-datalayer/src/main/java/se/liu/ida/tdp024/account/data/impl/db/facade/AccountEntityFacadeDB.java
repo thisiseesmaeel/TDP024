@@ -12,10 +12,7 @@ import se.liu.ida.tdp024.account.data.impl.db.entity.AccountDB;
 import se.liu.ida.tdp024.account.data.impl.db.entity.TransactionDB;
 import se.liu.ida.tdp024.account.data.impl.db.util.EMF;
 
-import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
-import javax.persistence.Query;
-import javax.persistence.RollbackException;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -69,10 +66,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
                 throw new AccountEntityNotFoundException("Could not found any account with this person key.");
             return accounts;
         }
-        catch (AccountInputParameterException e){
-            throw e;
-        }
-        catch (AccountEntityNotFoundException e){
+        catch (AccountInputParameterException | AccountEntityNotFoundException e){
             throw e;
         }
         catch (Exception e){
@@ -89,8 +83,8 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
 
         try {
             Account account = em.find(AccountDB.class, id);
-            if (account == null)
-                throw new AccountEntityNotFoundException("Could not found any account with provided id.");
+//            if (account == null)
+//                throw new AccountEntityNotFoundException("Could not found any account with provided id.");
 
             em.getTransaction().begin();
             em.lock(account, LockModeType.PESSIMISTIC_WRITE);
@@ -115,7 +109,10 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
             }
             throw new AccountServiceConfigurationException("Debiting account failed due to internal service error!");
         }
-        catch(AccountEntityNotFoundException | InsufficientHoldingException e){
+        catch (EntityNotFoundException e){
+            throw new AccountEntityNotFoundException("Could not found any account with provided id.");
+        }
+        catch(InsufficientHoldingException e){
             throw e;
         }
         catch (Exception e){
@@ -130,8 +127,8 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
             throw new AccountInputParameterException("Crediting account failed due to invalid input(s).");
         try {
             Account account = em.find(AccountDB.class, id);
-            if (account == null)
-                throw new AccountEntityNotFoundException("Could not found any account with provided id.");
+//            if (account == null)
+//                throw new AccountEntityNotFoundException("Could not found any account with provided id.");
 
             em.getTransaction().begin();
             em.lock(account, LockModeType.PESSIMISTIC_WRITE);
@@ -151,8 +148,8 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
             }
             throw new AccountServiceConfigurationException("Debiting account failed due to internal service error!");
         }
-        catch(AccountEntityNotFoundException e){
-            throw e;
+        catch (EntityNotFoundException e){
+            throw new AccountEntityNotFoundException("Could not found any account with provided id.");
         }
         catch (Exception e){
             throw new AccountServiceConfigurationException("Crediting account failed due to internal service error!");
