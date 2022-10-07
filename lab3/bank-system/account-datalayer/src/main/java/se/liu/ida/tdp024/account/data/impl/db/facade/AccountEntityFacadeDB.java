@@ -1,5 +1,6 @@
 package se.liu.ida.tdp024.account.data.impl.db.facade;
 
+import org.eclipse.persistence.annotations.OptimisticLocking;
 import se.liu.ida.tdp024.account.data.api.entity.Account;
 import se.liu.ida.tdp024.account.data.api.facade.AccountEntityFacade;
 import se.liu.ida.tdp024.account.data.api.facade.TransactionEntityFacade;
@@ -12,7 +13,9 @@ import se.liu.ida.tdp024.account.data.impl.db.entity.TransactionDB;
 import se.liu.ida.tdp024.account.data.impl.db.util.EMF;
 
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.Query;
+import javax.persistence.RollbackException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +23,7 @@ import java.util.List;
 public class AccountEntityFacadeDB implements AccountEntityFacade {
     private final EntityManager em = EMF.getEntityManager();
     private final TransactionEntityFacade transactionEntityFacade = new TransactionEntityFacadeDB();
+
     @Override
     public boolean create(String personKey, String bankKey, String accountType)
             throws AccountInputParameterException, AccountServiceConfigurationException {
@@ -29,7 +33,6 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
             }
 
             em.getTransaction().begin();
-
             AccountDB accountDB = new AccountDB();
             accountDB.setPersonKey(personKey);
             accountDB.setAccountType(accountType);
@@ -90,7 +93,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
                 throw new AccountEntityNotFoundException("Could not found any account with provided id.");
 
             em.getTransaction().begin();
-
+            em.lock(account, LockModeType.PESSIMISTIC_WRITE);
             if(account.getHoldings() >= amount){
                 TransactionDB transaction = transactionEntityFacade.create("DEBIT", amount, new Date().toString(), "OK", id);
                 // Update existing account in db
@@ -106,10 +109,13 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
                 throw new InsufficientHoldingException("Insufficient holding");
             }
         }
-        catch(AccountEntityNotFoundException e){
-            throw e;
+        catch (RollbackException e){
+            if(em.getTransaction().isActive()){
+                em.getTransaction().rollback();
+            }
+            throw new AccountServiceConfigurationException("Debiting account failed due to internal service error!");
         }
-        catch (InsufficientHoldingException e){
+        catch(AccountEntityNotFoundException | InsufficientHoldingException e){
             throw e;
         }
         catch (Exception e){
@@ -128,16 +134,22 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
                 throw new AccountEntityNotFoundException("Could not found any account with provided id.");
 
             em.getTransaction().begin();
+            em.lock(account, LockModeType.PESSIMISTIC_WRITE);
             // Create a transaction in db
             TransactionDB transaction = transactionEntityFacade.create("CREDIT", amount, new Date().toString(), "OK", id);
 
             // Update existing account in db
             account.getTransactions().add(transaction);
             account.setHoldings(account.getHoldings() + amount);
-            em.persist(account);
             em.getTransaction().commit();
 
             return account;
+        }
+        catch (RollbackException e){
+            if(em.getTransaction().isActive()){
+                em.getTransaction().rollback();
+            }
+            throw new AccountServiceConfigurationException("Debiting account failed due to internal service error!");
         }
         catch(AccountEntityNotFoundException e){
             throw e;
