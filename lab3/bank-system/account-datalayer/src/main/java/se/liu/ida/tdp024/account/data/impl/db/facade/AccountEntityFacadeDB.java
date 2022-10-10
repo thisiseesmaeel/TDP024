@@ -22,10 +22,11 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
     private final TransactionEntityFacade transactionEntityFacade = new TransactionEntityFacadeDB();
 
     @Override
-    public boolean create(String personKey, String bankKey, String accountType)
+    public long create(String personKey, String bankKey, String accountType)
             throws AccountInputParameterException, AccountServiceConfigurationException {
+        long id;
         try {
-            if(personKey.isEmpty() || bankKey.isEmpty() || accountType.isEmpty()){
+            if (personKey.isEmpty() || bankKey.isEmpty() || accountType.isEmpty()) {
                 throw new AccountInputParameterException("Creating account failed due to invalid input.");
             }
 
@@ -39,14 +40,13 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
 
             em.persist(accountDB);
             em.getTransaction().commit();
-        }
-        catch (AccountInputParameterException e){
+            id = accountDB.getId();
+        } catch (AccountInputParameterException e) {
             throw e;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new AccountServiceConfigurationException("Creating account failed due to internal service error.");
         }
-        return true;
+        return id;
     }
 
     @Override
@@ -83,8 +83,8 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
 
         try {
             Account account = em.find(AccountDB.class, id);
-//            if (account == null)
-//                throw new AccountEntityNotFoundException("Could not found any account with provided id.");
+            if (account == null)
+                throw new EntityNotFoundException();
 
             em.getTransaction().begin();
             em.lock(account, LockModeType.PESSIMISTIC_WRITE);
@@ -127,8 +127,8 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
             throw new AccountInputParameterException("Crediting account failed due to invalid input(s).");
         try {
             Account account = em.find(AccountDB.class, id);
-//            if (account == null)
-//                throw new AccountEntityNotFoundException("Could not found any account with provided id.");
+            if (account == null)
+                throw new EntityNotFoundException();
 
             em.getTransaction().begin();
             em.lock(account, LockModeType.PESSIMISTIC_WRITE);

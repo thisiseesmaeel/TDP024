@@ -6,7 +6,7 @@ public interface Transaction extends Serializable {
 
     long getId();
 
-    void setId(long id);
+    //void setId(long id);
 
     String getType();
 

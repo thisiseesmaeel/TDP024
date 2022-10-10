@@ -7,7 +7,7 @@ import java.util.List;
 public interface Account extends Serializable {
 
     long getId();
-    void setId(long id);
+    //void setId(long id);
 
     String getPersonKey();
     void setPersonKey(String personKey);

@@ -26,10 +26,10 @@ public class AccountDB implements Account {
         return id;
     }
 
-    @Override
-    public void setId(long id) {
-        this.id = id;
-    }
+//    @Override
+//    public void setId(long id) {
+//        this.id = id;
+//    }
 
     @Override
     public String getPersonKey() {

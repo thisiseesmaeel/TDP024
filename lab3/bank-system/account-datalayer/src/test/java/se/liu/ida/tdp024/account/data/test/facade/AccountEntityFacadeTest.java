@@ -5,13 +5,16 @@ import org.junit.Assert;
 import se.liu.ida.tdp024.account.data.api.entity.Account;
 import se.liu.ida.tdp024.account.data.api.facade.AccountEntityFacade;
 import se.liu.ida.tdp024.account.data.api.util.StorageFacade;
+import se.liu.ida.tdp024.account.data.exception.AccountEntityNotFoundException;
 import se.liu.ida.tdp024.account.data.exception.AccountInputParameterException;
 import se.liu.ida.tdp024.account.data.exception.AccountServiceConfigurationException;
+import se.liu.ida.tdp024.account.data.exception.InsufficientHoldingException;
 import se.liu.ida.tdp024.account.data.impl.db.facade.AccountEntityFacadeDB;
 
 import org.junit.After;
 import org.junit.Test;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,50 +39,50 @@ public class AccountEntityFacadeTest {
                 String personKey = "1";
                 String bankKey = "1";
                 String accountType = "SAVINGS";
-                boolean result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
-                Assert.assertEquals(true, result);
+                long result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
+                Assert.assertNotEquals(-1, result);
             }
             {
                 String personKey = "1";
                 String bankKey = "1";
                 String accountType = "SAVINGS";
-                boolean result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
-                Assert.assertEquals(true, result);
+                long result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
+                Assert.assertNotEquals(-1, result);
             }
             {
                 String personKey = "1";
                 String bankKey = "1";
                 String accountType = "CHECK";
-                boolean result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
-                Assert.assertEquals(true, result);
+                long result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
+                Assert.assertNotEquals(-1, result);
             }
             {
                 String personKey = "1";
                 String bankKey = "2";
                 String accountType = "SAVINGS";
-                boolean result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
-                Assert.assertEquals(true, result);
+                long result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
+                Assert.assertNotEquals(-1, result);
             }
             {
                 String personKey = "2";
                 String bankKey = "1";
                 String accountType = "SAVINGS";
-                boolean result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
-                Assert.assertEquals(true, result);
+                long result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
+                Assert.assertNotEquals(-1, result);
             }
             {
                 String personKey = "2";
                 String bankKey = "1";
                 String accountType = "CHECK";
-                boolean result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
-                Assert.assertEquals(true, result);
+                long result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
+                Assert.assertNotEquals(-1, result);
             }
             {
                 String personKey = "2";
                 String bankKey = "2";
                 String accountType = "SAVINGS";
-                boolean result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
-                Assert.assertEquals(true, result);
+                long result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
+                Assert.assertNotEquals(-1, result);
             }
 
         } catch (AccountInputParameterException | AccountServiceConfigurationException e ) {
@@ -119,8 +122,8 @@ public class AccountEntityFacadeTest {
             for (String bankKey : bankKeys) {
                 for (String accountType : accountTypes) {
                     try {
-                        boolean result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
-                        Assert.assertEquals(true, result);
+                        long result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
+                        Assert.assertNotEquals(-1, result);
                     }catch (AccountServiceConfigurationException | AccountInputParameterException e){
                         fail("Something went wrong while creating account");
                     }
@@ -137,7 +140,7 @@ public class AccountEntityFacadeTest {
                 String personKey = "";
                 String bankKey = "1";
                 String accountType = "CHECK";
-                boolean result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
+                long result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
                 fail("Should not reach this line");
             }
         }
@@ -153,7 +156,7 @@ public class AccountEntityFacadeTest {
                 String personKey = "2";
                 String bankKey = "";
                 String accountType = "CHECK";
-                boolean result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
+                long result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
                 fail("Should not reach this line");
             }
         }
@@ -169,7 +172,7 @@ public class AccountEntityFacadeTest {
                 String personKey = "1";
                 String bankKey = "2";
                 String accountType = "";
-                boolean result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
+                long result = accountEntityFacadeDB.create(personKey, bankKey, accountType);
                 fail("Should not reach this line");
             }
         }
@@ -183,7 +186,37 @@ public class AccountEntityFacadeTest {
     }
 
     @Test
-    public void testFind(){
+    public void testFindOutOfRangePersonKey(){
+        try {
+            String personKey = "1000"; // this person key is out of range
+            List<Account> accounts = accountEntityFacadeDB.find(personKey);
+            fail("Should not reach this line due to invalid person key");
+
+        }catch (AccountEntityNotFoundException e){
+            return;
+        }
+        catch (Exception e){
+            fail("Finding a person with person key 1000 should lead to AccountEntityNotFoundException");
+        }
+    }
+
+    @Test
+    public void testFindEmptyPersonKey(){
+        try {
+            String personKey = ""; // this person key is invalid
+            List<Account> accounts = accountEntityFacadeDB.find(personKey);
+            fail("Should not reach this line due to empty person key");
+
+        }catch (AccountInputParameterException e){
+            return;
+        }
+        catch (Exception e){
+            fail("Finding a person with person key 1000 should lead to AccountInputParameterException");
+        }
+    }
+
+    @Test
+    public void testFindAllPersonKeys(){
         try {
             // We have added all combinations here we check if we
             // can find all accounts each person MUST at least one account
@@ -197,6 +230,18 @@ public class AccountEntityFacadeTest {
             for(String personKey: personKeys){
                 List<Account> accounts = accountEntityFacadeDB.find(personKey);
                 Assert.assertTrue(accounts.size() >= 1);
+                for(Account account: accounts){
+                    Assert.assertTrue(account.getAccountType().equals("CHECK") || account.getAccountType().equals("SAVINGS"));
+                    Assert.assertTrue(account.getBankKey().equals("1")
+                            || account.getBankKey().equals("2")
+                            || account.getBankKey().equals("3")
+                            || account.getBankKey().equals("4")
+                            || account.getBankKey().equals("5")
+                            || account.getBankKey().equals("6")
+                            || account.getBankKey().equals("7")
+                            || account.getBankKey().equals("8")
+                            || account.getBankKey().equals("9"));
+                }
             }
 
 
@@ -241,8 +286,11 @@ public class AccountEntityFacadeTest {
             account.getHoldings();
             fail("Could not be able to reach this line");
 
-        }catch (Exception e){
+        }catch (AccountInputParameterException e){
             return;
+        }
+        catch (Exception e){
+            fail("Crediting an account with negative amount should throw AccountInputParameterException");
         }
     }
 
@@ -256,11 +304,32 @@ public class AccountEntityFacadeTest {
             account.getHoldings();
             fail("Could not be able to reach this line");
 
-        }catch (Exception e){
+        }catch (AccountInputParameterException e){
             return;
+        }
+        catch (Exception e){
+            fail("Crediting an account with zero amount should throw AccountInputParameterException");
         }
     }
 
+    @Test
+    public void testInvalidAccountCredit(){
+        try {
+            long accountId = 4000; // this account does not exist
+            long amount = 100;
+
+            Account account = accountEntityFacadeDB.credit(accountId, amount);
+            account.getHoldings();
+            fail("Could not be able to reach this line");
+
+        }
+        catch (AccountEntityNotFoundException e){
+            return;
+        }
+        catch (Exception e){
+            fail("Crediting an invalid account should throw AccountEntityNotFoundException");
+        }
+    }
 
     @Test
     public void testDebit(){
@@ -299,6 +368,42 @@ public class AccountEntityFacadeTest {
 
         }catch (Exception e){
             return;
+        }
+    }
+
+    @Test
+    public void testInvalidAccountDebit(){
+        try {
+            long accountId = 4000; // this account id is not yet reached
+            long amount = 100;
+
+            Account account = accountEntityFacadeDB.debit(accountId, amount);
+            account.getHoldings();
+            fail("Could not be able to reach this line");
+
+        }catch (AccountEntityNotFoundException e){
+            return;
+        }
+        catch (Exception e){
+            fail("Debiting an account that does not exist should throw AccountEntityNotFoundException");
+        }
+    }
+
+    @Test
+    public void testDebitEmptyAccount(){
+        try {
+            long accountId = 4;
+            long amount = 100;
+
+            Account account = accountEntityFacadeDB.debit(accountId, amount);
+            account.getHoldings();
+            fail("Could not be able to reach this line");
+
+        }catch (InsufficientHoldingException e){
+            return;
+        }
+        catch (Exception e){
+            fail("Debiting an account that has insufficient balance should throw InsufficientHoldingException");
         }
     }
 

@@ -9,7 +9,7 @@ import se.liu.ida.tdp024.account.data.exception.InsufficientHoldingException;
 import java.util.List;
 
 public interface AccountEntityFacade {
-    boolean create(String personKey, String bankKey, String accountType)
+    long create(String personKey, String bankKey, String accountType)
             throws AccountInputParameterException, AccountServiceConfigurationException;
 
     List<Account> find(String personKey)
