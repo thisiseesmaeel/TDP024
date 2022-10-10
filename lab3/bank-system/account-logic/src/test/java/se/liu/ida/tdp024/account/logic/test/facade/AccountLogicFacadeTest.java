@@ -23,22 +23,23 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.Silent.class)
+//@RunWith(MockitoJUnitRunner.Silent.class)
 public class AccountLogicFacadeTest {
 
     //--- Unit under test ---//
     @Mock
-    AccountEntityFacadeDB accountEntityFacadeDB = new AccountEntityFacadeDB();
+    AccountEntityFacadeDB accountEntityFacadeDB;
 
-    @InjectMocks
-    AccountLogicFacadeImpl accountLogicFacade = new AccountLogicFacadeImpl(accountEntityFacadeDB);
+    AccountLogicFacadeImpl accountLogicFacade;
     public StorageFacade storageFacade;
 
     @Before
-    public void init() {
-        MockitoAnnotations.openMocks(this);
+    public void setup(){
+        accountEntityFacadeDB = mock(AccountEntityFacadeDB.class);
+        accountLogicFacade = new AccountLogicFacadeImpl(accountEntityFacadeDB);
     }
 
     @After
