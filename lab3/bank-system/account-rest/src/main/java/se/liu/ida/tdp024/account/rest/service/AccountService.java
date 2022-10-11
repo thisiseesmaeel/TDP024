@@ -6,6 +6,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,23 +54,34 @@ public class AccountService {
 
     }
 
-    public ResponseEntity create(String person, String bank, String accounttype) {
+    public ResponseEntity<String> create(String person, String bank, String accounttype) {
         try{
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Creating user at: \"" + new Date() + "\"")).get();
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Creating account at: \"" + new Date() + "\"")).get();
 
             if (accountLogicFacade.create(person, bank, accounttype)) {
-                producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "User created at: \"" + new Date() + "\"")).get();
+                producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Account created at: \"" + new Date() + "\"")).get();
                 return ResponseEntity.ok("Ok");
             }
-        } catch (AccountServiceConfigurationException | AccountInputParameterException e) {
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not create user: " + e.getMessage()));
-            return ResponseEntity.status(400).body(e.getMessage());
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not create account"));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not create account");
+
+        }
+        catch (AccountInputParameterException e){
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not create account: " + e.getMessage()));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        catch (AccountEntityNotFoundException e){
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not create account: " + e.getMessage()));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not create an account. Either bank name or person key does not exist");
+        }
+        catch (AccountServiceConfigurationException e) {
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not create account: " + e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
         catch (Exception e){
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not create user: " + e.getMessage()));
-            return ResponseEntity.status(400).body(e.getMessage());
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not create account: " + e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
-        return null;
     }
 
     public ResponseEntity findPerson(String person) {
@@ -80,11 +92,11 @@ public class AccountService {
         } catch (AccountEntityNotFoundException | AccountInputParameterException |
                  AccountServiceConfigurationException e) {
             producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not find the person"));
-            return ResponseEntity.status(400).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
         catch (Exception e){
             producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Something went wrong."));
-            return ResponseEntity.status(400).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
@@ -98,10 +110,10 @@ public class AccountService {
         catch (AccountEntityNotFoundException | AccountInputParameterException
                | AccountServiceConfigurationException | InsufficientHoldingException e){
             producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Could not debit from account at: \"" + new Date() + "\""));
-            return ResponseEntity.status(400).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
         catch (Exception e){
-            return ResponseEntity.status(400).body("Something went wrong. Cause => " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Something went wrong. Cause => " + e.getMessage());
         }
 
     }
@@ -117,11 +129,11 @@ public class AccountService {
 
         } catch (AccountEntityNotFoundException | AccountInputParameterException | AccountServiceConfigurationException e) {
             producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Could not credit account at: \"" + new Date() + "\""));
-            return ResponseEntity.status(400).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
         catch (Exception e){
             producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Could not credit account at: \"" + new Date() + "\""));
-            return ResponseEntity.status(400).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
