@@ -135,7 +135,7 @@ import java.util.concurrent.ExecutionException;
     }
 
     @RequestMapping(&quot;/account/transactions&quot;)
-    public List&lt;Transaction&gt; transaction(@RequestParam long id) {
+    public ResponseEntity transaction(@RequestParam long id) {
 //        try{
 //            producer.send(new ProducerRecord&lt;&gt;(REST_TOPIC, System.currentTimeMillis(), &quot;Transaction details at: \&quot;&quot; + new Date() + &quot;\&quot;&quot;)).get();
 //            return transactionLogicFacade.findByAccountId(id);

@@ -7,10 +7,12 @@ import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import se.liu.ida.tdp024.account.data.api.entity.Account;
+import se.liu.ida.tdp024.account.data.api.entity.Transaction;
 import se.liu.ida.tdp024.account.data.exception.AccountEntityNotFoundException;
 import se.liu.ida.tdp024.account.data.exception.AccountInputParameterException;
 import se.liu.ida.tdp024.account.data.exception.AccountServiceConfigurationException;
 import se.liu.ida.tdp024.account.data.impl.db.entity.AccountDB;
+import se.liu.ida.tdp024.account.data.impl.db.entity.TransactionDB;
 import se.liu.ida.tdp024.account.data.impl.db.facade.AccountEntityFacadeDB;
 import se.liu.ida.tdp024.account.logic.api.facade.AccountLogicFacade;
 import se.liu.ida.tdp024.account.logic.api.facade.TransactionLogicFacade;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -173,7 +176,7 @@ public class AccountServiceTest {
 
     }
 
-    @org.junit.Test
+    @Test
     public void testCreateInvalidAccountType() {
         try{
             String personKey = "1";
@@ -192,7 +195,7 @@ public class AccountServiceTest {
         }
     }
 
-    @org.junit.Test
+    @Test
     public void testCreateInvalidBankName() {
         try{
             String personKey = "1";
@@ -208,7 +211,7 @@ public class AccountServiceTest {
         }
     }
 
-    @org.junit.Test
+    @Test
     public void testCreateInvalidPersonKey() {
         try{
             String personKey = "4000";
@@ -224,223 +227,310 @@ public class AccountServiceTest {
         }
     }
 
-//    @org.junit.Test
-//    public void testFind(){
-//        try {
-//            // We have added all combinations here we check if we
-//            // can find all accounts each person MUST at least one account
-//            List<String> personKeys = new ArrayList<String>();
-//            personKeys.add("1");
-//            personKeys.add("2");
-//            personKeys.add("3");
-//            personKeys.add("4");
-//            personKeys.add("5");
-//
-//            Account account1 = new AccountDB();
-//            Account account2 = new AccountDB();
-//
-//            ArrayList<Account> mockAccounts = new ArrayList<>();
-//            mockAccounts.add(account1);
-//            mockAccounts.add(account2);
-//
-//            for(String personKey: personKeys){
-//
-//                when(accountEntityFacadeDB.find(personKey)).thenReturn(mockAccounts); // Mock should return a list of accounts
-//
-//                List<Account> accounts = accountLogicFacade.find(personKey);
-//                Assert.assertEquals(true, accounts.size() >= 1);
-//            }
-//
-//            Account mockAccount = new AccountDB();
-//            mockAccount.setPersonKey("1");
-//
-//            when(accountEntityFacadeDB.find("1")).thenReturn(Arrays.asList(mockAccount));
-//
-//            List<Account> accounts = accountLogicFacade.find("1");
-//            Assert.assertEquals("1", accounts.get(0).getPersonKey());
-//
-//        }catch (Exception e){
-//            fail("testFind() failed");
-//        }
-//    }
-//
-//    @org.junit.Test
-//    public void testInvalidPersonFind(){
-//        try {
-//            String personKey = "40000";
-//            when(accountEntityFacadeDB.find(personKey)).thenThrow(AccountEntityNotFoundException.class); // Mock should return a list of accounts
-//
-//            List<Account> accounts = accountLogicFacade.find(personKey);
-//            fail("Finding accounts for an invalid person should throw AccountEntityNotFoundException");
-//
-//        }catch (AccountEntityNotFoundException e){
-//            return;
-//        }
-//        catch (Exception e){
-//            fail("Finding accounts for an invalid person should throw AccountEntityNotFoundException");
-//        }
-//    }
-//
-//    @org.junit.Test
-//    public void testEmptyPersonKeyFind(){
-//        try {
-//            String personKey = "";
-//            when(accountEntityFacadeDB.find(personKey)).thenThrow(AccountInputParameterException.class); // Mock should return a list of accounts
-//
-//            List<Account> accounts = accountLogicFacade.find(personKey);
-//            fail("Finding accounts when person key is empty should throw AccountInputParameterException");
-//
-//        }catch (AccountInputParameterException e){
-//            return;
-//        }
-//        catch (Exception e){
-//            fail("Finding accounts when person key is empty should throw AccountInputParameterException");
-//        }
-//    }
-//
-//    @org.junit.Test
-//    public void testCredit(){
-//        try {
-//            {
-//                long accountId = 1;
-//                long amount = 100;
-//                long amountTwo = 200;
-//
-//                Account mockAccount = new AccountDB();
-//                mockAccount.setHoldings(100);
-//                when(accountEntityFacadeDB.credit(accountId, amount)).thenReturn(mockAccount);
-//
-//                Account account = accountLogicFacade.credit(accountId, amount);
-//                Assert.assertNotEquals(null, account);
-//                Assert.assertEquals(100, account.getHoldings());
-//
-//                mockAccount.setHoldings(300);
-//                when(accountEntityFacadeDB.credit(accountId, amountTwo)).thenReturn(mockAccount);
-//
-//                Account account1 = accountLogicFacade.credit(accountId, amountTwo);
-//                Assert.assertNotEquals(null, account1);
-//                Assert.assertEquals(300, account.getHoldings());
-//            }
-//        }catch (Exception e){
-//            fail("testCredit() failed");
-//        }
-//    }
-//
-//    @org.junit.Test
-//    public void testNegativeCredit(){
-//        try {
-//            long accountId = 2;
-//            long amount = -100;
-//
-//            when(accountEntityFacadeDB.credit(accountId, amount)).thenThrow(AccountInputParameterException.class);
-//
-//            Account account = accountLogicFacade.credit(accountId, amount);
-//            account.getHoldings();
-//            fail("Could not be able to reach this line");
-//
-//        }
-//        catch (AccountInputParameterException e){
-//            return;
-//        }
-//        catch (Exception e){
-//            fail("Crediting an account should throw AccountInputParameterException if amount is negative");
-//        }
-//    }
-//
-//    @org.junit.Test
-//    public void testZeroCredit(){
-//        try {
-//            long accountId = 2;
-//            long amount = 0;
-//
-//            when(accountEntityFacadeDB.credit(accountId, amount)).thenThrow(AccountInputParameterException.class);
-//
-//            Account account = accountLogicFacade.credit(accountId, amount);
-//            account.getHoldings();
-//            fail("Could not be able to reach this line");
-//
-//        }
-//        catch (AccountInputParameterException e){
-//            return;
-//        }
-//        catch (Exception e){
-//            fail("Crediting an account should throw AccountInputParameterException if amount is zero");
-//        }
-//    }
-//
-//
-//    @org.junit.Test
-//    public void testDebit(){
-//        try {
-//            {
-//                long accountId = 3;
-//                long amount = 100;
-//                long amountTwo = 200;
-//
-//                Account mockAccount = new AccountDB();
-//                mockAccount.setHoldings(1000);
-//                when(accountEntityFacadeDB.credit(accountId, 1000)).thenReturn(mockAccount);
-//
-//                // Debiting account with 1000
-//                Account account = accountLogicFacade.credit(accountId, 1000);
-//                Assert.assertEquals(1000, account.getHoldings());
-//
-//
-//                mockAccount.setHoldings(900);
-//                when(accountEntityFacadeDB.debit(accountId, amount)).thenReturn(mockAccount);
-//
-//                Account accountAfterFirstDebit = accountLogicFacade.debit(accountId, amount);
-//                Assert.assertNotEquals(null, accountAfterFirstDebit);
-//                Assert.assertEquals(900, accountAfterFirstDebit.getHoldings());
-//
-//
-//                mockAccount.setHoldings(700);
-//                when(accountEntityFacadeDB.debit(accountId, amountTwo)).thenReturn(mockAccount);
-//
-//                Account accountAfterSecondDebit = accountLogicFacade.debit(accountId, amountTwo);
-//                Assert.assertNotEquals(null, accountAfterSecondDebit);
-//                Assert.assertEquals(700, accountAfterSecondDebit.getHoldings());
-//            }
-//        }catch (Exception e){
-//            fail("testDebit() failed");
-//        }
-//    }
-//
-//    @org.junit.Test
-//    public void testNegativeDebit(){
-//        try {
-//            long accountId = 4;
-//            long amount = -100;
-//
-//            when(accountEntityFacadeDB.debit(accountId, amount)).thenThrow(AccountInputParameterException.class);
-//            Account account = accountLogicFacade.debit(accountId, amount);
-//            account.getHoldings();
-//            fail("Could not be able to reach this line");
-//
-//        }catch (AccountInputParameterException e){
-//            return;
-//        }
-//        catch (Exception e){
-//            fail("Debiting an account should throw AccountInputParameterException if amount is negative");
-//        }
-//    }
-//
+    @Test
+    public void testCreateInternalServerError() {
+        try{
+            String personKey = "1";
+            String bankName = "SBAB";
+            String accountType = "CHECK";
+
+            when(accountLogicFacade.create(personKey, bankName, accountType)).thenThrow(AccountServiceConfigurationException.class);
+
+            ResponseEntity<String> result = accountService.create(personKey, bankName, accountType);
+            Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, result.getStatusCode());
+        }catch (Exception e) {
+            fail("Should not throw Exception");
+        }
+    }
+
+    @Test
+    public void testCreatFacadeReruntFalse() {
+        try{
+            String personKey = "1";
+            String bankName = "SBAB";
+            String accountType = "CHECK";
+
+            when(accountLogicFacade.create(personKey, bankName, accountType)).thenReturn(false);
+
+            ResponseEntity<String> result = accountService.create(personKey, bankName, accountType);
+            Assert.assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+        }catch (Exception e) {
+            fail("Should not throw Exception");
+        }
+    }
+    @Test
+    public void testFind(){
+        try {
+            // We have added all combinations here we check if we
+            // can find all accounts each person MUST at least one account
+            List<String> personKeys = new ArrayList<String>();
+            personKeys.add("1");
+            personKeys.add("2");
+            personKeys.add("3");
+            personKeys.add("4");
+            personKeys.add("5");
+
+            Account account1 = new AccountDB();
+            Account account2 = new AccountDB();
+
+            ArrayList<Account> mockAccounts = new ArrayList<>();
+            mockAccounts.add(account1);
+            mockAccounts.add(account2);
+
+            for(String personKey: personKeys){
+
+                when(accountLogicFacade.find(personKey)).thenReturn(mockAccounts); // Mock should return a list of accounts
+
+                ResponseEntity<List<Account>> accounts = accountService.findPerson("1");
+                Assert.assertTrue(accounts.getBody().size() >= 1);
+            }
+
+            Account mockAccount = new AccountDB();
+            mockAccount.setPersonKey("1");
+
+            when(accountLogicFacade.find("1")).thenReturn(Arrays.asList(mockAccount));
+
+            ResponseEntity<List<Account>> accounts = accountService.findPerson("1");
+            Assert.assertEquals("1", accounts.getBody().get(0).getPersonKey());
+
+        }catch (Exception e){
+            fail("testFind() failed");
+        }
+    }
+
+    @Test
+    public void testInvalidPersonFind(){
+        try {
+            String personKey = "40000";
+            when(accountLogicFacade.find(personKey)).thenThrow(AccountEntityNotFoundException.class);
+
+            ResponseEntity result = accountService.findPerson(personKey);
+            Assert.assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
+        }
+        catch (Exception e){
+            fail("Should not throw exception " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testInternalServerErrorInFind(){
+        try {
+            String personKey = "1";
+            when(accountLogicFacade.find(personKey)).thenThrow(AccountServiceConfigurationException.class);
+
+            ResponseEntity result = accountService.findPerson(personKey);
+            Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, result.getStatusCode());
+        }
+        catch (Exception e){
+            fail("Should not throw exception " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void testEmptyPersonKeyFind(){
+        try {
+            String personKey = "";
+            when(accountLogicFacade.find(personKey)).thenThrow(AccountInputParameterException.class);
+
+            ResponseEntity<List<Account>> response = accountService.findPerson(personKey);
+            Assert.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        }catch (Exception e){
+            fail("Should not throw exception");
+        }
+    }
+
+    @Test
+    public void testCredit(){
+        try {
+            {
+                long accountId = 1;
+                long amount = 100;
+                long amountTwo = 200;
+
+                Account mockAccount = new AccountDB();
+                mockAccount.setHoldings(100);
+                when(accountLogicFacade.credit(accountId, amount)).thenReturn(mockAccount);
+
+                ResponseEntity response = accountService.credit(accountId, amount);
+                Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+                mockAccount.setHoldings(300);
+                when(accountLogicFacade.credit(accountId, amountTwo)).thenReturn(mockAccount);
+
+                ResponseEntity response1 = accountService.credit(accountId, amountTwo);
+                Assert.assertEquals(HttpStatus.OK, response1.getStatusCode());
+            }
+        }catch (Exception e){
+            fail("Should not throw exception ");
+        }
+    }
+
+    @Test
+    public void testNegativeCredit(){
+        try {
+            long accountId = 2;
+            long amount = -100;
+
+            when(accountLogicFacade.credit(accountId, amount)).thenThrow(AccountInputParameterException.class);
+
+            ResponseEntity response = accountService.credit(accountId, amount);
+            Assert.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        }
+        catch (Exception e){
+            fail("Should not throw exception ");
+        }
+    }
+
+    @Test
+    public void testZeroCredit(){
+        try {
+            long accountId = 2;
+            long amount = 0;
+
+            when(accountLogicFacade.credit(accountId, amount)).thenThrow(AccountInputParameterException.class);
+
+            ResponseEntity response = accountService.credit(accountId, amount);
+            Assert.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
+        }catch (Exception e){
+            fail("Should not throw exception ");
+        }
+    }
+    @Test
+    public void testNotFoundInCredit(){
+        try {
+            long accountId = 4000; // Invalid id for now
+            long amount = 100;
+
+            when(accountLogicFacade.credit(accountId, amount)).thenThrow(AccountEntityNotFoundException.class);
+
+            ResponseEntity response = accountService.credit(accountId, amount);
+            Assert.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        }
+        catch (Exception e){
+            fail("Should not throw exception ");
+        }
+    }
+
+    @Test
+    public void testInternalExceptionCredit(){
+        try {
+            long accountId = 2;
+            long amount = 100;
+
+            when(accountLogicFacade.credit(accountId, amount)).thenThrow(AccountServiceConfigurationException.class);
+
+            ResponseEntity response = accountService.credit(accountId, amount);
+            Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        }
+        catch (Exception e){
+            fail("Should not throw exception ");
+        }
+    }
+
+    @Test
+    public void testDebit(){
+        try {
+            {
+                long accountId = 3;
+                long amount = 100;
+                long amountTwo = 200;
+
+                Account mockAccount = new AccountDB();
+                mockAccount.setHoldings(1000);
+                when(accountLogicFacade.credit(accountId, 1000)).thenReturn(mockAccount);
+
+                // Crediting account with 1000
+                ResponseEntity response = accountService.credit(accountId, 1000);
+                Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+
+                mockAccount.setHoldings(900);
+                // Debiting account with 100
+                when(accountLogicFacade.debit(accountId, amount)).thenReturn(mockAccount);
+
+                ResponseEntity response2 = accountService.debit(accountId, amount);
+                Assert.assertEquals(HttpStatus.OK, response2.getStatusCode());
+
+
+                mockAccount.setHoldings(700);
+                // Debiting account with 200
+                when(accountLogicFacade.debit(accountId, amountTwo)).thenReturn(mockAccount);
+
+                ResponseEntity response3 = accountService.debit(accountId, amountTwo);
+                Assert.assertEquals(HttpStatus.OK, response3.getStatusCode());
+            }
+        }catch (Exception e){
+            fail("testDebit() failed");
+        }
+    }
+
+    @org.junit.Test
+    public void testNegativeDebit(){
+        try {
+            long accountId = 4;
+            long amount = -100;
+
+            when(accountLogicFacade.debit(accountId, amount)).thenThrow(AccountInputParameterException.class);
+            ResponseEntity<String> response = accountService.debit(accountId, amount);
+            Assert.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
+        }catch (Exception e){
+            fail("Should not throw exception ");
+        }
+    }
+
+    @Test
+    public void testZeroDebit(){
+        try {
+            long accountId = 4;
+            long amount = 0;
+
+            when(accountLogicFacade.debit(accountId, amount)).thenThrow(AccountInputParameterException.class);
+            ResponseEntity<String> response = accountService.debit(accountId, amount);
+            Assert.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        }catch (Exception e){
+            fail("Should not throw exception ");
+        }
+    }
+
+    @Test
+    public void testTransaction(){
+        try {
+            long accountId = 4;
+
+            List<Transaction> mockTransactions = new ArrayList<>();
+            Transaction t1 = new TransactionDB();
+            Transaction t2 = new TransactionDB();
+
+            mockTransactions.add(t1);
+            mockTransactions.add(t2);
+
+            when(transactionLogicFacade.findByAccountId(accountId)).thenReturn(mockTransactions);
+            ResponseEntity<List<Transaction>> transactions = accountService.transaction(accountId);
+            Assert.assertTrue(transactions.getBody().size() >= 2);
+        }catch (Exception e){
+            fail("Should not throw exception ");
+        }
+    }
+
 //    @Test
-//    public void testZeroDebit(){
+//    public void testTransactionFailure(){
 //        try {
 //            long accountId = 4;
-//            long amount = 0;
 //
-//            when(accountEntityFacadeDB.debit(accountId, amount)).thenThrow(AccountInputParameterException.class);
-//            Account account = accountLogicFacade.debit(accountId, amount);
-//            account.getHoldings();
-//            fail("Could not be able to reach this line");
+//            List<Transaction> mockTransactions = new ArrayList<>();
+//            Transaction t1 = new TransactionDB();
+//            Transaction t2 = new TransactionDB();
 //
-//        }catch (AccountInputParameterException e){
-//            return;
-//        }
-//        catch (Exception e){
-//            fail("Debiting an account should throw AccountInputParameterException if amount is zero");
+//            mockTransactions.add(t1);
+//            mockTransactions.add(t2);
+//
+//            when(transactionLogicFacade.findByAccountId(accountId)).thenReturn(mockTransactions);
+//            List<Transaction> transactions = accountService.transaction(accountId);
+//            Assert.assertTrue(transactions.size() >= 2);
+//        }catch (Exception e){
+//            fail("Should not throw exception ");
 //        }
 //    }
 }

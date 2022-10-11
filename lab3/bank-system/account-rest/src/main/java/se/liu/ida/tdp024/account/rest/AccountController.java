@@ -135,7 +135,7 @@ public class AccountController {
     }
 
     @RequestMapping("/account/transactions")
-    public List<Transaction> transaction(@RequestParam long id) {
+    public ResponseEntity transaction(@RequestParam long id) {
 //        try{
 //            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Transaction details at: \"" + new Date() + "\"")).get();
 //            return transactionLogicFacade.findByAccountId(id);

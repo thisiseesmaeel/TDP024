@@ -386,7 +386,7 @@ public class AccountLogicFacadeTest {
                 mockAccount.setHoldings(1000);
                 when(accountEntityFacadeDB.credit(accountId, 1000)).thenReturn(mockAccount);
 
-                // Debiting account with 1000
+                // Crediting account with 1000
                 Account account = accountLogicFacade.credit(accountId, 1000);
                 Assert.assertEquals(1000, account.getHoldings());
 

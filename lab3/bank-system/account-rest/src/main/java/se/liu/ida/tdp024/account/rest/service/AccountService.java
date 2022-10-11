@@ -45,8 +45,8 @@ public class AccountService {
         return new KafkaProducer<>(props);
     }
 
-    private final AccountLogicFacade accountLogicFacade; //= new AccountLogicFacadeImpl(new AccountEntityFacadeDB());
-    private final TransactionLogicFacade transactionLogicFacade; // = new TransactionLogicFacadeImp(new TransactionEntityFacadeDB());
+    private final AccountLogicFacade accountLogicFacade;
+    private final TransactionLogicFacade transactionLogicFacade;
 
     public AccountService(AccountLogicFacade accountLogicFacade, TransactionLogicFacade transactionLogicFacade) {
         this.accountLogicFacade = accountLogicFacade;
@@ -89,10 +89,15 @@ public class AccountService {
             producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Finding all accounts of a person: \"" + new Date() + "\"")).get();
             List<Account> response = accountLogicFacade.find(person);
             return ResponseEntity.ok(response);
-        } catch (AccountEntityNotFoundException | AccountInputParameterException |
-                 AccountServiceConfigurationException e) {
+        } catch (AccountEntityNotFoundException e) {
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not find the person"));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (AccountInputParameterException e){
             producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not find the person"));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }catch (AccountServiceConfigurationException e) {
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not find the person"));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
         catch (Exception e){
             producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Something went wrong."));
@@ -100,7 +105,7 @@ public class AccountService {
         }
     }
 
-    public ResponseEntity debit(long id, long amount) {
+    public ResponseEntity<String> debit(long id, long amount) {
         try {
             producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Trying to debit from an account at: \"" + new Date() + "\"")).get();
             accountLogicFacade.debit(id, amount);
@@ -118,7 +123,7 @@ public class AccountService {
 
     }
 
-    public ResponseEntity credit(long id, long amount) {
+    public ResponseEntity<String> credit(long id, long amount) {
         try {
             producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Trying to credit an account at: \"" + new Date() + "\"")).get();
             accountLogicFacade.credit(id, amount);
@@ -126,10 +131,15 @@ public class AccountService {
 
             return ResponseEntity.ok("Ok");
 
-
-        } catch (AccountEntityNotFoundException | AccountInputParameterException | AccountServiceConfigurationException e) {
+        } catch (AccountEntityNotFoundException e){
+            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Could not credit account at: \"" + new Date() + "\""));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (AccountInputParameterException e) {
             producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Could not credit account at: \"" + new Date() + "\""));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }catch (AccountServiceConfigurationException e) {
+            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Could not credit account at: \"" + new Date() + "\""));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
         catch (Exception e){
             producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Could not credit account at: \"" + new Date() + "\""));
@@ -137,14 +147,13 @@ public class AccountService {
         }
     }
 
-    public List<Transaction> transaction(long id) {
+    public ResponseEntity transaction(long id) {
         try{
             producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Transaction details at: \"" + new Date() + "\"")).get();
-            return transactionLogicFacade.findByAccountId(id);
+            return ResponseEntity.status(HttpStatus.OK).body(transactionLogicFacade.findByAccountId(id));
 
         }catch (Exception e){
-            System.out.println(e);
-            return new ArrayList<>();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }
