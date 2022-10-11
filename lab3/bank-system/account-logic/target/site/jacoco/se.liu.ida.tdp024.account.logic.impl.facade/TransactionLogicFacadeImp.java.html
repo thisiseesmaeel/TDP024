@@ -2,6 +2,7 @@
 
 import se.liu.ida.tdp024.account.data.api.entity.Transaction;
 import se.liu.ida.tdp024.account.data.api.facade.TransactionEntityFacade;
+import se.liu.ida.tdp024.account.data.exception.AccountServiceConfigurationException;
 import se.liu.ida.tdp024.account.logic.api.facade.TransactionLogicFacade;
 
 import java.util.List;
@@ -9,9 +10,9 @@ import java.util.List;
 public class TransactionLogicFacadeImp implements TransactionLogicFacade {
     private final TransactionEntityFacade transactionEntityFacade;
 
-<span class="fc" id="L12">    public TransactionLogicFacadeImp(TransactionEntityFacade transactionEntityFacade) {</span>
-<span class="fc" id="L13">        this.transactionEntityFacade = transactionEntityFacade;</span>
-<span class="fc" id="L14">    }</span>
+<span class="fc" id="L13">    public TransactionLogicFacadeImp(TransactionEntityFacade transactionEntityFacade) {</span>
+<span class="fc" id="L14">        this.transactionEntityFacade = transactionEntityFacade;</span>
+<span class="fc" id="L15">    }</span>
 
 //    @Override
 //    public boolean create(String type, long amount, String status, long accountId) {
@@ -20,8 +21,14 @@ public class TransactionLogicFacadeImp implements TransactionLogicFacade {
 //    }
 
     @Override
-    public List&lt;Transaction&gt; findByAccountId(long accountID) {
-<span class="fc" id="L24">        return transactionEntityFacade.findByAccountId(accountID);</span>
+    public List&lt;Transaction&gt; findByAccountId(long accountID)
+    throws AccountServiceConfigurationException {
+        try {
+<span class="fc" id="L27">            return transactionEntityFacade.findByAccountId(accountID);</span>
+        }
+<span class="nc" id="L29">        catch (AccountServiceConfigurationException e){</span>
+<span class="nc" id="L30">            throw e;</span>
+        }
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

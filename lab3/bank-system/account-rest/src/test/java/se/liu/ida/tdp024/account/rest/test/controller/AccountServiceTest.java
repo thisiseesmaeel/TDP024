@@ -13,12 +13,10 @@ import se.liu.ida.tdp024.account.data.exception.AccountInputParameterException;
 import se.liu.ida.tdp024.account.data.exception.AccountServiceConfigurationException;
 import se.liu.ida.tdp024.account.data.impl.db.entity.AccountDB;
 import se.liu.ida.tdp024.account.data.impl.db.entity.TransactionDB;
-import se.liu.ida.tdp024.account.data.impl.db.facade.AccountEntityFacadeDB;
 import se.liu.ida.tdp024.account.logic.api.facade.AccountLogicFacade;
 import se.liu.ida.tdp024.account.logic.api.facade.TransactionLogicFacade;
 import se.liu.ida.tdp024.account.logic.impl.facade.AccountLogicFacadeImpl;
 import se.liu.ida.tdp024.account.logic.impl.facade.TransactionLogicFacadeImp;
-import se.liu.ida.tdp024.account.rest.AccountController;
 import se.liu.ida.tdp024.account.rest.service.AccountService;
 
 import java.util.ArrayList;
@@ -514,23 +512,24 @@ public class AccountServiceTest {
         }
     }
 
-//    @Test
-//    public void testTransactionFailure(){
-//        try {
-//            long accountId = 4;
-//
-//            List<Transaction> mockTransactions = new ArrayList<>();
-//            Transaction t1 = new TransactionDB();
-//            Transaction t2 = new TransactionDB();
-//
-//            mockTransactions.add(t1);
-//            mockTransactions.add(t2);
-//
-//            when(transactionLogicFacade.findByAccountId(accountId)).thenReturn(mockTransactions);
-//            List<Transaction> transactions = accountService.transaction(accountId);
-//            Assert.assertTrue(transactions.size() >= 2);
-//        }catch (Exception e){
-//            fail("Should not throw exception ");
-//        }
-//    }
+    @Test
+    public void testTransactionFailure(){
+        try {
+            long accountId = 4;
+
+            List<Transaction> mockTransactions = new ArrayList<>();
+            Transaction t1 = new TransactionDB();
+            Transaction t2 = new TransactionDB();
+
+            mockTransactions.add(t1);
+            mockTransactions.add(t2);
+
+            when(transactionLogicFacade.findByAccountId(accountId)).thenThrow(AccountServiceConfigurationException.class);
+            ResponseEntity<List<Transaction>> transactions = accountService.transaction(accountId);
+            Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, transactions.getStatusCode());
+        }
+        catch (Exception e){
+            fail("Should not throw exception");
+        }
+    }
 }

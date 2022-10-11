@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="14" failures="0" name="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" time="1.419" errors="0" skipped="0">
+<testsuite tests="14" failures="0" name="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" time="1.334" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="java.vm.version" value="17.0.4+8-Ubuntu-122.04"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-17-openjdk-amd64/lib"/>
-    <property name="maven.multiModuleProjectDirectory" value="/home/hadan326/tdp024/lab3/bank-system"/>
+    <property name="maven.multiModuleProjectDirectory" value="/home/hadan326/tdp024/lab3/bank-system/account-logic"/>
     <property name="java.vm.vendor" value="Private Build"/>
     <property name="java.vendor.url" value="Unknown"/>
-    <property name="path.separator" value=":"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
+    <property name="path.separator" value=":"/>
     <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
     <property name="user.country" value="US"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
-    <property name="user.dir" value="/home/hadan326/tdp024/lab3/bank-system"/>
-    <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="/home/hadan326/tdp024/lab3/bank-system/account-logic"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="java.runtime.version" value="17.0.4+8-Ubuntu-122.04"/>
     <property name="os.arch" value="amd64"/>
     <property name="java.io.tmpdir" value="/tmp"/>
@@ -40,7 +40,7 @@
     <property name="java.class.path" value="/usr/share/maven/boot/plexus-classworlds-2.x.jar"/>
     <property name="java.vm.specification.version" value="17"/>
     <property name="sun.arch.data.model" value="64"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean install"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean test"/>
     <property name="java.home" value="/usr/lib/jvm/java-17-openjdk-amd64"/>
     <property name="user.language" value="en"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
@@ -53,22 +53,22 @@
     <property name="file.separator" value="/"/>
     <property name="java.version.date" value="2022-07-19"/>
     <property name="java.vendor.url.bug" value="Unknown"/>
-    <property name="sun.cpu.endian" value="little"/>
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.cpu.endian" value="little"/>
     <property name="sun.stdout.encoding" value="UTF-8"/>
   </properties>
-  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="createSuccessAllCombos" time="1.396"/>
-  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testCreateInvalidPersonKey" time="0.001"/>
-  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testDebit" time="0.002"/>
-  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testFind" time="0.002"/>
-  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testCreateInvalidAccountType" time="0.001"/>
-  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testInvalidPersonFind" time="0.009"/>
-  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testNegativeCredit" time="0.001"/>
-  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testZeroDebit" time="0.001"/>
-  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testCreateInvalidBankName" time="0.001"/>
-  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testNegativeDebit" time="0.001"/>
-  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testCreate" time="0.001"/>
-  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testCredit" time="0.001"/>
-  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testEmptyPersonKeyFind" time="0.001"/>
+  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="createSuccessAllCombos" time="1.293"/>
+  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testCreateInvalidPersonKey" time="0"/>
+  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testDebit" time="0.004"/>
+  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testFind" time="0.006"/>
+  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testCreateInvalidAccountType" time="0.002"/>
+  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testInvalidPersonFind" time="0.012"/>
+  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testNegativeCredit" time="0.002"/>
+  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testZeroDebit" time="0.002"/>
+  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testCreateInvalidBankName" time="0.002"/>
+  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testNegativeDebit" time="0.002"/>
+  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testCreate" time="0.004"/>
+  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testCredit" time="0.002"/>
+  <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testEmptyPersonKeyFind" time="0.002"/>
   <testcase classname="se.liu.ida.tdp024.account.logic.test.facade.AccountLogicFacadeTest" name="testZeroCredit" time="0.001"/>
 </testsuite>

@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ExecutionException;
 
 public class AccountService {
     private final static String REST_TOPIC = "REST";
@@ -150,9 +151,13 @@ public class AccountService {
     public ResponseEntity transaction(long id) {
         try{
             producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Transaction details at: \"" + new Date() + "\"")).get();
-            return ResponseEntity.status(HttpStatus.OK).body(transactionLogicFacade.findByAccountId(id));
-
-        }catch (Exception e){
+            List<Transaction> transactions = transactionLogicFacade.findByAccountId(id);
+            return ResponseEntity.status(HttpStatus.OK).body(transactions);
+        }catch (AccountServiceConfigurationException e){
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Transaction details failed at: \"" + new Date() + "\""));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } catch (ExecutionException | InterruptedException e) {
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Transaction details failed at: \"" + new Date() + "\""));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }

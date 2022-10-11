@@ -2,47 +2,57 @@
 
 import se.liu.ida.tdp024.account.data.api.entity.Transaction;
 import se.liu.ida.tdp024.account.data.api.facade.TransactionEntityFacade;
+import se.liu.ida.tdp024.account.data.exception.AccountEntityNotFoundException;
+import se.liu.ida.tdp024.account.data.exception.AccountServiceConfigurationException;
 import se.liu.ida.tdp024.account.data.impl.db.entity.AccountDB;
 import se.liu.ida.tdp024.account.data.impl.db.entity.TransactionDB;
 import se.liu.ida.tdp024.account.data.impl.db.util.EMF;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
 import java.util.Date;
 import java.util.List;
 
-<span class="fc" id="L14">public class TransactionEntityFacadeDB implements TransactionEntityFacade {</span>
-<span class="fc" id="L15">    private final EntityManager em = EMF.getEntityManager();</span>
+<span class="fc" id="L17">public class TransactionEntityFacadeDB implements TransactionEntityFacade {</span>
+<span class="fc" id="L18">    private final EntityManager em = EMF.getEntityManager();</span>
     @Override
     public TransactionDB create(String type, long amount, String created, String status, long accountId) {
 
-<span class="fc" id="L19">        em.getTransaction().begin();</span>
+<span class="fc" id="L22">        em.getTransaction().begin();</span>
 
-<span class="fc" id="L21">        TransactionDB transaction = new TransactionDB();</span>
-<span class="fc" id="L22">        transaction.setType(type);</span>
-<span class="fc" id="L23">        transaction.setAmount(amount);</span>
-<span class="fc" id="L24">        transaction.setCreated(created);</span>
-<span class="fc" id="L25">        transaction.setStatus(status);</span>
-<span class="fc" id="L26">        transaction.setCreated(created);</span>
-<span class="fc" id="L27">        transaction.setAccount(em.find(AccountDB.class, accountId)); // Find belonging account and relate this transaction to it</span>
+<span class="fc" id="L24">        TransactionDB transaction = new TransactionDB();</span>
+<span class="fc" id="L25">        transaction.setType(type);</span>
+<span class="fc" id="L26">        transaction.setAmount(amount);</span>
+<span class="fc" id="L27">        transaction.setCreated(created);</span>
+<span class="fc" id="L28">        transaction.setStatus(status);</span>
+<span class="fc" id="L29">        transaction.setCreated(created);</span>
+<span class="fc" id="L30">        transaction.setAccount(em.find(AccountDB.class, accountId)); // Find belonging account and relate this transaction to it</span>
                                                                    // DB handles the rest. It creates two tables and add account id as
                                                                    // a column into the transaction table. (one -&gt; many)
 
-<span class="fc" id="L31">        em.persist(transaction);</span>
-<span class="fc" id="L32">        em.getTransaction().commit();</span>
+<span class="fc" id="L34">        em.persist(transaction);</span>
+<span class="fc" id="L35">        em.getTransaction().commit();</span>
 
-<span class="fc" id="L34">        return transaction;</span>
+<span class="fc" id="L37">        return transaction;</span>
     }
 
     @Override
-    public List&lt;Transaction&gt; findByAccountId(long accountID) {
-<span class="fc" id="L39">        em.clear(); // If we do not clear entity manager it will show old data of account</span>
-<span class="fc" id="L40">        Query query = em.createQuery(</span>
-                 &quot;SELECT transaction FROM TransactionDB transaction WHERE transaction.account.id = :accountID&quot;);
+    public List&lt;Transaction&gt; findByAccountId(long accountID)
+            throws AccountServiceConfigurationException {
+        try {
+<span class="fc" id="L44">            em.clear(); // If we do not clear entity manager it will show old data of account</span>
+<span class="fc" id="L45">            Query query = em.createQuery(</span>
+                    &quot;SELECT transaction FROM TransactionDB transaction WHERE transaction.account.id = :accountID&quot;);
 
-<span class="fc" id="L43">        query.setParameter(&quot;accountID&quot;, accountID);</span>
+<span class="fc" id="L48">            query.setParameter(&quot;accountID&quot;, accountID);</span>
+<span class="fc" id="L49">            return (List&lt;Transaction&gt;) query.getResultList();</span>
+        }
+<span class="nc" id="L51">        catch (Exception e){</span>
+<span class="nc" id="L52">            throw new AccountServiceConfigurationException(&quot;Could not find transaction due to internal server error&quot;);</span>
+        }
 
-<span class="fc" id="L45">        return (List&lt;Transaction&gt;) query.getResultList();</span>
+
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

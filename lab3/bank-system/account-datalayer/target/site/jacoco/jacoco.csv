@@ -2,7 +2,7 @@ GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_
 datalayer,se.liu.ida.tdp024.account.data.impl.db.util,EMF,11,18,5,3,4,5,5,2,2,1
 datalayer,se.liu.ida.tdp024.account.data.impl.db.util,StorageFacadeDB,5,0,0,0,3,0,2,0,2,0
 datalayer,se.liu.ida.tdp024.account.data.impl.db.facade,AccountEntityFacadeDB,54,277,8,20,16,64,6,13,0,5
-datalayer,se.liu.ida.tdp024.account.data.impl.db.facade,TransactionEntityFacadeDB,0,65,0,0,0,17,0,3,0,3
+datalayer,se.liu.ida.tdp024.account.data.impl.db.facade,TransactionEntityFacadeDB,6,65,0,0,2,17,0,3,0,3
 datalayer,se.liu.ida.tdp024.account.data.exception,AccountEntityNotFoundException,0,4,0,0,0,2,0,1,0,1
 datalayer,se.liu.ida.tdp024.account.data.exception,AccountInputParameterException,0,4,0,0,0,2,0,1,0,1
 datalayer,se.liu.ida.tdp024.account.data.exception,InsufficientHoldingException,0,4,0,0,0,2,0,1,0,1

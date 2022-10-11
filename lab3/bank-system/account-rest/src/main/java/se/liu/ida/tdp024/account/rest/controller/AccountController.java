@@ -1,4 +1,4 @@
-package se.liu.ida.tdp024.account.rest;
+package se.liu.ida.tdp024.account.rest.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
