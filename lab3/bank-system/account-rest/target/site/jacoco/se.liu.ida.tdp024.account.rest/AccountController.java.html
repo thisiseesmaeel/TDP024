@@ -22,6 +22,7 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import se.liu.ida.tdp024.account.rest.service.AccountService;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,113 +32,119 @@ import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping(&quot;/account-rest&quot;)
-<span class="nc" id="L34">public class AccountController {</span>
-    private final static String REST_TOPIC = &quot;REST&quot;;
-    private final static String TRANSACTION_TOPIC = &quot;TRANSACTION&quot;;
-<span class="nc" id="L37">    private final Producer &lt;Long, String&gt; producer = createProducer();</span>
-    private final static String BOOTSTRAP_SERVERS = &quot;https://localhost:9092&quot;;
-    private static Producer&lt;Long, String&gt; createProducer() {
-<span class="nc" id="L40">        Properties props = new Properties();</span>
-<span class="nc" id="L41">        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,</span>
-                BOOTSTRAP_SERVERS);
-<span class="nc" id="L43">        props.put(ProducerConfig.CLIENT_ID_CONFIG, &quot;KafkaExampleProducer&quot;);</span>
-<span class="nc" id="L44">        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,</span>
-<span class="nc" id="L45">                LongSerializer.class.getName());</span>
-<span class="nc" id="L46">        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,</span>
-<span class="nc" id="L47">                StringSerializer.class.getName());</span>
-<span class="nc" id="L48">        return new KafkaProducer&lt;&gt;(props);</span>
-    }
+<span class="nc" id="L35">public class AccountController {</span>
+//    private final static String REST_TOPIC = &quot;REST&quot;;
+//    private final static String TRANSACTION_TOPIC = &quot;TRANSACTION&quot;;
+//    private final Producer &lt;Long, String&gt; producer = createProducer();
+//    private final static String BOOTSTRAP_SERVERS = &quot;https://localhost:9092&quot;;
+//    private static Producer&lt;Long, String&gt; createProducer() {
+//        Properties props = new Properties();
+//        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
+//                BOOTSTRAP_SERVERS);
+//        props.put(ProducerConfig.CLIENT_ID_CONFIG, &quot;KafkaExampleProducer&quot;);
+//        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
+//                LongSerializer.class.getName());
+//        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
+//                StringSerializer.class.getName());
+//        return new KafkaProducer&lt;&gt;(props);
+//    }
 
-<span class="nc" id="L51">    private final AccountLogicFacade accountLogicFacade = new AccountLogicFacadeImpl(new AccountEntityFacadeDB());</span>
-<span class="nc" id="L52">    private final TransactionLogicFacade transactionLogicFacade = new TransactionLogicFacadeImp(new TransactionEntityFacadeDB());</span>
+//    private final AccountLogicFacade accountLogicFacade = new AccountLogicFacadeImpl(new AccountEntityFacadeDB());
+//    private final TransactionLogicFacade transactionLogicFacade = new TransactionLogicFacadeImp(new TransactionEntityFacadeDB());
+
+<span class="nc" id="L55">    private final AccountService accountService =  new AccountService(new AccountLogicFacadeImpl(new AccountEntityFacadeDB()), new TransactionLogicFacadeImp(new TransactionEntityFacadeDB()));;</span>
     @RequestMapping(&quot;/account/create&quot;)
     public ResponseEntity create(@RequestParam(value = &quot;person&quot;, defaultValue = &quot;&quot;) String person,
                          @RequestParam(value = &quot;bank&quot;, defaultValue = &quot;&quot;) String bank,
                          @RequestParam(value = &quot;accounttype&quot;, defaultValue = &quot;&quot;)String accounttype) {
-        try{
-<span class="nc" id="L58">            producer.send(new ProducerRecord&lt;&gt;(REST_TOPIC, System.currentTimeMillis(), &quot;Creating user at: \&quot;&quot; + new Date() + &quot;\&quot;&quot;)).get();</span>
-
-<span class="nc bnc" id="L60" title="All 2 branches missed.">            if (accountLogicFacade.create(person, bank, accounttype)) {</span>
-<span class="nc" id="L61">                producer.send(new ProducerRecord&lt;&gt;(REST_TOPIC, System.currentTimeMillis(), &quot;User created at: \&quot;&quot; + new Date() + &quot;\&quot;&quot;)).get();</span>
-<span class="nc" id="L62">                return ResponseEntity.ok(&quot;Ok&quot;);</span>
-            }
-<span class="nc" id="L64">        } catch (AccountServiceConfigurationException | AccountInputParameterException e) {</span>
-<span class="nc" id="L65">            producer.send(new ProducerRecord&lt;&gt;(REST_TOPIC, System.currentTimeMillis(), &quot;Could not create user: &quot; + e.getMessage()));</span>
-<span class="nc" id="L66">            return ResponseEntity.status(400).body(e.getMessage());</span>
-        }
-<span class="nc" id="L68">        catch (Exception e){</span>
-<span class="nc" id="L69">            producer.send(new ProducerRecord&lt;&gt;(REST_TOPIC, System.currentTimeMillis(), &quot;Could not create user: &quot; + e.getMessage()));</span>
-<span class="nc" id="L70">            return ResponseEntity.status(400).body(e.getMessage());</span>
-<span class="nc" id="L71">        }</span>
-<span class="nc" id="L72">        return null;</span>
+//        try{
+//            producer.send(new ProducerRecord&lt;&gt;(REST_TOPIC, System.currentTimeMillis(), &quot;Creating user at: \&quot;&quot; + new Date() + &quot;\&quot;&quot;)).get();
+//
+//            if (accountLogicFacade.create(person, bank, accounttype)) {
+//                producer.send(new ProducerRecord&lt;&gt;(REST_TOPIC, System.currentTimeMillis(), &quot;User created at: \&quot;&quot; + new Date() + &quot;\&quot;&quot;)).get();
+//                return ResponseEntity.ok(&quot;Ok&quot;);
+//            }
+//        } catch (AccountServiceConfigurationException | AccountInputParameterException e) {
+//            producer.send(new ProducerRecord&lt;&gt;(REST_TOPIC, System.currentTimeMillis(), &quot;Could not create user: &quot; + e.getMessage()));
+//            return ResponseEntity.status(400).body(e.getMessage());
+//        }
+//        catch (Exception e){
+//            producer.send(new ProducerRecord&lt;&gt;(REST_TOPIC, System.currentTimeMillis(), &quot;Could not create user: &quot; + e.getMessage()));
+//            return ResponseEntity.status(400).body(e.getMessage());
+//        }
+<span class="nc" id="L75">        return accountService.create(person, bank, accounttype);</span>
     }
 
     @RequestMapping(&quot;/account/find/person&quot;)
     public ResponseEntity findPerson(@RequestParam String person) {
-        try {
-<span class="nc" id="L78">            producer.send(new ProducerRecord&lt;&gt;(REST_TOPIC, System.currentTimeMillis(), &quot;Finding all accounts of a person: \&quot;&quot; + new Date() + &quot;\&quot;&quot;)).get();</span>
-<span class="nc" id="L79">            List&lt;Account&gt; response = accountLogicFacade.find(person);</span>
-<span class="nc" id="L80">            return ResponseEntity.ok(response);</span>
-<span class="nc" id="L81">        } catch (AccountEntityNotFoundException | AccountInputParameterException |</span>
-                 AccountServiceConfigurationException e) {
-<span class="nc" id="L83">            producer.send(new ProducerRecord&lt;&gt;(REST_TOPIC, System.currentTimeMillis(), &quot;Could not find the person&quot;));</span>
-<span class="nc" id="L84">            return ResponseEntity.status(400).body(e.getMessage());</span>
-        }
-<span class="nc" id="L86">        catch (Exception e){</span>
-<span class="nc" id="L87">            producer.send(new ProducerRecord&lt;&gt;(REST_TOPIC, System.currentTimeMillis(), &quot;Something went wrong.&quot;));</span>
-<span class="nc" id="L88">            return ResponseEntity.status(400).body(e.getMessage());</span>
-        }
+//        try {
+//            producer.send(new ProducerRecord&lt;&gt;(REST_TOPIC, System.currentTimeMillis(), &quot;Finding all accounts of a person: \&quot;&quot; + new Date() + &quot;\&quot;&quot;)).get();
+//            List&lt;Account&gt; response = accountLogicFacade.find(person);
+//            return ResponseEntity.ok(response);
+//        } catch (AccountEntityNotFoundException | AccountInputParameterException |
+//                 AccountServiceConfigurationException e) {
+//            producer.send(new ProducerRecord&lt;&gt;(REST_TOPIC, System.currentTimeMillis(), &quot;Could not find the person&quot;));
+//            return ResponseEntity.status(400).body(e.getMessage());
+//        }
+//        catch (Exception e){
+//            producer.send(new ProducerRecord&lt;&gt;(REST_TOPIC, System.currentTimeMillis(), &quot;Something went wrong.&quot;));
+//            return ResponseEntity.status(400).body(e.getMessage());
+//        }
+<span class="nc" id="L93">        return accountService.findPerson(person);</span>
     }
 
     @RequestMapping(&quot;/account/debit&quot;)
     public ResponseEntity debit(@RequestParam long id, @RequestParam long amount) {
-        try {
-<span class="nc" id="L95">            producer.send(new ProducerRecord&lt;&gt;(REST_TOPIC, System.currentTimeMillis(), &quot;Trying to debit from an account at: \&quot;&quot; + new Date() + &quot;\&quot;&quot;)).get();</span>
-<span class="nc" id="L96">            accountLogicFacade.debit(id, amount);</span>
-<span class="nc" id="L97">            producer.send(new ProducerRecord&lt;&gt;(TRANSACTION_TOPIC, System.currentTimeMillis(), &quot;Debited from account at: \&quot;&quot; + new Date() + &quot;\&quot;&quot;)).get();</span>
-<span class="nc" id="L98">            return ResponseEntity.ok(&quot;Ok&quot;);</span>
-        }
-<span class="nc" id="L100">        catch (AccountEntityNotFoundException | AccountInputParameterException</span>
-               | AccountServiceConfigurationException | InsufficientHoldingException e){
-<span class="nc" id="L102">            producer.send(new ProducerRecord&lt;&gt;(TRANSACTION_TOPIC, System.currentTimeMillis(), &quot;Could not debit from account at: \&quot;&quot; + new Date() + &quot;\&quot;&quot;));</span>
-<span class="nc" id="L103">            return ResponseEntity.status(400).body(e.getMessage());</span>
-        }
-<span class="nc" id="L105">        catch (Exception e){</span>
-<span class="nc" id="L106">            return ResponseEntity.status(400).body(&quot;Something went wrong. Cause =&gt; &quot; + e.getMessage());</span>
-        }
+//        try {
+//            producer.send(new ProducerRecord&lt;&gt;(REST_TOPIC, System.currentTimeMillis(), &quot;Trying to debit from an account at: \&quot;&quot; + new Date() + &quot;\&quot;&quot;)).get();
+//            accountLogicFacade.debit(id, amount);
+//            producer.send(new ProducerRecord&lt;&gt;(TRANSACTION_TOPIC, System.currentTimeMillis(), &quot;Debited from account at: \&quot;&quot; + new Date() + &quot;\&quot;&quot;)).get();
+//            return ResponseEntity.ok(&quot;Ok&quot;);
+//        }
+//        catch (AccountEntityNotFoundException | AccountInputParameterException
+//               | AccountServiceConfigurationException | InsufficientHoldingException e){
+//            producer.send(new ProducerRecord&lt;&gt;(TRANSACTION_TOPIC, System.currentTimeMillis(), &quot;Could not debit from account at: \&quot;&quot; + new Date() + &quot;\&quot;&quot;));
+//            return ResponseEntity.status(400).body(e.getMessage());
+//        }
+//        catch (Exception e){
+//            return ResponseEntity.status(400).body(&quot;Something went wrong. Cause =&gt; &quot; + e.getMessage());
+//        }
+<span class="nc" id="L112">        return accountService.debit(id, amount);</span>
 
     }
 
     @RequestMapping(&quot;/account/credit&quot;)
     public ResponseEntity credit(@RequestParam long id, @RequestParam long amount) {
-        try {
-<span class="nc" id="L114">            producer.send(new ProducerRecord&lt;&gt;(REST_TOPIC, System.currentTimeMillis(), &quot;Trying to credit an account at: \&quot;&quot; + new Date() + &quot;\&quot;&quot;)).get();</span>
-<span class="nc" id="L115">            accountLogicFacade.credit(id, amount);</span>
-<span class="nc" id="L116">            producer.send(new ProducerRecord&lt;&gt;(TRANSACTION_TOPIC, System.currentTimeMillis(), &quot;Credited from account at: \&quot;&quot; + new Date() + &quot;\&quot;&quot;)).get();</span>
-
-<span class="nc" id="L118">            return ResponseEntity.ok(&quot;Ok&quot;);</span>
-
-
-<span class="nc" id="L121">        } catch (AccountEntityNotFoundException | AccountInputParameterException | AccountServiceConfigurationException e) {</span>
-<span class="nc" id="L122">            producer.send(new ProducerRecord&lt;&gt;(TRANSACTION_TOPIC, System.currentTimeMillis(), &quot;Could not credit account at: \&quot;&quot; + new Date() + &quot;\&quot;&quot;));</span>
-<span class="nc" id="L123">            return ResponseEntity.status(400).body(e.getMessage());</span>
-        }
-<span class="nc" id="L125">        catch (Exception e){</span>
-<span class="nc" id="L126">            producer.send(new ProducerRecord&lt;&gt;(TRANSACTION_TOPIC, System.currentTimeMillis(), &quot;Could not credit account at: \&quot;&quot; + new Date() + &quot;\&quot;&quot;));</span>
-<span class="nc" id="L127">            return ResponseEntity.status(400).body(e.getMessage());</span>
-        }
+//        try {
+//            producer.send(new ProducerRecord&lt;&gt;(REST_TOPIC, System.currentTimeMillis(), &quot;Trying to credit an account at: \&quot;&quot; + new Date() + &quot;\&quot;&quot;)).get();
+//            accountLogicFacade.credit(id, amount);
+//            producer.send(new ProducerRecord&lt;&gt;(TRANSACTION_TOPIC, System.currentTimeMillis(), &quot;Credited from account at: \&quot;&quot; + new Date() + &quot;\&quot;&quot;)).get();
+//
+//            return ResponseEntity.ok(&quot;Ok&quot;);
+//
+//
+//        } catch (AccountEntityNotFoundException | AccountInputParameterException | AccountServiceConfigurationException e) {
+//            producer.send(new ProducerRecord&lt;&gt;(TRANSACTION_TOPIC, System.currentTimeMillis(), &quot;Could not credit account at: \&quot;&quot; + new Date() + &quot;\&quot;&quot;));
+//            return ResponseEntity.status(400).body(e.getMessage());
+//        }
+//        catch (Exception e){
+//            producer.send(new ProducerRecord&lt;&gt;(TRANSACTION_TOPIC, System.currentTimeMillis(), &quot;Could not credit account at: \&quot;&quot; + new Date() + &quot;\&quot;&quot;));
+//            return ResponseEntity.status(400).body(e.getMessage());
+//        }
+<span class="nc" id="L134">        return accountService.credit(id, amount);</span>
     }
 
     @RequestMapping(&quot;/account/transactions&quot;)
     public List&lt;Transaction&gt; transaction(@RequestParam long id) {
-        try{
-<span class="nc" id="L134">            producer.send(new ProducerRecord&lt;&gt;(REST_TOPIC, System.currentTimeMillis(), &quot;Transaction details at: \&quot;&quot; + new Date() + &quot;\&quot;&quot;)).get();</span>
-<span class="nc" id="L135">            return transactionLogicFacade.findByAccountId(id);</span>
-
-<span class="nc" id="L137">        }catch (Exception e){</span>
-<span class="nc" id="L138">            System.out.println(e);</span>
-<span class="nc" id="L139">            return new ArrayList&lt;&gt;();</span>
-        }
+//        try{
+//            producer.send(new ProducerRecord&lt;&gt;(REST_TOPIC, System.currentTimeMillis(), &quot;Transaction details at: \&quot;&quot; + new Date() + &quot;\&quot;&quot;)).get();
+//            return transactionLogicFacade.findByAccountId(id);
+//
+//        }catch (Exception e){
+//            System.out.println(e);
+//            return new ArrayList&lt;&gt;();
+//        }
+<span class="nc" id="L147">        return accountService.transaction(id);</span>
     }
 
 }

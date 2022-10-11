@@ -34,7 +34,7 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
 <span class="fc" id="L34">            throw new AccountEntityNotFoundException(&quot;Could not find this person.&quot;);</span>
         }
 
-        // 3) Call to Rust and check whether the bank exists in our database or not and get the unique bank key.
+        // 3) TODO: Call to Rust and check whether the bank exists in our database or not and get the unique bank key.
 <span class="fc" id="L38">        String bankKey = BankMock.findBankByName(bankName);</span>
 <span class="fc bfc" id="L39" title="All 2 branches covered.">        if( bankKey == null){</span>
 <span class="fc" id="L40">            throw new AccountEntityNotFoundException(&quot;Could not find this bank.&quot;);</span>

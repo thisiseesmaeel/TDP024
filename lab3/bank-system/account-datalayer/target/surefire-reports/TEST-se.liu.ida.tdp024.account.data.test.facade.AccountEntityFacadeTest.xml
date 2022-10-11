@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="15" failures="0" name="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" time="0.445" errors="0" skipped="0">
+<testsuite tests="15" failures="0" name="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" time="0.458" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="java.vm.version" value="17.0.4+8-Ubuntu-122.04"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-17-openjdk-amd64/lib"/>
-    <property name="maven.multiModuleProjectDirectory" value="/home/hadan326/tdp024/lab3/bank-system/account-datalayer"/>
+    <property name="maven.multiModuleProjectDirectory" value="/home/hadan326/tdp024/lab3/bank-system"/>
     <property name="java.vm.vendor" value="Private Build"/>
     <property name="java.vendor.url" value="Unknown"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
@@ -13,7 +13,7 @@
     <property name="user.country" value="US"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="/home/hadan326/tdp024/lab3/bank-system/account-datalayer"/>
+    <property name="user.dir" value="/home/hadan326/tdp024/lab3/bank-system"/>
     <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="java.runtime.version" value="17.0.4+8-Ubuntu-122.04"/>
     <property name="os.arch" value="amd64"/>
@@ -30,7 +30,7 @@
     <property name="java.class.version" value="61.0"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
-    <property name="os.version" value="5.15.0-48-generic"/>
+    <property name="os.version" value="5.15.0-50-generic"/>
     <property name="library.jansi.path" value="/usr/share/maven/lib/jansi-native"/>
     <property name="user.home" value="/home/hadan326"/>
     <property name="user.timezone" value="Europe/Stockholm"/>
@@ -40,7 +40,7 @@
     <property name="java.class.path" value="/usr/share/maven/boot/plexus-classworlds-2.x.jar"/>
     <property name="java.vm.specification.version" value="17"/>
     <property name="sun.arch.data.model" value="64"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean test"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean install"/>
     <property name="java.home" value="/usr/lib/jvm/java-17-openjdk-amd64"/>
     <property name="user.language" value="en"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
@@ -57,18 +57,18 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.stdout.encoding" value="UTF-8"/>
   </properties>
-  <testcase classname="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" name="createSuccessAllCombos" time="0.192"/>
-  <testcase classname="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" name="testDebit" time="0.078"/>
+  <testcase classname="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" name="createSuccessAllCombos" time="0.165"/>
+  <testcase classname="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" name="testDebit" time="0.104"/>
   <testcase classname="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" name="testDebitEmptyAccount" time="0.005"/>
-  <testcase classname="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" name="testFindOutOfRangePersonKey" time="0.143"/>
+  <testcase classname="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" name="testFindOutOfRangePersonKey" time="0.142"/>
   <testcase classname="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" name="createInvalid" time="0"/>
-  <testcase classname="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" name="testInvalidAccountDebit" time="0"/>
+  <testcase classname="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" name="testInvalidAccountDebit" time="0.001"/>
   <testcase classname="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" name="testNegativeCredit" time="0"/>
   <testcase classname="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" name="testZeroDebit" time="0"/>
-  <testcase classname="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" name="testFindAllPersonKeys" time="0.01"/>
+  <testcase classname="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" name="testFindAllPersonKeys" time="0.015"/>
   <testcase classname="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" name="testNegativeDebit" time="0"/>
-  <testcase classname="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" name="testCreate" time="0.007"/>
-  <testcase classname="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" name="testCredit" time="0.009"/>
+  <testcase classname="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" name="testCreate" time="0.011"/>
+  <testcase classname="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" name="testCredit" time="0.014"/>
   <testcase classname="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" name="testInvalidAccountCredit" time="0.001"/>
   <testcase classname="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" name="testZeroCredit" time="0"/>
   <testcase classname="se.liu.ida.tdp024.account.data.test.facade.AccountEntityFacadeTest" name="testFindEmptyPersonKey" time="0"/>

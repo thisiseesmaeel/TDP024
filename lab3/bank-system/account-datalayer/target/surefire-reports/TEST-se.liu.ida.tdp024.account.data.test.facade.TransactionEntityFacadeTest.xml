@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="2" failures="0" name="se.liu.ida.tdp024.account.data.test.facade.TransactionEntityFacadeTest" time="0.039" errors="0" skipped="0">
+<testsuite tests="2" failures="0" name="se.liu.ida.tdp024.account.data.test.facade.TransactionEntityFacadeTest" time="0.075" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="java.vm.version" value="17.0.4+8-Ubuntu-122.04"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-17-openjdk-amd64/lib"/>
-    <property name="maven.multiModuleProjectDirectory" value="/home/hadan326/tdp024/lab3/bank-system/account-datalayer"/>
+    <property name="maven.multiModuleProjectDirectory" value="/home/hadan326/tdp024/lab3/bank-system"/>
     <property name="java.vm.vendor" value="Private Build"/>
     <property name="java.vendor.url" value="Unknown"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
@@ -13,7 +13,7 @@
     <property name="user.country" value="US"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="/home/hadan326/tdp024/lab3/bank-system/account-datalayer"/>
+    <property name="user.dir" value="/home/hadan326/tdp024/lab3/bank-system"/>
     <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="java.runtime.version" value="17.0.4+8-Ubuntu-122.04"/>
     <property name="os.arch" value="amd64"/>
@@ -30,7 +30,7 @@
     <property name="java.class.version" value="61.0"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
-    <property name="os.version" value="5.15.0-48-generic"/>
+    <property name="os.version" value="5.15.0-50-generic"/>
     <property name="library.jansi.path" value="/usr/share/maven/lib/jansi-native"/>
     <property name="user.home" value="/home/hadan326"/>
     <property name="user.timezone" value="Europe/Stockholm"/>
@@ -40,7 +40,7 @@
     <property name="java.class.path" value="/usr/share/maven/boot/plexus-classworlds-2.x.jar"/>
     <property name="java.vm.specification.version" value="17"/>
     <property name="sun.arch.data.model" value="64"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean test"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean install"/>
     <property name="java.home" value="/usr/lib/jvm/java-17-openjdk-amd64"/>
     <property name="user.language" value="en"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
@@ -57,6 +57,6 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.stdout.encoding" value="UTF-8"/>
   </properties>
-  <testcase classname="se.liu.ida.tdp024.account.data.test.facade.TransactionEntityFacadeTest" name="testCredit" time="0.004"/>
-  <testcase classname="se.liu.ida.tdp024.account.data.test.facade.TransactionEntityFacadeTest" name="testTransaction" time="0.035"/>
+  <testcase classname="se.liu.ida.tdp024.account.data.test.facade.TransactionEntityFacadeTest" name="testCredit" time="0.009"/>
+  <testcase classname="se.liu.ida.tdp024.account.data.test.facade.TransactionEntityFacadeTest" name="testTransaction" time="0.066"/>
 </testsuite>
