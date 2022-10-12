@@ -44,6 +44,12 @@
             <artifactId>jacoco-maven-plugin</artifactId>
             <version>0.8.8</version>
         </dependency>
+        <dependency>
+            <groupId>tdp024</groupId>
+            <artifactId>xfinal-test</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
 
     </dependencies>
 

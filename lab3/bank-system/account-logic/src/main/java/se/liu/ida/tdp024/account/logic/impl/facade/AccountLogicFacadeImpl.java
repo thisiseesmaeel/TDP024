@@ -9,12 +9,16 @@ import se.liu.ida.tdp024.account.data.exception.InsufficientHoldingException;
 import se.liu.ida.tdp024.account.logic.api.facade.AccountLogicFacade;
 import se.liu.ida.tdp024.account.logic.mock.BankMock;
 import se.liu.ida.tdp024.account.logic.mock.PersonMock;
+import se.liu.ida.tdp024.account.util.http.HTTPHelper;
+import se.liu.ida.tdp024.account.util.http.HTTPHelperImpl;
 
 import java.util.List;
 
 
 public class AccountLogicFacadeImpl implements AccountLogicFacade {
     private final AccountEntityFacade accountEntityFacade;
+
+    private static final HTTPHelper httpHelper = new HTTPHelperImpl();
 
     public AccountLogicFacadeImpl(AccountEntityFacade accountEntityFacade) {
         this.accountEntityFacade = accountEntityFacade;
@@ -29,16 +33,29 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
         if(!(accountType.equals("CHECK") || accountType.equals("SAVINGS")))
             throw new AccountInputParameterException("Account type is incorrect.");
 
-        // TODO: 2) Call to Elixir and check whether the person exists in our database or not.
-        if(PersonMock.findPersonById(personKey) == null){
+        // 2) Call to Elixir and check whether the person exists in our database or not.
+        String response = httpHelper.get("http://localhost:8060/api/person/find.key", "key", personKey);
+        if (response.equals("null")) {
             throw new AccountEntityNotFoundException("Could not find this person.");
         }
 
-        // 3) TODO: Call to Rust and check whether the bank exists in our database or not and get the unique bank key.
-        String bankKey = BankMock.findBankByName(bankName);
-        if( bankKey == null){
+        // Person API MOCK
+//        String response = PersonMock.findPersonById(personKey)
+//        if(response == null){
+//            throw new AccountEntityNotFoundException("Could not find this person.");
+//        }
+
+        // 3) Call to Rust and check whether the bank exists in our database or not and get the unique bank key.
+        String bankKey = httpHelper.get("http://localhost:8070/bank/find.name", "name", bankName);
+        if(bankKey.equals("null")){
             throw new AccountEntityNotFoundException("Could not find this bank.");
         }
+
+        // Bank API MOCK
+//        String bankKey = BankMock.findBankByName(bankName);
+//        if( bankKey == null){
+//            throw new AccountEntityNotFoundException("Could not find this bank.");
+//        }
         try {
             accountEntityFacade.create(personKey, bankKey, accountType);
         }
@@ -53,7 +70,12 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
     public List<Account> find(String personKey)
             throws AccountEntityNotFoundException, AccountInputParameterException, AccountServiceConfigurationException{
         try {
-            // TODO: Call to Elixir and check whether the person exists in our database or not.
+            // Call to Elixir and check whether the person exists in our database or not.
+            String response = httpHelper.get("http://localhost:8060/api/person/find.key", "key", personKey);
+            if (response.equals("null")) {
+                throw new AccountEntityNotFoundException("Could not find this person.");
+            }
+
             return accountEntityFacade.find(personKey);
         }
         catch(AccountEntityNotFoundException | AccountInputParameterException| AccountServiceConfigurationException e){
