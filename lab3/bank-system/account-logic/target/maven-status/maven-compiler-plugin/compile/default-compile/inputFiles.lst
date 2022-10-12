@@ -1,0 +1,6 @@
+/home/hadan326/tdp024/lab3/bank-system/account-logic/src/main/java/se/liu/ida/tdp024/account/logic/api/facade/AccountLogicFacade.java
+/home/hadan326/tdp024/lab3/bank-system/account-logic/src/main/java/se/liu/ida/tdp024/account/logic/api/facade/TransactionLogicFacade.java
+/home/hadan326/tdp024/lab3/bank-system/account-logic/src/main/java/se/liu/ida/tdp024/account/logic/impl/facade/TransactionLogicFacadeImp.java
+/home/hadan326/tdp024/lab3/bank-system/account-logic/src/main/java/se/liu/ida/tdp024/account/logic/mock/BankMock.java
+/home/hadan326/tdp024/lab3/bank-system/account-logic/src/main/java/se/liu/ida/tdp024/account/logic/impl/facade/AccountLogicFacadeImpl.java
+/home/hadan326/tdp024/lab3/bank-system/account-logic/src/main/java/se/liu/ida/tdp024/account/logic/mock/PersonMock.java

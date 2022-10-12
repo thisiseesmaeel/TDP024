@@ -1,9 +1,3 @@
-# How to set up environment
--  How to set up Elixir environment
--  How to set up Rust environment
--  How to set up Kafka
--  How to run bank-system application
-
 ### How to set up Elixir environment (person api)
 Make sure you have elixir installed by running the `elixir -v`. Check [here](https://hexdocs.pm/phoenix/installation.html) for installation. Then follow the steps below:
 - Open `person-api` directory
@@ -12,6 +6,9 @@ Make sure you have elixir installed by running the `elixir -v`. Check [here](htt
 - Aplication should run on port **http://localhost:8060/person**
 
 ### How to set up Rust environment (bank api)
+- Open **"bank_api"** directory
+- Run `systemfd --no-pid -s http::8070 -- cargo watch -x run`
+- Aplication should run on port **http://localhost:8070/bank**
 
 ### How to set up Kafka
 Download **Kafka** from [here](https://downloads.apache.org/kafka/3.2.3/kafka-3.2.3-src.tgz) and fallow the steps below:
