@@ -1,5 +1,0 @@
-GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-logic,se.liu.ida.tdp024.account.logic.mock,PersonMock,25,35,4,0,6,8,4,2,2,2
-logic,se.liu.ida.tdp024.account.logic.mock,BankMock,8,74,0,4,2,16,2,4,2,2
-logic,se.liu.ida.tdp024.account.logic.impl.facade,TransactionLogicFacadeImp,3,11,0,0,2,4,0,2,0,2
-logic,se.liu.ida.tdp024.account.logic.impl.facade,AccountLogicFacadeImpl,3,73,0,8,2,22,0,9,0,5

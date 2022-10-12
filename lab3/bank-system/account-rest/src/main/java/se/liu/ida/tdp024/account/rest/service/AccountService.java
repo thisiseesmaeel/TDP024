@@ -57,107 +57,108 @@ public class AccountService {
 
     public ResponseEntity<String> create(String person, String bank, String accounttype) {
         try{
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Creating account at: \"" + new Date() + "\"")).get();
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Trying to create an account \"" + new Date() + "\"")).get();
 
             if (accountLogicFacade.create(person, bank, accounttype)) {
-                producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Account created at: \"" + new Date() + "\"")).get();
+                producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Account created successfully \"" + new Date() + "\"")).get();
                 return ResponseEntity.ok("Ok");
             }
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not create account"));
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not create account");
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Failed to create the account"));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Failed to create the account");
 
         }
         catch (AccountInputParameterException e){
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not create account: " + e.getMessage()));
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Failed to create the account: " + e.getMessage()));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
         catch (AccountEntityNotFoundException e){
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not create account: " + e.getMessage()));
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Could not create an account. Either bank name or person key does not exist");
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Failed to create the account: " + e.getMessage()));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Failed to create the account. Either bank name or person key does not exist");
         }
         catch (AccountServiceConfigurationException e) {
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not create account: " + e.getMessage()));
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Failed to create the account: " + e.getMessage()));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
         catch (Exception e){
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not create account: " + e.getMessage()));
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Failed to create the account: " + e.getMessage()));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
     public ResponseEntity findPerson(String person) {
         try {
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Finding all accounts of a person: \"" + new Date() + "\"")).get();
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Finding all accounts of a person \"" + new Date() + "\"")).get();
             List<Account> response = accountLogicFacade.find(person);
             return ResponseEntity.ok(response);
         } catch (AccountEntityNotFoundException e) {
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not find the person"));
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java):  Failed to find the person"));
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }catch (AccountInputParameterException e){
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not find the person"));
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Failed to find the person"));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }catch (AccountServiceConfigurationException e) {
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not find the person"));
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Failed to find the person"));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
         catch (Exception e){
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Something went wrong."));
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Something went wrong."));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
     public ResponseEntity<String> debit(long id, long amount) {
         try {
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Trying to debit from an account at: \"" + new Date() + "\"")).get();
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Trying to debit from an account \"" + new Date() + "\"")).get();
             accountLogicFacade.debit(id, amount);
-            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Debited from account at: \"" + new Date() + "\"")).get();
+            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Debited from the account successfully \"" + new Date() + "\"")).get();
             return ResponseEntity.ok("Ok");
         }
         catch (AccountEntityNotFoundException | AccountInputParameterException
                | AccountServiceConfigurationException | InsufficientHoldingException e){
-            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Could not debit from account at: \"" + new Date() + "\""));
+            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Failed to debit from the account \"" + new Date() + "\""));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
         catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Something went wrong. Cause => " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bank-system (Java): Something went wrong. Cause => " + e.getMessage());
         }
 
     }
 
     public ResponseEntity<String> credit(long id, long amount) {
         try {
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Trying to credit an account at: \"" + new Date() + "\"")).get();
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Trying to credit an account \"" + new Date() + "\"")).get();
             accountLogicFacade.credit(id, amount);
-            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Credited from account at: \"" + new Date() + "\"")).get();
+            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Credited the account successfully \"" + new Date() + "\"")).get();
 
             return ResponseEntity.ok("Ok");
 
         } catch (AccountEntityNotFoundException e){
-            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Could not credit account at: \"" + new Date() + "\""));
+            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Failed to credit the account \"" + new Date() + "\""));
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }catch (AccountInputParameterException e) {
-            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Could not credit account at: \"" + new Date() + "\""));
+            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Failed to credit the account \"" + new Date() + "\""));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }catch (AccountServiceConfigurationException e) {
-            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Could not credit account at: \"" + new Date() + "\""));
+            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Failed to credit the account \"" + new Date() + "\""));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
         catch (Exception e){
-            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Could not credit account at: \"" + new Date() + "\""));
+            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Failed to credit the account \"" + new Date() + "\""));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
     public ResponseEntity transaction(long id) {
         try{
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Transaction details at: \"" + new Date() + "\"")).get();
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Inquiry for transaction details \"" + new Date() + "\"")).get();
             List<Transaction> transactions = transactionLogicFacade.findByAccountId(id);
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Transaction details succeeded \"" + new Date() + "\"")).get();
             return ResponseEntity.status(HttpStatus.OK).body(transactions);
         }catch (AccountServiceConfigurationException e){
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Transaction details failed at: \"" + new Date() + "\""));
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Transaction details failed \"" + new Date() + "\""));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         } catch (ExecutionException | InterruptedException e) {
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Transaction details failed at: \"" + new Date() + "\""));
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Transaction details failed \"" + new Date() + "\""));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
