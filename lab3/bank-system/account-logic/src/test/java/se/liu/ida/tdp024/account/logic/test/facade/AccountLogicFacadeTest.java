@@ -290,12 +290,12 @@ public class AccountLogicFacadeTest {
     public void testEmptyPersonKeyFind(){
         try {
             String personKey = "";
-            when(accountEntityFacadeDB.find(personKey)).thenThrow(AccountInputParameterException.class); // Mock should return a list of accounts
+            when(accountEntityFacadeDB.find(personKey)).thenThrow(AccountInputParameterException.class); // Mock throw exception
 
             List<Account> accounts = accountLogicFacade.find(personKey);
-            fail("Finding accounts when person key is empty should throw AccountInputParameterException");
+            fail("Finding accounts when person key is empty should throw AccountInputParameterException or AccountEntityNotFoundException");
 
-        }catch (AccountInputParameterException e){
+        }catch (AccountInputParameterException | AccountEntityNotFoundException e){
             return;
         }
         catch (Exception e){

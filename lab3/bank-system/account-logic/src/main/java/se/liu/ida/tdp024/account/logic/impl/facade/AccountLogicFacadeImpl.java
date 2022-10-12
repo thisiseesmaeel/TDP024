@@ -40,7 +40,7 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
         }
 
         // Person API MOCK
-//        String response = PersonMock.findPersonById(personKey)
+//        String response = PersonMock.findPersonById(personKey);
 //        if(response == null){
 //            throw new AccountEntityNotFoundException("Could not find this person.");
 //        }
@@ -56,6 +56,7 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
 //        if( bankKey == null){
 //            throw new AccountEntityNotFoundException("Could not find this bank.");
 //        }
+
         try {
             accountEntityFacade.create(personKey, bankKey, accountType);
         }
