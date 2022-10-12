@@ -1,17 +1,36 @@
 defmodule PersonApi.Application do
+  # See https://hexdocs.pm/elixir/Application.html
+  # for more information on OTP Applications
+  @moduledoc false
+
   use Application
 
-  # The @impl true here denotes that the start function is implementing a
-  # callback that was defined in the Application module
-  # https://hexdocs.pm/elixir/main/Module.html#module-impl
-  # This will aid the compiler to warn you when a implementaion is incorrect
   @impl true
   def start(_type, _args) do
     children = [
-      {Plug.Cowboy, scheme: :http, plug: PersonApi.Router, options: [port: 8061]}
+      # Start the Ecto repository
+      PersonApi.Repo,
+      # Start the Telemetry supervisor
+      PersonApiWeb.Telemetry,
+      # Start the PubSub system
+      {Phoenix.PubSub, name: PersonApi.PubSub},
+      # Start the Endpoint (http/https)
+      PersonApiWeb.Endpoint
+      # Start a worker by calling: PersonApi.Worker.start_link(arg)
+      # {PersonApi.Worker, arg}
     ]
 
+    # See https://hexdocs.pm/elixir/Supervisor.html
+    # for other strategies and supported options
     opts = [strategy: :one_for_one, name: PersonApi.Supervisor]
     Supervisor.start_link(children, opts)
+  end
+
+  # Tell Phoenix to update the endpoint configuration
+  # whenever the application is updated.
+  @impl true
+  def config_change(changed, _new, removed) do
+    PersonApiWeb.Endpoint.config_change(changed, removed)
+    :ok
   end
 end
