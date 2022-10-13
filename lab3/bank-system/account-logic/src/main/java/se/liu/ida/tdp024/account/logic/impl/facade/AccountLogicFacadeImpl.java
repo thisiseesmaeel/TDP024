@@ -31,10 +31,10 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
             return false;
 
         // 2) Call to Elixir and check whether the person exists in our database or not.
-//        String response = httpHelper.get("http://localhost:8060/api/person/find.key", "key", personKey);
-//        if (response.equals("null")) {
-//            return false;
-//        }
+        String response = httpHelper.get("http://localhost:8060/api/person/find.key", "key", personKey);
+        if (response.equals("null")) {
+            return false;
+        }
 
         // Person API MOCK
         if(PersonMock.findPersonById(personKey) == null){
@@ -42,16 +42,16 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
         }
 
 //        3) Call to Rust and check whether the bank exists in our database or not and get the unique bank key.
-//        String bankKey = httpHelper.get("http://localhost:8070/bank/find.name", "name", bankName);
-//        if(bankKey.equals("null")){
-//            return false;
-//        }
-
-        // Bank API MOCK
-        String bankKey = BankMock.findBankByName(bankName);
-        if( bankKey == null){
+        String bankKey = httpHelper.get("http://localhost:8070/bank/find.name", "name", bankName);
+        if(bankKey.equals("null")){
             return false;
         }
+
+        // Bank API MOCK
+//        String bankKey = BankMock.findBankByName(bankName);
+//        if( bankKey == null){
+//            return false;
+//        }
 
         accountEntityFacade.create(personKey, bankKey, accountType);
 
@@ -62,26 +62,24 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
     @Override
     public List<Account> find(String personKey) {
         // Call to Elixir and check whether the person exists in our database or not.
-        //String response = httpHelper.get("http://localhost:8060/api/person/find.key", "key", personKey);
-//        if(response.equals("null")){
-//            return new ArrayList<>();
-//        }
-
-        // Person API MOCK
-        if(PersonMock.findPersonById(personKey) == null){
+        String response = httpHelper.get("http://localhost:8060/api/person/find.key", "key", personKey);
+        if(response.equals("null")){
             return new ArrayList<>();
         }
+
+        // Person API MOCK
+//        if(PersonMock.findPersonById(personKey) == null){
+//            return new ArrayList<>();
+//        }
         return accountEntityFacade.find(personKey);
     }
     @Override
     public boolean debit(long id, long amount) {
-        // TODO: Check if this account exists?
         return accountEntityFacade.debit(id, amount);
     }
 
     @Override
     public boolean credit(long id, long amount) {
-        // TODO: Check if this account exists?
         return accountEntityFacade.credit(id, amount);
     }
 

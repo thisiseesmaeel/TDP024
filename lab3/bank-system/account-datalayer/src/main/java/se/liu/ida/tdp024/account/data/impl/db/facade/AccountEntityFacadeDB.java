@@ -36,6 +36,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
 
     @Override
     public List<Account> find(String personKey) {
+        em.clear();
         Query query = em.createQuery(
                 "SELECT account FROM AccountDB account WHERE account.personKey = :personKey"
         );
@@ -48,46 +49,49 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
 
     @Override
     public boolean credit(long id, long amount) {
-        Account account = em.find(AccountDB.class, id);
+        try {
+            EntityManager em = EMF.getEntityManager();
+            em.getTransaction().begin();
+            Account account = em.find(AccountDB.class, id, LockModeType.PESSIMISTIC_WRITE);
 
-        em.getTransaction().begin();
-        // Create a transaction in db
-        TransactionDB transaction = new TransactionDB();
-        transaction.setType("CREDIT");
-        transaction.setAmount(amount);
-        transaction.setCreated(new Date().toString());
-        transaction.setAccount(account);
-        account.getTransactions().add(transaction);
+            // Create a transaction in db
+            TransactionDB transaction = new TransactionDB();
+            transaction.setType("CREDIT");
+            transaction.setAmount(amount);
+            transaction.setCreated(new Date().toString());
+            transaction.setAccount(account);
+            account.getTransactions().add(transaction);
 
-        if(amount > 0){
-            transaction.setStatus("OK");
-            // Update existing account in db
-            account.setHoldings(account.getHoldings() + amount);
-            em.persist(transaction);
-            em.getTransaction().commit();
-            return true;
-        }
-        else {
-            transaction.setStatus("FAILED");
-            em.persist(transaction);
-            em.getTransaction().commit();
+            if(amount > 0){
+                transaction.setStatus("OK");
+                // Update existing account in db
+                account.setHoldings(account.getHoldings() + amount);
+                em.persist(account);
+                em.persist(transaction);
+                em.getTransaction().commit();
+                em.close();
+                return true;
+            }
+            else {
+                transaction.setStatus("FAILED");
+                em.persist(transaction);
+                em.getTransaction().commit();
+                em.close();
+                return false;
+            }
+        }catch (Exception e){
+            em.close();
             return false;
         }
+
     }
 
     @Override
     public boolean debit(long id, long amount) {
         try{
-            System.out.println("*************BEFORE********");
-
-            Account account = em.find(AccountDB.class, id);
-
-
-
-            em.lock(account, LockModeType.PESSIMISTIC_WRITE);
-            System.out.println("+++++++++AFTER+++++++++");
+            EntityManager em = EMF.getEntityManager();
             em.getTransaction().begin();
-
+            Account account = em.find(AccountDB.class, id, LockModeType.PESSIMISTIC_WRITE);
 
             // Create a transaction in db
             TransactionDB transaction = new TransactionDB();
@@ -102,26 +106,22 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
                 transaction.setStatus("OK");
                 // Update existing account in db
                 account.setHoldings(account.getHoldings() - amount);
+                em.persist(account);
                 em.persist(transaction);
                 em.getTransaction().commit();
+                em.close();
                 return true;
             }
             else {
                 transaction.setStatus("FAILED");
                 em.persist(transaction);
                 em.getTransaction().commit();
+                em.close();
                 return false;
             }
-        }catch (java.lang.IllegalStateException e){
-            System.out.println("(IllegalStateException) => " + e.getMessage());
-            em.getTransaction().rollback();
-            System.out.println("Rollback is done!");
-            return false;
         }
         catch (Exception e){
-            System.out.println("ERORR => " + e.getMessage() + " type => " + e.getClass());
-            if(em.getTransaction().isActive())
-                em.getTransaction().rollback();
+            em.close();
             return false;
         }
     }

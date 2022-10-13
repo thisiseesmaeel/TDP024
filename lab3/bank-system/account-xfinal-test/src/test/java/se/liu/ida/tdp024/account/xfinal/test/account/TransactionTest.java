@@ -15,8 +15,6 @@ import se.liu.ida.tdp024.account.xfinal.test.util.FinalConstants;
 import se.liu.ida.tdp024.account.xfinal.test.util.TransactionDTO;
 
 public class TransactionTest {
-
-
     private static final HTTPHelper httpHelper = new HTTPHelperImpl();
     private static final AccountJsonSerializer jsonSerializer = new AccountJsonSerializerImpl();
 
@@ -167,63 +165,62 @@ public class TransactionTest {
 
 
     }
-    
-//    @Test
-//    public void testCreditConcurrency() {
-//
-//         {
-//            String person = "4";
-//            String bank = "SWEDBANK";
-//            String accountType = "SAVINGS";
-//            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
-//            Assert.assertEquals("OK", response);
-//        }
-//
-//
-//        String accountJson = httpHelper.get(FinalConstants.ENDPOINT + "account/find/person", "person", "4");
-//        AccountDTO[] accountDTos = jsonSerializer.fromJson(accountJson, AccountDTO[].class);
-//        final AccountDTO accountDTO = accountDTos[0];
-//
-//
-//
-//        //Create lots of small credits
-//        final int size = 1000;
-//        final int amount = 10;
-//        List<Thread> threads = new ArrayList<Thread>();
-//        for (int i = 0; i < size; i++) {
-//            threads.add(new Thread() {
-//                @Override
-//                public void run() {
-//                    try {
-//                        Thread.currentThread().sleep((long)(Math.random() * 100));
-//                        httpHelper.get(FinalConstants.ENDPOINT + "account/credit", "id", accountDTO.getId() + "", "amount", amount + "");
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            });
-//        }
-//
-//        //Run the removals
-//        for (Thread thread : threads) {
-//            thread.start();
-//        }
-//
-//        //Assume that it take 20 seconds to complete
-//        try {
-//            Thread.currentThread().sleep(20000);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        //Now check the balance of the account
-//        {
-//            String checkJson = httpHelper.get(FinalConstants.ENDPOINT + "account/find/person", "person", "4");
-//            AccountDTO refreshedAccountDTO = jsonSerializer.fromJson(checkJson, AccountDTO[].class)[0];
-//            Assert.assertEquals(size * amount, refreshedAccountDTO.getHoldings());
-//        }
-//
-//    }
 
+    @Test
+    public void testCreditConcurrency() {
+
+        {
+            String person = "4";
+            String bank = "SWEDBANK";
+            String accountType = "SAVINGS";
+            String response = httpHelper.get(FinalConstants.ENDPOINT + "account/create/", "person", person, "bank", bank, "accounttype", accountType);
+            Assert.assertEquals("OK", response);
+        }
+
+
+        String accountJson = httpHelper.get(FinalConstants.ENDPOINT + "account/find/person", "person", "4");
+        AccountDTO[] accountDTos = jsonSerializer.fromJson(accountJson, AccountDTO[].class);
+        final AccountDTO accountDTO = accountDTos[0];
+
+
+
+        //Create lots of small credits
+        final int size = 1000;
+        final int amount = 10;
+        List<Thread> threads = new ArrayList<Thread>();
+        for (int i = 0; i < size; i++) {
+            threads.add(new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.currentThread().sleep((long)(Math.random() * 100));
+                        httpHelper.get(FinalConstants.ENDPOINT + "account/credit", "id", accountDTO.getId() + "", "amount", amount + "");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+
+        //Run the removals
+        for (Thread thread : threads) {
+            thread.start();
+        }
+
+        //Assume that it take 20 seconds to complete
+        try {
+            Thread.currentThread().sleep(20000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //Now check the balance of the account
+        {
+            String checkJson = httpHelper.get(FinalConstants.ENDPOINT + "account/find/person", "person", "4");
+            AccountDTO refreshedAccountDTO = jsonSerializer.fromJson(checkJson, AccountDTO[].class)[0];
+            Assert.assertEquals(size * amount, refreshedAccountDTO.getHoldings());
+        }
+
+    }
 
 }
