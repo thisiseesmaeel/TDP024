@@ -69,7 +69,7 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
 
         // Person API MOCK
         if(PersonMock.findPersonById(personKey) == null){
-            return List<Account>;
+            return new ArrayList<>();
         }
         return accountEntityFacade.find(personKey);
     }
