@@ -8,6 +8,7 @@ import se.liu.ida.tdp024.account.data.impl.db.entity.TransactionDB;
 import se.liu.ida.tdp024.account.data.impl.db.util.EMF;
 
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Date;
@@ -76,28 +77,35 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
 
     @Override
     public boolean debit(long id, long amount) {
-        Account account = em.find(AccountDB.class, id);
-        em.getTransaction().begin();
-        // Create a transaction in db
-        TransactionDB transaction = new TransactionDB();
-        transaction.setType("DEBIT");
-        transaction.setAmount(amount);
-        transaction.setCreated(new Date().toString());
-        transaction.setAccount(account);
-        account.getTransactions().add(transaction);
+        try{
+            Account account = em.find(AccountDB.class, id);
+            em.getTransaction().begin();
+            em.lock(account, LockModeType.PESSIMISTIC_WRITE);
+            // Create a transaction in db
+            TransactionDB transaction = new TransactionDB();
+            transaction.setType("DEBIT");
+            transaction.setAmount(amount);
+            transaction.setCreated(new Date().toString());
+            transaction.setAccount(account);
+            account.getTransactions().add(transaction);
 
-        if(account.getHoldings() >= amount && amount > 0){
-            transaction.setStatus("OK");
-            // Update existing account in db
-            account.setHoldings(account.getHoldings() - amount);
-            em.persist(transaction);
-            em.getTransaction().commit();
-            return true;
-        }
-        else {
-            transaction.setStatus("FAILED");
-            em.persist(transaction);
-            em.getTransaction().commit();
+            if(account.getHoldings() >= amount && amount > 0){
+                transaction.setStatus("OK");
+                // Update existing account in db
+                account.setHoldings(account.getHoldings() - amount);
+                em.persist(transaction);
+                em.getTransaction().commit();
+                return true;
+            }
+            else {
+                transaction.setStatus("FAILED");
+                em.persist(transaction);
+                em.getTransaction().commit();
+                return false;
+            }
+        }catch (Exception e){
+            if(em.getTransaction().isActive())
+                em.getTransaction().rollback();
             return false;
         }
     }
