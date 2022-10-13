@@ -174,14 +174,6 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
             }
             throw new AccountServiceConfigurationException("Crediting account failed due to internal service error!");
         }
-//        finally {
-////            em.getTransaction().begin();
-////            TransactionDB transaction = transactionEntityFacade.create("CREDIT", amount, new Date().toString(), "FAILED", id);
-////            em.persist(transaction);
-////            em.getTransaction().commit();
-//            em.close();
-//        }
-
     }
 }
 
