@@ -11,7 +11,7 @@ mod kafka;
 #[get("/bank/list")]
 async fn get_all_banks() -> impl Responder { 
     let banks = database::get_db();
-    let log : String = "Listing all banks at ".to_owned();
+    let log : String = "Bank-API (Rust): Inquiry for all banks at".to_owned();
     let date: String = Utc::now().to_string();
     let log: String = format!("{} \"{}\"", log, date);
     kafka::get_producer(log);
@@ -31,7 +31,7 @@ async fn find_by_name(param : Query<Name>) -> impl Responder {
     let name: String = (*param.name).to_string();
     let result  = database::find_bank_by_name(name);
     let name: String = (*param.name).to_string();
-    let log : String = format!("Finding bank with name {} at", name).to_owned();
+    let log : String = format!("Bank-API (Rust): Inquiry for a bank with name {} at", name).to_owned();
     let date: String = Utc::now().to_string();
     let log: String = format!("{} \"{}\"", log, date);
     kafka::get_producer(log);
@@ -53,7 +53,7 @@ async fn find_by_key(param : Query<Key>) -> impl Responder {
     let key: String = (*param.key).to_string();
     let result: String = database::find_bank_by_key(key);
     let key: String = (*param.key).to_string();
-    let log : String = format!("Finding bank with key {} at", key).to_owned();
+    let log : String = format!("Bank-API (Rust): Inquiry for bank with key {} at", key).to_owned();
     let date: String = Utc::now().to_string();
     let log: String = format!("{} \"{}\"", log, date);
     kafka::get_producer(log);
@@ -86,5 +86,3 @@ async fn main() -> std::io::Result<()> {
 
     server.run().await
 }
-
-// systemfd --no-pid -s http::8070 -- cargo watch -x run
