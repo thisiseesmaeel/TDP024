@@ -78,9 +78,17 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
     @Override
     public boolean debit(long id, long amount) {
         try{
+            System.out.println("*************BEFORE********");
+
             Account account = em.find(AccountDB.class, id);
-            em.getTransaction().begin();
+
+
+
             em.lock(account, LockModeType.PESSIMISTIC_WRITE);
+            System.out.println("+++++++++AFTER+++++++++");
+            em.getTransaction().begin();
+
+
             // Create a transaction in db
             TransactionDB transaction = new TransactionDB();
             transaction.setType("DEBIT");
@@ -88,6 +96,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
             transaction.setCreated(new Date().toString());
             transaction.setAccount(account);
             account.getTransactions().add(transaction);
+
 
             if(account.getHoldings() >= amount && amount > 0){
                 transaction.setStatus("OK");
@@ -103,7 +112,14 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
                 em.getTransaction().commit();
                 return false;
             }
-        }catch (Exception e){
+        }catch (java.lang.IllegalStateException e){
+            System.out.println("(IllegalStateException) => " + e.getMessage());
+            em.getTransaction().rollback();
+            System.out.println("Rollback is done!");
+            return false;
+        }
+        catch (Exception e){
+            System.out.println("ERORR => " + e.getMessage() + " type => " + e.getClass());
             if(em.getTransaction().isActive())
                 em.getTransaction().rollback();
             return false;
