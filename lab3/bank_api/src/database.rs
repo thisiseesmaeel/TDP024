@@ -7,7 +7,7 @@ pub fn get_db() ->  HashMap<String, String> {
     bank_info.insert("2".to_string(), "IKANOBANKEN".to_string());
     bank_info.insert("3".to_string(), "JPMORGAN".to_string());
     bank_info.insert("4".to_string(), "NORDEA".to_string());
-    bank_info.insert("5".to_string(), "CIT".to_string());
+    bank_info.insert("5".to_string(), "CITIBANK".to_string());
     bank_info.insert("6".to_string(), "HANDELSBANKEN".to_string());
     bank_info.insert("7".to_string(), "SBAB".to_string());
     bank_info.insert("8".to_string(), "HSBC".to_string());
