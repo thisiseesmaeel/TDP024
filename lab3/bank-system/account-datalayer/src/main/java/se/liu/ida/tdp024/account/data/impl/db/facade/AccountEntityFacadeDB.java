@@ -53,6 +53,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
     public List<Account> find(String personKey)
             throws AccountEntityNotFoundException, AccountInputParameterException, AccountServiceConfigurationException{
         try {
+            em.clear();
             if(personKey.isEmpty())
                 throw new AccountInputParameterException("Finding account(s) failed due to invalid input(s).");
 
@@ -82,24 +83,30 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
             throw new AccountInputParameterException("Debiting account failed due to invalid input(s).");
 
         try {
-            Account account = em.find(AccountDB.class, id);
+            EntityManager em = EMF.getEntityManager();
+            em.getTransaction().begin();
+            Account account = em.find(AccountDB.class, id, LockModeType.PESSIMISTIC_WRITE);
             if (account == null)
                 throw new EntityNotFoundException();
 
-            em.getTransaction().begin();
-            em.lock(account, LockModeType.PESSIMISTIC_WRITE);
             if(account.getHoldings() >= amount){
                 TransactionDB transaction = transactionEntityFacade.create("DEBIT", amount, new Date().toString(), "OK", id);
                 // Update existing account in db
                 account.getTransactions().add(transaction);
                 account.setHoldings(account.getHoldings() - amount);
+                em.persist(account);
+                //em.persist(transaction);
                 em.getTransaction().commit();
+                em.close();
                 return account;
             }
             else {
                 TransactionDB transaction = transactionEntityFacade.create("DEBIT", amount, new Date().toString(), "FAILED", id);
                 account.getTransactions().add(transaction);
+                em.persist(account);
+                //em.persist(transaction);
                 em.getTransaction().commit();
+                em.close();
                 throw new InsufficientHoldingException("Insufficient holding");
             }
         }
@@ -107,9 +114,13 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
             if(em.getTransaction().isActive()){
                 em.getTransaction().rollback();
             }
-            throw new AccountServiceConfigurationException("Debiting account failed due to internal service error!");
+            // Debiting account failed due to internal service error!
+            throw new AccountServiceConfigurationException(e.getMessage());
         }
         catch (EntityNotFoundException e){
+            if(em.getTransaction().isActive()){
+                em.getTransaction().rollback();
+            }
             throw new AccountEntityNotFoundException("Could not found any account with provided id.");
         }
         catch(InsufficientHoldingException e){
@@ -126,34 +137,50 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
         if(id < 0 || amount <= 0)
             throw new AccountInputParameterException("Crediting account failed due to invalid input(s).");
         try {
-            Account account = em.find(AccountDB.class, id);
+            EntityManager em = EMF.getEntityManager();
+            em.getTransaction().begin();
+            Account account = em.find(AccountDB.class, id, LockModeType.PESSIMISTIC_WRITE);
             if (account == null)
                 throw new EntityNotFoundException();
 
-            em.getTransaction().begin();
-            em.lock(account, LockModeType.PESSIMISTIC_WRITE);
             // Create a transaction in db
             TransactionDB transaction = transactionEntityFacade.create("CREDIT", amount, new Date().toString(), "OK", id);
 
             // Update existing account in db
             account.getTransactions().add(transaction);
             account.setHoldings(account.getHoldings() + amount);
+            em.persist(account);
+            //em.persist(transaction);
             em.getTransaction().commit();
-
             return account;
         }
         catch (RollbackException e){
             if(em.getTransaction().isActive()){
                 em.getTransaction().rollback();
             }
-            throw new AccountServiceConfigurationException("Debiting account failed due to internal service error!");
+            // "Crediting account failed due to internal service error!"
+            throw new AccountServiceConfigurationException(e.getMessage());
         }
         catch (EntityNotFoundException e){
+            if(em.getTransaction().isActive()){
+                em.getTransaction().rollback();
+            }
+
             throw new AccountEntityNotFoundException("Could not found any account with provided id.");
         }
         catch (Exception e){
+            if(em.getTransaction().isActive()){
+                em.getTransaction().rollback();
+            }
             throw new AccountServiceConfigurationException("Crediting account failed due to internal service error!");
         }
+//        finally {
+////            em.getTransaction().begin();
+////            TransactionDB transaction = transactionEntityFacade.create("CREDIT", amount, new Date().toString(), "FAILED", id);
+////            em.persist(transaction);
+////            em.getTransaction().commit();
+//            em.close();
+//        }
 
     }
 }
