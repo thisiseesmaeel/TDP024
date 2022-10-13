@@ -51,14 +51,14 @@ public class AccountController {
                          @RequestParam(value = "bank", defaultValue = "") String bank,
                          @RequestParam(value = "accounttype", defaultValue = "")String accounttype) {
         try{
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Creating user at: \"" + new Date() + "\"")).get();
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Trying to create an account " + new Date())).get();
 
             if (person.isEmpty() || bank.isEmpty() || accounttype.isEmpty()){
-                producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Could not create user: \"" + new Date() + "\"")).get();
+                producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Failed to create the account " + new Date())).get();
                 return "FAILED";
             }
             if (accountLogicFacade.create(person, bank, accounttype)) {
-                producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "User created at: \"" + new Date() + "\"")).get();
+                producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Account created successfully " + new Date())).get();
                 return "OK";
             }
         }
@@ -73,9 +73,11 @@ public class AccountController {
     @RequestMapping("/account/find/person")
     public List<Account> findPerson(@RequestParam String person) {
         try {
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Finding all accounts of a person: \"" + new Date() + "\"")).get();
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Finding all accounts of a person " + new Date())).get();
         }catch (Exception e){
             System.out.println(e);
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Something went wrong " + new Date()));
+            return new ArrayList<>();
         }
         return accountLogicFacade.find(person);
     }
@@ -83,12 +85,12 @@ public class AccountController {
     @RequestMapping("/account/debit")
     public String debit(@RequestParam long id, @RequestParam long amount) {
         try {
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Trying to debit from an account at: \"" + new Date() + "\"")).get();
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Trying to debit from an account " + new Date())).get();
             if(accountLogicFacade.debit(id, amount)){
-                producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Debited from account at: \"" + new Date() + "\"")).get();
+                producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Debited from the account successfully " + new Date())).get();
                 return "OK";
             }
-            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Could not debit from account at: \"" + new Date() + "\"")).get();
+            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Failed to debit from the account " + new Date())).get();
             return "FAILED";
         }
         catch (Exception e){
@@ -100,29 +102,30 @@ public class AccountController {
     @RequestMapping("/account/credit")
     public String credit(@RequestParam long id, @RequestParam long amount) {
         try {
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Trying to credit an account at: \"" + new Date() + "\"")).get();
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Trying to credit an account " + new Date())).get();
             if(accountLogicFacade.credit(id, amount)) {
-                producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Credited from account at: \"" + new Date() + "\"")).get();
+                producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Credited the account successfully " + new Date())).get();
                 return "OK";
             }
-            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Could not credit account at: \"" + new Date() + "\"")).get();
+            producer.send(new ProducerRecord<>(TRANSACTION_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Failed to credit the account " + new Date() )).get();
             return "FAILED";
 
         }
         catch (Exception e){
                 System.out.println(e);
                 return "FAILED";
-            }
+        }
     }
 
     @RequestMapping("/account/transactions")
     public List<Transaction> transaction(@RequestParam long id) {
         try{
-            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Transaction details at: \"" + new Date() + "\"")).get();
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Inquiry for transaction details " + new Date())).get();
             return transactionLogicFacade.findByAccountId(id);
 
         }catch (Exception e){
             System.out.println(e);
+            producer.send(new ProducerRecord<>(REST_TOPIC, System.currentTimeMillis(), "Bank-system (Java): Transaction details failed " + new Date()));
             return new ArrayList<>();
         }
     }
