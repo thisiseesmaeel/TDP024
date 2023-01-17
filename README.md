@@ -1,0 +1,3 @@
+# TDP024 - Enterprise Systems
+
+This course provides students with an insight into the architecture behind Enterprise Systems. In the final lab, students will develop a number of different services that communicate with one another. In this way, they will practice analyzing and solving various problems that arise in this type of development. At the same time, students must adapt to the tools, methods, principles and design patterns used in the development of the services that will be available and modular. For higher grades, students are given the opportunity to delve into more complex pieces of SOA services.
